@@ -32,5 +32,10 @@ namespace COMP4911WebAPI.Models
             this.Password = password;
             this.EmployeeId = employeeId;
         }
+
+        public override string ToString()
+        {
+            return "credential username: " + CredentialId;
+        }
     }
 }

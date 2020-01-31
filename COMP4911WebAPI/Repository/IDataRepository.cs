@@ -13,5 +13,7 @@ namespace COMP4911WebAPI.Repository
         Task Update(TEntity dbEntity, TEntity entity);
         Task Delete(TEntity entity);
 
+        Task<TEntity> GetLastId();
+
     }
 }

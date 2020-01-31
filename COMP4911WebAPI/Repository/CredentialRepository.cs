@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using COMP4911WebAPI.Models;
@@ -15,6 +16,14 @@ namespace COMP4911WebAPI.Repository
         {
             this._credentialContext = context;
         }
+
+        public async Task<Credential> GetLastId()
+        {
+            Credential cred = _credentialContext.Credentials.OrderBy(c =>c.CredentialId).LastOrDefault();
+            Debug.WriteLine(cred.ToString());
+
+            return cred;
+        } 
 
         public async Task Add(Credential entity)
         {
