@@ -1,0 +1,16 @@
+C:\Users\perry\source\repos\COMP4911WebAPI\COMP4911WebAPI\bin\Debug\netcoreapp2.2\appsettings.Development.json
+C:\Users\perry\source\repos\COMP4911WebAPI\COMP4911WebAPI\bin\Debug\netcoreapp2.2\appsettings.json
+C:\Users\perry\source\repos\COMP4911WebAPI\COMP4911WebAPI\bin\Debug\netcoreapp2.2\Properties\launchSettings.json
+C:\Users\perry\source\repos\COMP4911WebAPI\COMP4911WebAPI\bin\Debug\netcoreapp2.2\COMP4911WebAPI.deps.json
+C:\Users\perry\source\repos\COMP4911WebAPI\COMP4911WebAPI\bin\Debug\netcoreapp2.2\COMP4911WebAPI.runtimeconfig.json
+C:\Users\perry\source\repos\COMP4911WebAPI\COMP4911WebAPI\bin\Debug\netcoreapp2.2\COMP4911WebAPI.runtimeconfig.dev.json
+C:\Users\perry\source\repos\COMP4911WebAPI\COMP4911WebAPI\bin\Debug\netcoreapp2.2\COMP4911WebAPI.dll
+C:\Users\perry\source\repos\COMP4911WebAPI\COMP4911WebAPI\obj\Debug\netcoreapp2.2\COMP4911WebAPI.RazorAssemblyInfo.cache
+C:\Users\perry\source\repos\COMP4911WebAPI\COMP4911WebAPI\obj\Debug\netcoreapp2.2\COMP4911WebAPI.RazorAssemblyInfo.cs
+C:\Users\perry\source\repos\COMP4911WebAPI\COMP4911WebAPI\obj\Debug\netcoreapp2.2\COMP4911WebAPI.AssemblyInfoInputs.cache
+C:\Users\perry\source\repos\COMP4911WebAPI\COMP4911WebAPI\obj\Debug\netcoreapp2.2\COMP4911WebAPI.AssemblyInfo.cs
+C:\Users\perry\source\repos\COMP4911WebAPI\COMP4911WebAPI\obj\Debug\netcoreapp2.2\COMP4911WebAPI.RazorTargetAssemblyInfo.cache
+C:\Users\perry\source\repos\COMP4911WebAPI\COMP4911WebAPI\bin\Debug\netcoreapp2.2\COMP4911WebAPI.pdb
+C:\Users\perry\source\repos\COMP4911WebAPI\COMP4911WebAPI\obj\Debug\netcoreapp2.2\COMP4911WebAPI.dll
+C:\Users\perry\source\repos\COMP4911WebAPI\COMP4911WebAPI\obj\Debug\netcoreapp2.2\COMP4911WebAPI.pdb
+C:\Users\perry\source\repos\COMP4911WebAPI\COMP4911WebAPI\obj\Debug\netcoreapp2.2\COMP4911WebAPI.csprojAssemblyReference.cache
