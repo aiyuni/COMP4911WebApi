@@ -9,41 +9,6 @@ namespace COMP4911WebAPI.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Employees",
-                columns: table => new
-                {
-                    EmployeeId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    JobId = table.Column<int>(nullable: false),
-                    EmployeeFirstName = table.Column<string>(nullable: true),
-                    EmployeeLastName = table.Column<string>(nullable: true),
-                    IsActivated = table.Column<bool>(nullable: false),
-                    TimesheetApproverId = table.Column<int>(nullable: true),
-                    SupervisorId = table.Column<int>(nullable: true),
-                    IsProjectManager = table.Column<bool>(nullable: false),
-                    IsAdmin = table.Column<bool>(nullable: false),
-                    IsHumanResources = table.Column<bool>(nullable: false),
-                    Row_Lst_Upd_Uid = table.Column<string>(nullable: true),
-                    Row_Lst_Upd_Ts = table.Column<DateTime>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Employees", x => x.EmployeeId);
-                    table.ForeignKey(
-                        name: "FK_Employees_Employees_SupervisorId",
-                        column: x => x.SupervisorId,
-                        principalTable: "Employees",
-                        principalColumn: "EmployeeId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Employees_Employees_TimesheetApproverId",
-                        column: x => x.TimesheetApproverId,
-                        principalTable: "Employees",
-                        principalColumn: "EmployeeId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "JobTitle",
                 columns: table => new
                 {
@@ -75,70 +40,45 @@ namespace COMP4911WebAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Credentials",
+                name: "Employees",
                 columns: table => new
                 {
-                    CredentialId = table.Column<string>(nullable: false),
-                    EmployeeId = table.Column<int>(nullable: false),
-                    Password = table.Column<string>(nullable: true),
-                    Row_Lst_Upd_Uid = table.Column<string>(nullable: true),
-                    Row_Lst_Upd_Ts = table.Column<DateTime>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Credentials", x => x.CredentialId);
-                    table.ForeignKey(
-                        name: "FK_Credentials_Employees_EmployeeId",
-                        column: x => x.EmployeeId,
-                        principalTable: "Employees",
-                        principalColumn: "EmployeeId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Timesheet",
-                columns: table => new
-                {
-                    TimesheetId = table.Column<int>(nullable: false)
+                    EmployeeId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    EmployeeId = table.Column<int>(nullable: false),
-                    WeekNumber = table.Column<int>(nullable: false),
+                    JobId = table.Column<int>(nullable: false),
+                    EmployeeFirstName = table.Column<string>(nullable: true),
+                    EmployeeLastName = table.Column<string>(nullable: true),
+                    IsActivated = table.Column<bool>(nullable: false),
+                    TimesheetApproverId = table.Column<int>(nullable: true),
+                    SupervisorId = table.Column<int>(nullable: true),
+                    IsProjectManager = table.Column<bool>(nullable: false),
+                    IsAdmin = table.Column<bool>(nullable: false),
+                    IsHumanResources = table.Column<bool>(nullable: false),
+                    JobTitleId = table.Column<int>(nullable: true),
                     Row_Lst_Upd_Uid = table.Column<string>(nullable: true),
                     Row_Lst_Upd_Ts = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Timesheet", x => x.TimesheetId);
+                    table.PrimaryKey("PK_Employees", x => x.EmployeeId);
                     table.ForeignKey(
-                        name: "FK_Timesheet_Employees_EmployeeId",
-                        column: x => x.EmployeeId,
+                        name: "FK_Employees_JobTitle_JobTitleId",
+                        column: x => x.JobTitleId,
+                        principalTable: "JobTitle",
+                        principalColumn: "JobTitleId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Employees_Employees_SupervisorId",
+                        column: x => x.SupervisorId,
                         principalTable: "Employees",
                         principalColumn: "EmployeeId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "EmployeeProjectAssignments",
-                columns: table => new
-                {
-                    EmployeeId = table.Column<int>(nullable: false),
-                    ProjectId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EmployeeProjectAssignments", x => new { x.EmployeeId, x.ProjectId });
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_EmployeeProjectAssignments_Employees_EmployeeId",
-                        column: x => x.EmployeeId,
+                        name: "FK_Employees_Employees_TimesheetApproverId",
+                        column: x => x.TimesheetApproverId,
                         principalTable: "Employees",
                         principalColumn: "EmployeeId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_EmployeeProjectAssignments_Projects_ProjectId",
-                        column: x => x.ProjectId,
-                        principalTable: "Projects",
-                        principalColumn: "ProjectId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -180,6 +120,73 @@ namespace COMP4911WebAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Credentials",
+                columns: table => new
+                {
+                    CredentialId = table.Column<string>(nullable: false),
+                    EmployeeId = table.Column<int>(nullable: false),
+                    Password = table.Column<string>(nullable: true),
+                    Row_Lst_Upd_Uid = table.Column<string>(nullable: true),
+                    Row_Lst_Upd_Ts = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Credentials", x => x.CredentialId);
+                    table.ForeignKey(
+                        name: "FK_Credentials_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employees",
+                        principalColumn: "EmployeeId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EmployeeProjectAssignments",
+                columns: table => new
+                {
+                    EmployeeId = table.Column<int>(nullable: false),
+                    ProjectId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmployeeProjectAssignments", x => new { x.EmployeeId, x.ProjectId });
+                    table.ForeignKey(
+                        name: "FK_EmployeeProjectAssignments_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employees",
+                        principalColumn: "EmployeeId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EmployeeProjectAssignments_Projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "Projects",
+                        principalColumn: "ProjectId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Timesheet",
+                columns: table => new
+                {
+                    TimesheetId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    EmployeeId = table.Column<int>(nullable: false),
+                    WeekNumber = table.Column<int>(nullable: false),
+                    Row_Lst_Upd_Uid = table.Column<string>(nullable: true),
+                    Row_Lst_Upd_Ts = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Timesheet", x => x.TimesheetId);
+                    table.ForeignKey(
+                        name: "FK_Timesheet_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employees",
+                        principalColumn: "EmployeeId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "EmployeeWorkPackageAssignments",
                 columns: table => new
                 {
@@ -218,7 +225,6 @@ namespace COMP4911WebAPI.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     TimesheetId = table.Column<int>(nullable: false),
                     WorkPackageId = table.Column<int>(nullable: false),
-                    ProjectId = table.Column<int>(nullable: false),
                     Monday = table.Column<int>(nullable: false),
                     Tuesday = table.Column<int>(nullable: false),
                     Wednesday = table.Column<int>(nullable: false),
@@ -233,23 +239,17 @@ namespace COMP4911WebAPI.Migrations
                 {
                     table.PrimaryKey("PK_TimesheetRows", x => x.TimesheetRowId);
                     table.ForeignKey(
-                        name: "FK_TimesheetRows_Projects_ProjectId",
-                        column: x => x.ProjectId,
-                        principalTable: "Projects",
-                        principalColumn: "ProjectId",
-                        onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
                         name: "FK_TimesheetRows_Timesheet_TimesheetId",
                         column: x => x.TimesheetId,
                         principalTable: "Timesheet",
                         principalColumn: "TimesheetId",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_TimesheetRows_WorkPackages_WorkPackageId_ProjectId",
-                        columns: x => new { x.WorkPackageId, x.ProjectId },
+                        name: "FK_TimesheetRows_WorkPackages_TimesheetId_WorkPackageId",
+                        columns: x => new { x.TimesheetId, x.WorkPackageId },
                         principalTable: "WorkPackages",
                         principalColumns: new[] { "WorkPackageId", "ProjectId" },
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -261,6 +261,11 @@ namespace COMP4911WebAPI.Migrations
                 name: "IX_EmployeeProjectAssignments_ProjectId",
                 table: "EmployeeProjectAssignments",
                 column: "ProjectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employees_JobTitleId",
+                table: "Employees",
+                column: "JobTitleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_SupervisorId",
@@ -285,23 +290,12 @@ namespace COMP4911WebAPI.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Timesheet_EmployeeId",
                 table: "Timesheet",
-                column: "EmployeeId",
-                unique: true);
+                column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TimesheetRows_ProjectId",
+                name: "IX_TimesheetRows_TimesheetId_WorkPackageId",
                 table: "TimesheetRows",
-                column: "ProjectId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TimesheetRows_TimesheetId",
-                table: "TimesheetRows",
-                column: "TimesheetId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TimesheetRows_WorkPackageId_ProjectId",
-                table: "TimesheetRows",
-                columns: new[] { "WorkPackageId", "ProjectId" });
+                columns: new[] { "TimesheetId", "WorkPackageId" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_WorkPackages_ProjectId",
@@ -326,9 +320,6 @@ namespace COMP4911WebAPI.Migrations
                 name: "EmployeeWorkPackageAssignments");
 
             migrationBuilder.DropTable(
-                name: "JobTitle");
-
-            migrationBuilder.DropTable(
                 name: "TimesheetRows");
 
             migrationBuilder.DropTable(
@@ -342,6 +333,9 @@ namespace COMP4911WebAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "Projects");
+
+            migrationBuilder.DropTable(
+                name: "JobTitle");
         }
     }
 }

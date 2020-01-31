@@ -23,10 +23,10 @@ namespace COMP4911WebAPI.Controllers
 
         //GET: api/JobTitle/AllJobTitles
         [HttpGet("AllJobTitles")]
-        public IActionResult GetAllJobTitles()
+        public async Task<IActionResult> GetAllJobTitles()
         {
 
-            return Ok(_jobTitleRepository.GetAll());
+            return Ok(await _jobTitleRepository.GetAll());
         }
 
         // GET: api/JobTitles
@@ -43,7 +43,7 @@ namespace COMP4911WebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<JobTitle>> PostJobTitle(JobTitle jobTitle)
         {
-            _jobTitleRepository.Add(jobTitle);
+            await _jobTitleRepository.Add(jobTitle);
 
             return new OkObjectResult(200);
         }

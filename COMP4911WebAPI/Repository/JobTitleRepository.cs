@@ -16,7 +16,7 @@ namespace COMP4911WebAPI.Repository
             this._jobTitleContext = context;
         }
 
-        public void Add(JobTitle entity)
+        public async Task Add(JobTitle entity)
         {
             if (_jobTitleContext.JobTitle.Any(p => p.JobTitleId == entity.JobTitleId) == false)
             {
@@ -30,26 +30,26 @@ namespace COMP4911WebAPI.Repository
                 this.Update(existingJobTitle, entity);
             }
 
-            _jobTitleContext.SaveChanges();
+            await _jobTitleContext.SaveChangesAsync();
             _jobTitleContext.Entry(entity).State = EntityState.Detached;
         }
 
-        public void Delete(JobTitle entity)
+        public async Task Delete(JobTitle entity)
         {
             throw new NotImplementedException();
         }
 
-        public JobTitle Get(int id)
+        public async Task<JobTitle> Get(int id)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<JobTitle> GetAll()
+        public async Task<IEnumerable<JobTitle>> GetAll()
         {
-            return _jobTitleContext.JobTitle.ToList();
+            return await _jobTitleContext.JobTitle.ToListAsync();
         }
 
-        public void Update(JobTitle dbEntity, JobTitle entity)
+        public async Task Update(JobTitle dbEntity, JobTitle entity)
         {
             _jobTitleContext.Entry(dbEntity).CurrentValues.SetValues(entity);
             System.Diagnostics.Debug.Write("Updated credentials...");
