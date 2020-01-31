@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using COMP4911WebAPI.Models;
+using COMP4911WebAPI.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -30,7 +31,9 @@ namespace COMP4911WebAPI
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddDbContext<ApplicationDbContext>(Options => Options.UseSqlServer(Configuration.GetConnectionString("ConnString")));
-
+            services.AddScoped<IDataRepository<Employee>, EmployeeRepository>();
+            services.AddScoped<IDataRepository<JobTitle>, JobTitleRepository>();
+            services.AddScoped<IDataRepository<Credential>, CredentialRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

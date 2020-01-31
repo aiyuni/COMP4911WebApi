@@ -13,4 +13,3 @@ C:\Users\perry\source\repos\COMP4911WebAPI\COMP4911WebAPI\obj\Debug\netcoreapp2.
 C:\Users\perry\source\repos\COMP4911WebAPI\COMP4911WebAPI\bin\Debug\netcoreapp2.2\COMP4911WebAPI.pdb
 C:\Users\perry\source\repos\COMP4911WebAPI\COMP4911WebAPI\obj\Debug\netcoreapp2.2\COMP4911WebAPI.dll
 C:\Users\perry\source\repos\COMP4911WebAPI\COMP4911WebAPI\obj\Debug\netcoreapp2.2\COMP4911WebAPI.pdb
-C:\Users\perry\source\repos\COMP4911WebAPI\COMP4911WebAPI\obj\Debug\netcoreapp2.2\COMP4911WebAPI.csprojAssemblyReference.cache
