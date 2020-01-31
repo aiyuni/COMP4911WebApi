@@ -14,7 +14,7 @@ namespace COMP4911WebAPI.Models
         public int EmployeeId { get; set; }
 
         [ForeignKey("JobId")]
-        public int JobId { get; set; }
+        public int JobTitleId { get; set; }
 
         public string EmployeeFirstName { get; set; }
         public string EmployeeLastName { get; set; }
@@ -27,8 +27,9 @@ namespace COMP4911WebAPI.Models
 
         public Employee TimesheetApprover { get; set; }
         public Employee Supervisor { get; set; }
+        public JobTitle JobTitle { get; set; }
 
-        public Timesheet Timesheet { get; set; }
+        public IList<Timesheet> Timesheets { get; set; }
 
         public IList<EmployeeProjectAssignment> EmployeeProjectAssignments { get; set; }
         public IList<EmployeeWorkPackageAssignment> EmployeeWorkPackageAssignments { get; set; }
@@ -43,7 +44,7 @@ namespace COMP4911WebAPI.Models
         public Employee(int jobId, string firstName, string lastName, int? timesheetApproverId, int? supervisorId, bool isActivated,
             bool isProjectManager, bool isAdmin, bool isHumanResources)
         {
-            JobId = jobId;
+            JobTitleId = jobId;
             EmployeeFirstName = firstName;
             EmployeeLastName = lastName;
             TimesheetApproverId = timesheetApproverId;

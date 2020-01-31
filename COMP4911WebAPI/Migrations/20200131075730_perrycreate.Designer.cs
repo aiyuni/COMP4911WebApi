@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace COMP4911WebAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200131033450_perrycreate")]
+    [Migration("20200131075730_perrycreate")]
     partial class perrycreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,6 +61,8 @@ namespace COMP4911WebAPI.Migrations
 
                     b.Property<int>("JobId");
 
+                    b.Property<int?>("JobTitleId");
+
                     b.Property<DateTime>("Row_Lst_Upd_Ts");
 
                     b.Property<string>("Row_Lst_Upd_Uid");
@@ -70,6 +72,8 @@ namespace COMP4911WebAPI.Migrations
                     b.Property<int?>("TimesheetApproverId");
 
                     b.HasKey("EmployeeId");
+
+                    b.HasIndex("JobTitleId");
 
                     b.HasIndex("SupervisorId");
 
@@ -160,8 +164,7 @@ namespace COMP4911WebAPI.Migrations
 
                     b.HasKey("TimesheetId");
 
-                    b.HasIndex("EmployeeId")
-                        .IsUnique();
+                    b.HasIndex("EmployeeId");
 
                     b.ToTable("Timesheet");
                 });
@@ -175,8 +178,6 @@ namespace COMP4911WebAPI.Migrations
                     b.Property<int>("Friday");
 
                     b.Property<int>("Monday");
-
-                    b.Property<int>("ProjectId");
 
                     b.Property<DateTime>("Row_Lst_Upd_Ts");
 
@@ -198,11 +199,7 @@ namespace COMP4911WebAPI.Migrations
 
                     b.HasKey("TimesheetRowId");
 
-                    b.HasIndex("ProjectId");
-
-                    b.HasIndex("TimesheetId");
-
-                    b.HasIndex("WorkPackageId", "ProjectId");
+                    b.HasIndex("TimesheetId", "WorkPackageId");
 
                     b.ToTable("TimesheetRows");
                 });
@@ -260,6 +257,10 @@ namespace COMP4911WebAPI.Migrations
 
             modelBuilder.Entity("COMP4911WebAPI.Models.Employee", b =>
                 {
+                    b.HasOne("COMP4911WebAPI.Models.JobTitle", "JobTitle")
+                        .WithMany()
+                        .HasForeignKey("JobTitleId");
+
                     b.HasOne("COMP4911WebAPI.Models.Employee", "Supervisor")
                         .WithMany()
                         .HasForeignKey("SupervisorId");
@@ -289,7 +290,7 @@ namespace COMP4911WebAPI.Migrations
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("COMP4911WebAPI.Models.Project", "Project")
+                    b.HasOne("COMP4911WebAPI.Models.Project")
                         .WithMany("EmployeeWorkPackageAssignments")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -303,27 +304,22 @@ namespace COMP4911WebAPI.Migrations
             modelBuilder.Entity("COMP4911WebAPI.Models.Timesheet", b =>
                 {
                     b.HasOne("COMP4911WebAPI.Models.Employee", "Employee")
-                        .WithOne("Timesheet")
-                        .HasForeignKey("COMP4911WebAPI.Models.Timesheet", "EmployeeId")
+                        .WithMany("Timesheets")
+                        .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("COMP4911WebAPI.Models.TimesheetRow", b =>
                 {
-                    b.HasOne("COMP4911WebAPI.Models.Project", "Project")
-                        .WithMany()
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("COMP4911WebAPI.Models.Timesheet", "Timesheet")
                         .WithMany("TimesheetRows")
                         .HasForeignKey("TimesheetId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("COMP4911WebAPI.Models.WorkPackage", "WorkPackage")
                         .WithMany("TimesheetRows")
-                        .HasForeignKey("WorkPackageId", "ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("TimesheetId", "WorkPackageId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("COMP4911WebAPI.Models.WorkPackage", b =>
@@ -335,7 +331,8 @@ namespace COMP4911WebAPI.Migrations
 
                     b.HasOne("COMP4911WebAPI.Models.WorkPackage", "ParentWorkPackage")
                         .WithMany("ChildrenWorkPackages")
-                        .HasForeignKey("ParentWorkPackageId", "ProjectId");
+                        .HasForeignKey("ParentWorkPackageId", "ProjectId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618
         }
