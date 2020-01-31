@@ -27,11 +27,12 @@ namespace COMP4911WebAPI.Controllers
         [HttpGet("AllEmployees")]
         public async Task<IActionResult> GetAllEmployees()
         {
-            //List<Employee> employeeList = new List<Employee>();
-            //foreach (Employee e in _employeeRepository.GetAll())
-            //{
+            return Ok(await _employeeRepository.GetAll());
+        }
 
-            //}
+        [HttpGet("AvailableEmployeeUsername")]
+        public async Task<IActionResult> GetAvailableUserName()
+        {
             return Ok(await _employeeRepository.GetAll());
         }
 

@@ -49,6 +49,11 @@ namespace COMP4911WebAPI.Repository
             return await _jobTitleContext.JobTitle.ToListAsync();
         }
 
+        public Task<JobTitle> GetLastId()
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task Update(JobTitle dbEntity, JobTitle entity)
         {
             _jobTitleContext.Entry(dbEntity).CurrentValues.SetValues(entity);
