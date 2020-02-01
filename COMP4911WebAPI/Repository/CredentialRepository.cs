@@ -30,8 +30,16 @@ namespace COMP4911WebAPI.Repository
         public async Task<Credential> Authenticate(string username, string password)
         {
             Debug.Write("inside CredRepo Authenticate... username is: " + username + ", password is: " + password);
+
+            if (_credentialContext.Credentials.SingleOrDefault(x => x.CredentialId.Equals(username)) == null)
+            {
+                return null;
+            }
+            byte[] salt = _credentialContext.Credentials.SingleOrDefault(x => x.CredentialId.Equals(username)).Salt;
+            string hashedPassword = PasswordHasher.HashPassword(password, salt);
+
             var credential =  await _credentialContext.Credentials.SingleOrDefaultAsync(x =>
-                x.CredentialId.Equals(username) && x.Password.Equals(password));
+                x.CredentialId.Equals(username) && x.Password.Equals(hashedPassword));
             if (credential == null)
             {
                 Debug.WriteLine("user is null??");
@@ -92,6 +100,13 @@ namespace COMP4911WebAPI.Repository
         public async Task<bool> Add(Credential entity)
         {
             bool success;
+
+            byte[] salt = PasswordHasher.GenerateSalt();
+            string hashedPass = PasswordHasher.HashPassword(entity.Password, salt);
+
+            entity.Salt = salt;
+            entity.Password = hashedPass;
+
             if (_credentialContext.Credentials.Any(p => p.CredentialId == entity.CredentialId) == false)
             {
                 System.Diagnostics.Debug.WriteLine("record doesnt exist, adding credential...");
