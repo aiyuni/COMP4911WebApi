@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace COMP4911WebAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200201034454_perrycreate3")]
-    partial class perrycreate3
+    [Migration("20200201195142_perrycreate")]
+    partial class perrycreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,6 +34,8 @@ namespace COMP4911WebAPI.Migrations
 
                     b.Property<string>("Row_Lst_Upd_Uid");
 
+                    b.Property<byte[]>("Salt");
+
                     b.Property<string>("Token");
 
                     b.HasKey("CredentialId");
@@ -41,6 +43,15 @@ namespace COMP4911WebAPI.Migrations
                     b.HasIndex("EmployeeId");
 
                     b.ToTable("Credentials");
+
+                    b.HasData(
+                        new
+                        {
+                            CredentialId = "A000001",
+                            EmployeeId = 1,
+                            Password = "password",
+                            Row_Lst_Upd_Ts = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("COMP4911WebAPI.Models.Employee", b =>
@@ -80,6 +91,23 @@ namespace COMP4911WebAPI.Migrations
                     b.HasIndex("TimesheetApproverId");
 
                     b.ToTable("Employees");
+
+                    b.HasData(
+                        new
+                        {
+                            EmployeeId = 1,
+                            EmployeeFirstName = "AdminFirstName",
+                            EmployeeLastName = "AdminLastName",
+                            IsActivated = true,
+                            IsAdmin = true,
+                            IsHumanResources = true,
+                            IsProjectManager = true,
+                            JobTitleId = 1,
+                            Row_Lst_Upd_Ts = new DateTime(2020, 2, 1, 11, 51, 42, 177, DateTimeKind.Local).AddTicks(3294),
+                            Row_Lst_Upd_Uid = "perry",
+                            SupervisorId = 1,
+                            TimesheetApproverId = 1
+                        });
                 });
 
             modelBuilder.Entity("COMP4911WebAPI.Models.EmployeeProjectAssignment", b =>
@@ -127,6 +155,29 @@ namespace COMP4911WebAPI.Migrations
                     b.HasKey("JobTitleId");
 
                     b.ToTable("JobTitle");
+
+                    b.HasData(
+                        new
+                        {
+                            JobTitleId = 1,
+                            JobTitleName = "Software Developer",
+                            Row_Lst_Upd_Ts = new DateTime(2020, 2, 1, 11, 51, 42, 180, DateTimeKind.Local).AddTicks(6865),
+                            Row_Lst_Upd_Uid = "perry"
+                        },
+                        new
+                        {
+                            JobTitleId = 2,
+                            JobTitleName = "Q/A Analyst",
+                            Row_Lst_Upd_Ts = new DateTime(2020, 2, 1, 11, 51, 42, 180, DateTimeKind.Local).AddTicks(8843),
+                            Row_Lst_Upd_Uid = "perry"
+                        },
+                        new
+                        {
+                            JobTitleId = 3,
+                            JobTitleName = "Business Analyst",
+                            Row_Lst_Upd_Ts = new DateTime(2020, 2, 1, 11, 51, 42, 180, DateTimeKind.Local).AddTicks(9721),
+                            Row_Lst_Upd_Uid = "perry"
+                        });
                 });
 
             modelBuilder.Entity("COMP4911WebAPI.Models.Project", b =>
@@ -289,7 +340,7 @@ namespace COMP4911WebAPI.Migrations
                     b.HasOne("COMP4911WebAPI.Models.Employee", "Employee")
                         .WithMany("EmployeeWorkPackageAssignments")
                         .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("COMP4911WebAPI.Models.Project")
                         .WithMany("EmployeeWorkPackageAssignments")
@@ -299,7 +350,7 @@ namespace COMP4911WebAPI.Migrations
                     b.HasOne("COMP4911WebAPI.Models.WorkPackage", "WorkPackage")
                         .WithMany("EmployeeWorkPackageAssignments")
                         .HasForeignKey("WorkPackageId", "ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("COMP4911WebAPI.Models.Timesheet", b =>

@@ -31,17 +31,7 @@ namespace COMP4911WebAPI.Controllers
             return Ok(await _jobTitleRepository.GetAll());
         }
 
-        // GET: api/JobTitles
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<JobTitle>>> GetJobTitle()
-        {
-            throw new Exception("not yet implemented");
-        }
-
-
         // POST: api/JobTitles
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
         public async Task<ActionResult<JobTitle>> PostJobTitle(JobTitle jobTitle)
         {
@@ -50,25 +40,5 @@ namespace COMP4911WebAPI.Controllers
             return new OkObjectResult(200);
         }
 
-        //DELETE: api/JobTitles/5
-        //[HttpDelete("{id}")]
-        //public async Task<ActionResult<JobTitle>> DeleteJobTitle(int id)
-        //{
-        //    var jobTitle = await _context.JobTitle.FindAsync(id);
-        //    if (jobTitle == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _context.JobTitle.Remove(jobTitle);
-        //    await _context.SaveChangesAsync();
-
-        //    return jobTitle;
-        //}
-
-        //private bool JobTitleExists(int id)
-        //{
-        //    return _context.JobTitle.Any(e => e.JobTitleId == id);
-        //}
     }
 }

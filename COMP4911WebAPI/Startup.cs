@@ -78,7 +78,6 @@ namespace COMP4911WebAPI
                 };
             });
 
-
             services.AddDbContext<ApplicationDbContext>(Options => Options.UseSqlServer(Configuration.GetConnectionString("ConnString")));
             services.AddScoped<IDataRepository<Employee>, EmployeeRepository>();
             services.AddScoped<IDataRepository<JobTitle>, JobTitleRepository>();
