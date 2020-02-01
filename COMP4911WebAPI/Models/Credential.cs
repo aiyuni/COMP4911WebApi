@@ -15,6 +15,7 @@ namespace COMP4911WebAPI.Models
         [ForeignKey("EmployeeId")]
         public int EmployeeId { get; set; }
         public string Password { get; set; }
+        public string Token { get; set; }
 
         public string Row_Lst_Upd_Uid { get; set; }
         public DateTime Row_Lst_Upd_Ts { get; set; }
@@ -35,7 +36,7 @@ namespace COMP4911WebAPI.Models
 
         public override string ToString()
         {
-            return "credential username: " + CredentialId;
+            return "tostring, credential username: " + CredentialId + ", cred password: " + Password;
         }
     }
 }
