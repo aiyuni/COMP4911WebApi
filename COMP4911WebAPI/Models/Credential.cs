@@ -15,6 +15,8 @@ namespace COMP4911WebAPI.Models
         [ForeignKey("EmployeeId")]
         public int EmployeeId { get; set; }
         public string Password { get; set; }
+        public string Token { get; set; }
+        public byte[] Salt { get; set; }
 
         public string Row_Lst_Upd_Uid { get; set; }
         public DateTime Row_Lst_Upd_Ts { get; set; }
@@ -31,6 +33,19 @@ namespace COMP4911WebAPI.Models
             this.CredentialId = userName;
             this.Password = password;
             this.EmployeeId = employeeId;
+        }
+
+        public Credential(string userName, string password, int employeeId, byte[] salt)
+        {
+            this.CredentialId = userName;
+            this.Password = password;
+            this.EmployeeId = employeeId;
+            this.Salt = salt;
+        }
+
+        public override string ToString()
+        {
+            return "tostring, credential username: " + CredentialId + ", cred password: " + Password + ", salt: " + Salt;
         }
     }
 }
