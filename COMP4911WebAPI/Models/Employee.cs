@@ -34,8 +34,8 @@ namespace COMP4911WebAPI.Models
         public IList<EmployeeProjectAssignment> EmployeeProjectAssignments { get; set; }
         public IList<EmployeeWorkPackageAssignment> EmployeeWorkPackageAssignments { get; set; }
 
-        public string Row_Lst_Upd_Uid { get; set; }
-        public DateTime Row_Lst_Upd_Ts { get; set; }
+        public string LastUpdatedBy { get; set; }
+        public DateTime LastUpdatedTime { get; set; }
 
         public Employee()
         {
@@ -53,8 +53,8 @@ namespace COMP4911WebAPI.Models
             this.IsProjectManager = isProjectManager;
             this.IsAdmin = isAdmin;
             this.IsHumanResources = isHumanResources;
-            this.Row_Lst_Upd_Ts = DateTime.Now;
-            this.Row_Lst_Upd_Uid = System.Environment.UserName.ToString();
+            this.LastUpdatedBy = System.Environment.UserName;
+            this.LastUpdatedTime = DateTime.Now;
         }
 
         public Employee(int empId, int jobId, string firstName, string lastName, int? timesheetApproverId, int? supervisorId, bool isActivated,
@@ -70,8 +70,8 @@ namespace COMP4911WebAPI.Models
             this.IsProjectManager = isProjectManager;
             this.IsAdmin = isAdmin;
             this.IsHumanResources = isHumanResources;
-            this.Row_Lst_Upd_Ts = DateTime.Now;
-            this.Row_Lst_Upd_Uid = System.Environment.UserName.ToString();
+            this.LastUpdatedBy = System.Environment.UserName;
+            this.LastUpdatedTime = DateTime.Now;
         }
     }
 }
