@@ -51,16 +51,5 @@ namespace COMP4911WebAPI.Controllers
             return Ok(JsonConvert.SerializeObject(username));
         }
 
-        //// POST: api/Credentials
-        //[HttpPost]
-        //public async Task<ActionResult<Credential>> PostCredential(Credential credential)
-        //{
-        //    _context.Credentials.Add(credential);
-        //    await _context.SaveChangesAsync();
-
-        //    return CreatedAtAction("GetCredential", new { id = credential.CredentialId }, credential);
-        //}
-
-
     }
 }

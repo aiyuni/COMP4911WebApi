@@ -24,6 +24,14 @@ namespace COMP4911WebAPI.Models
             Row_Lst_Upd_Uid = System.Environment.UserName.ToString();
         }
 
+        public JobTitle(int id, string jobTitleName)
+        {
+            this.JobTitleId = id;
+            this.JobTitleName = jobTitleName;
+            Row_Lst_Upd_Ts = DateTime.Now;
+            Row_Lst_Upd_Uid = System.Environment.UserName.ToString();
+        }
+
 
     }
 }
