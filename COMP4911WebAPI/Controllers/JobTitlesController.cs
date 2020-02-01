@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using COMP4911WebAPI.Models;
 using COMP4911WebAPI.Repository;
+using Microsoft.AspNetCore.Authorization;
 
 namespace COMP4911WebAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class JobTitlesController : ControllerBase

@@ -9,22 +9,37 @@ using Microsoft.EntityFrameworkCore;
 using COMP4911WebAPI.Models;
 using COMP4911WebAPI.Repository;
 using COMP4911WebAPI.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace COMP4911WebAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CredentialsController : ControllerBase
     {
-        private readonly IDataRepository<Credential> _credentialRepository;
+        private readonly CredentialRepository _credentialRepository;
 
         public CredentialsController(IDataRepository<Credential> credentialRepository)
         {
-            _credentialRepository = credentialRepository;
+            _credentialRepository = (CredentialRepository)credentialRepository;
         }
 
+        [AllowAnonymous]
+        [HttpPost("Authenticate")]
+        public async Task<IActionResult> Authenticate(Credential cred)
+        {
+            Debug.Write("inside authenticate...cred is: " + cred.ToString());
+            var user = await _credentialRepository.Authenticate(cred.CredentialId, cred.Password);
+            if (user == null)
+            {
+                return BadRequest("Username or password is incorrect");
+            }
+
+            return Ok(user);
+        }
 
         [HttpGet("AvailableUsername")]
         public async Task<IActionResult> GetAvailableUserName()
