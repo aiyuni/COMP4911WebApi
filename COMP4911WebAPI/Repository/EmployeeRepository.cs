@@ -33,7 +33,7 @@ namespace COMP4911WebAPI.Repository
                 success = false;
             }
 
-            await _employeeContext.SaveChangesAsync();  //what happens if no await here?
+            await _employeeContext.SaveChangesAsync();  
             _employeeContext.Entry(entity).State = EntityState.Detached;
 
             return success;

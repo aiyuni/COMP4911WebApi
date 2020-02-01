@@ -17,7 +17,7 @@ namespace COMP4911WebAPI.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Purpose { get; set; }
-        public int ResponsibleEngineerId { get; set; } //or string and use name?
+        public int ResponsibleEngineerId { get; set; } 
         public string Contractor { get; set; }
         public string Inputs { get; set; }
         public string Activities { get; set; }
@@ -30,10 +30,10 @@ namespace COMP4911WebAPI.Models
 
         public Project Project { get; set; }
 
-        public string Row_Lst_Upd_Uid { get; set; }
-        public DateTime Row_Lst_Upd_Ts { get; set; }
-
         public IList<TimesheetRow> TimesheetRows { get; set; }
         public IList<EmployeeWorkPackageAssignment> EmployeeWorkPackageAssignments { get; set; }
+
+        public string LastUpdatedBy { get; set; }
+        public DateTime LastUpdatedTime { get; set; }
     }
 }

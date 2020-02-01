@@ -13,5 +13,8 @@ namespace COMP4911WebAPI.Models
 
         public Employee Employee { get; set; }
         public WorkPackage WorkPackage { get; set; }
+
+        public string LastUpdatedBy { get; set; }
+        public DateTime LastUpdatedTime { get; set; }
     }
 }

@@ -30,7 +30,7 @@ namespace COMP4911WebAPI.Repository
             {
                 System.Diagnostics.Debug.Write("record already exists, updating existing job title...");
                 JobTitle existingJobTitle = _jobTitleContext.JobTitle.FirstOrDefault(p => p.JobTitleId == entity.JobTitleId);
-                this.Update(existingJobTitle, entity);
+                await this.Update(existingJobTitle, entity);
                 success = false;
             }
 

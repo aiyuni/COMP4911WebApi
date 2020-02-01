@@ -12,10 +12,11 @@ namespace COMP4911WebAPI.Models
 
         public int WeekNumber { get; set; }
 
-        public string Row_Lst_Upd_Uid { get; set; }
-        public DateTime Row_Lst_Upd_Ts { get; set; }
-
         public Employee Employee { get; set; }
         public IList<TimesheetRow> TimesheetRows { get; set; }
+
+        public string LastUpdatedBy { get; set; }
+        public DateTime LastUpdatedTime { get; set; }
+
     }
 }

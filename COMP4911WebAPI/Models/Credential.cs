@@ -18,10 +18,10 @@ namespace COMP4911WebAPI.Models
         public string Token { get; set; }
         public byte[] Salt { get; set; }
 
-        public string Row_Lst_Upd_Uid { get; set; }
-        public DateTime Row_Lst_Upd_Ts { get; set; }
-
         public Employee Employee { get; set; }
+
+        public string LastUpdatedBy { get; set; }
+        public DateTime LastUpdatedTime { get; set; }
 
         public Credential()
         {
@@ -33,6 +33,8 @@ namespace COMP4911WebAPI.Models
             this.CredentialId = userName;
             this.Password = password;
             this.EmployeeId = employeeId;
+            this.LastUpdatedBy = System.Environment.UserName;
+            this.LastUpdatedTime = DateTime.Now;
         }
 
         public Credential(string userName, string password, int employeeId, byte[] salt)
@@ -41,11 +43,13 @@ namespace COMP4911WebAPI.Models
             this.Password = password;
             this.EmployeeId = employeeId;
             this.Salt = salt;
+            this.LastUpdatedBy = System.Environment.UserName;
+            this.LastUpdatedTime = DateTime.Now;
         }
 
         public override string ToString()
         {
-            return "tostring, credential username: " + CredentialId + ", cred password: " + Password + ", salt: " + Salt;
+            return "credential username: " + CredentialId + ", cred password: " + Password + ", salt: " + Salt;
         }
     }
 }
