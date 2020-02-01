@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using COMP4911WebAPI.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace COMP4911WebAPI.Models
@@ -22,6 +23,7 @@ namespace COMP4911WebAPI.Models
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -54,9 +56,11 @@ namespace COMP4911WebAPI.Models
 
             modelBuilder.Entity<EmployeeWorkPackageAssignment>().HasKey(epa => new { epa.EmployeeId, epa.WorkPackageId, epa.ProjectId });
             modelBuilder.Entity<EmployeeWorkPackageAssignment>().HasOne(epa => epa.WorkPackage)
-                .WithMany(wp => wp.EmployeeWorkPackageAssignments);
+                .WithMany(wp => wp.EmployeeWorkPackageAssignments)
+                .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<EmployeeWorkPackageAssignment>().HasOne(epa => epa.Employee)
-                .WithMany(e => e.EmployeeWorkPackageAssignments);
+                .WithMany(e => e.EmployeeWorkPackageAssignments)
+                .OnDelete(DeleteBehavior.Restrict);
             //modelBuilder.Entity<EmployeeWorkPackageAssignment>().HasOne(epa => epa.Project)
             //    .WithMany(epa => epa.EmployeeWorkPackageAssignments);
             //modelBuilder.Entity<EmployeeWorkPackageAssignment>().HasOne(epa => epa.Project)
@@ -83,6 +87,7 @@ namespace COMP4911WebAPI.Models
                 .HasForeignKey(tr => new {tr.TimesheetId})
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Seed();
      
         }
 

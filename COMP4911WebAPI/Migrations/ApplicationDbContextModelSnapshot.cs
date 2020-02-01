@@ -41,6 +41,24 @@ namespace COMP4911WebAPI.Migrations
                     b.HasIndex("EmployeeId");
 
                     b.ToTable("Credentials");
+
+                    b.HasData(
+                        new
+                        {
+                            CredentialId = "A100001",
+                            EmployeeId = 1,
+                            Password = "UEV+xdCoqisp/gJnPW5khVjzMGOg2ESLf2L5HfrH+LA=",
+                            Row_Lst_Upd_Ts = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Salt = new byte[] { 249, 174, 116, 131, 148, 51, 234, 168, 33, 65, 30, 43, 80, 163, 151, 214 }
+                        },
+                        new
+                        {
+                            CredentialId = "A100002",
+                            EmployeeId = 2,
+                            Password = "nsVl+rew5vflaUXglWd+dlWrZTn+yHiOXoYjMz0EdKc=",
+                            Row_Lst_Upd_Ts = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Salt = new byte[] { 24, 235, 197, 140, 75, 109, 78, 89, 240, 76, 156, 229, 16, 225, 84, 153 }
+                        });
                 });
 
             modelBuilder.Entity("COMP4911WebAPI.Models.Employee", b =>
@@ -80,6 +98,38 @@ namespace COMP4911WebAPI.Migrations
                     b.HasIndex("TimesheetApproverId");
 
                     b.ToTable("Employees");
+
+                    b.HasData(
+                        new
+                        {
+                            EmployeeId = 1,
+                            EmployeeFirstName = "AdminFirstName",
+                            EmployeeLastName = "AdminLastName",
+                            IsActivated = true,
+                            IsAdmin = true,
+                            IsHumanResources = true,
+                            IsProjectManager = true,
+                            JobTitleId = 1,
+                            Row_Lst_Upd_Ts = new DateTime(2020, 2, 1, 12, 35, 39, 725, DateTimeKind.Local).AddTicks(8236),
+                            Row_Lst_Upd_Uid = "perry",
+                            SupervisorId = 1,
+                            TimesheetApproverId = 1
+                        },
+                        new
+                        {
+                            EmployeeId = 2,
+                            EmployeeFirstName = "Perry",
+                            EmployeeLastName = "Li",
+                            IsActivated = true,
+                            IsAdmin = false,
+                            IsHumanResources = false,
+                            IsProjectManager = true,
+                            JobTitleId = 2,
+                            Row_Lst_Upd_Ts = new DateTime(2020, 2, 1, 12, 35, 39, 729, DateTimeKind.Local).AddTicks(161),
+                            Row_Lst_Upd_Uid = "perry",
+                            SupervisorId = 1,
+                            TimesheetApproverId = 1
+                        });
                 });
 
             modelBuilder.Entity("COMP4911WebAPI.Models.EmployeeProjectAssignment", b =>
@@ -127,6 +177,29 @@ namespace COMP4911WebAPI.Migrations
                     b.HasKey("JobTitleId");
 
                     b.ToTable("JobTitle");
+
+                    b.HasData(
+                        new
+                        {
+                            JobTitleId = 1,
+                            JobTitleName = "Software Developer",
+                            Row_Lst_Upd_Ts = new DateTime(2020, 2, 1, 12, 35, 39, 729, DateTimeKind.Local).AddTicks(5603),
+                            Row_Lst_Upd_Uid = "perry"
+                        },
+                        new
+                        {
+                            JobTitleId = 2,
+                            JobTitleName = "Q/A Analyst",
+                            Row_Lst_Upd_Ts = new DateTime(2020, 2, 1, 12, 35, 39, 729, DateTimeKind.Local).AddTicks(7618),
+                            Row_Lst_Upd_Uid = "perry"
+                        },
+                        new
+                        {
+                            JobTitleId = 3,
+                            JobTitleName = "Business Analyst",
+                            Row_Lst_Upd_Ts = new DateTime(2020, 2, 1, 12, 35, 39, 729, DateTimeKind.Local).AddTicks(8480),
+                            Row_Lst_Upd_Uid = "perry"
+                        });
                 });
 
             modelBuilder.Entity("COMP4911WebAPI.Models.Project", b =>
@@ -289,7 +362,7 @@ namespace COMP4911WebAPI.Migrations
                     b.HasOne("COMP4911WebAPI.Models.Employee", "Employee")
                         .WithMany("EmployeeWorkPackageAssignments")
                         .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("COMP4911WebAPI.Models.Project")
                         .WithMany("EmployeeWorkPackageAssignments")
@@ -299,7 +372,7 @@ namespace COMP4911WebAPI.Migrations
                     b.HasOne("COMP4911WebAPI.Models.WorkPackage", "WorkPackage")
                         .WithMany("EmployeeWorkPackageAssignments")
                         .HasForeignKey("WorkPackageId", "ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("COMP4911WebAPI.Models.Timesheet", b =>

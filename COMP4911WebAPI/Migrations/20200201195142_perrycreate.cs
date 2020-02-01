@@ -45,7 +45,7 @@ namespace COMP4911WebAPI.Migrations
                 {
                     EmployeeId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    JobId = table.Column<int>(nullable: false),
+                    JobTitleId = table.Column<int>(nullable: false),
                     EmployeeFirstName = table.Column<string>(nullable: true),
                     EmployeeLastName = table.Column<string>(nullable: true),
                     IsActivated = table.Column<bool>(nullable: false),
@@ -54,7 +54,6 @@ namespace COMP4911WebAPI.Migrations
                     IsProjectManager = table.Column<bool>(nullable: false),
                     IsAdmin = table.Column<bool>(nullable: false),
                     IsHumanResources = table.Column<bool>(nullable: false),
-                    JobTitleId = table.Column<int>(nullable: true),
                     Row_Lst_Upd_Uid = table.Column<string>(nullable: true),
                     Row_Lst_Upd_Ts = table.Column<DateTime>(nullable: false)
                 },
@@ -66,7 +65,7 @@ namespace COMP4911WebAPI.Migrations
                         column: x => x.JobTitleId,
                         principalTable: "JobTitle",
                         principalColumn: "JobTitleId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Employees_Employees_SupervisorId",
                         column: x => x.SupervisorId,
@@ -126,6 +125,8 @@ namespace COMP4911WebAPI.Migrations
                     CredentialId = table.Column<string>(nullable: false),
                     EmployeeId = table.Column<int>(nullable: false),
                     Password = table.Column<string>(nullable: true),
+                    Token = table.Column<string>(nullable: true),
+                    Salt = table.Column<byte[]>(nullable: true),
                     Row_Lst_Upd_Uid = table.Column<string>(nullable: true),
                     Row_Lst_Upd_Ts = table.Column<DateTime>(nullable: false)
                 },
@@ -202,19 +203,19 @@ namespace COMP4911WebAPI.Migrations
                         column: x => x.EmployeeId,
                         principalTable: "Employees",
                         principalColumn: "EmployeeId",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_EmployeeWorkPackageAssignments_Projects_ProjectId",
                         column: x => x.ProjectId,
                         principalTable: "Projects",
                         principalColumn: "ProjectId",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_EmployeeWorkPackageAssignments_WorkPackages_WorkPackageId_ProjectId",
                         columns: x => new { x.WorkPackageId, x.ProjectId },
                         principalTable: "WorkPackages",
                         principalColumns: new[] { "WorkPackageId", "ProjectId" },
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -251,6 +252,31 @@ namespace COMP4911WebAPI.Migrations
                         principalColumns: new[] { "WorkPackageId", "ProjectId" },
                         onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.InsertData(
+                table: "JobTitle",
+                columns: new[] { "JobTitleId", "JobTitleName", "Row_Lst_Upd_Ts", "Row_Lst_Upd_Uid" },
+                values: new object[] { 1, "Software Developer", new DateTime(2020, 2, 1, 11, 51, 42, 180, DateTimeKind.Local).AddTicks(6865), "perry" });
+
+            migrationBuilder.InsertData(
+                table: "JobTitle",
+                columns: new[] { "JobTitleId", "JobTitleName", "Row_Lst_Upd_Ts", "Row_Lst_Upd_Uid" },
+                values: new object[] { 2, "Q/A Analyst", new DateTime(2020, 2, 1, 11, 51, 42, 180, DateTimeKind.Local).AddTicks(8843), "perry" });
+
+            migrationBuilder.InsertData(
+                table: "JobTitle",
+                columns: new[] { "JobTitleId", "JobTitleName", "Row_Lst_Upd_Ts", "Row_Lst_Upd_Uid" },
+                values: new object[] { 3, "Business Analyst", new DateTime(2020, 2, 1, 11, 51, 42, 180, DateTimeKind.Local).AddTicks(9721), "perry" });
+
+            migrationBuilder.InsertData(
+                table: "Employees",
+                columns: new[] { "EmployeeId", "EmployeeFirstName", "EmployeeLastName", "IsActivated", "IsAdmin", "IsHumanResources", "IsProjectManager", "JobTitleId", "Row_Lst_Upd_Ts", "Row_Lst_Upd_Uid", "SupervisorId", "TimesheetApproverId" },
+                values: new object[] { 1, "AdminFirstName", "AdminLastName", true, true, true, true, 1, new DateTime(2020, 2, 1, 11, 51, 42, 177, DateTimeKind.Local).AddTicks(3294), "perry", 1, 1 });
+
+            migrationBuilder.InsertData(
+                table: "Credentials",
+                columns: new[] { "CredentialId", "EmployeeId", "Password", "Row_Lst_Upd_Ts", "Row_Lst_Upd_Uid", "Salt", "Token" },
+                values: new object[] { "A000001", 1, "password", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Credentials_EmployeeId",

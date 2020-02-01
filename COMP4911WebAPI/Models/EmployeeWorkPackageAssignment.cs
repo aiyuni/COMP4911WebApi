@@ -13,6 +13,5 @@ namespace COMP4911WebAPI.Models
 
         public Employee Employee { get; set; }
         public WorkPackage WorkPackage { get; set; }
-       // public Project Project { get; set; }
     }
 }

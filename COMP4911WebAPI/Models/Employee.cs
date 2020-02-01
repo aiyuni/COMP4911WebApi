@@ -56,5 +56,22 @@ namespace COMP4911WebAPI.Models
             this.Row_Lst_Upd_Ts = DateTime.Now;
             this.Row_Lst_Upd_Uid = System.Environment.UserName.ToString();
         }
+
+        public Employee(int empId, int jobId, string firstName, string lastName, int? timesheetApproverId, int? supervisorId, bool isActivated,
+            bool isProjectManager, bool isAdmin, bool isHumanResources)
+        {
+            this.EmployeeId = empId;
+            JobTitleId = jobId;
+            EmployeeFirstName = firstName;
+            EmployeeLastName = lastName;
+            TimesheetApproverId = timesheetApproverId;
+            SupervisorId = supervisorId;
+            this.IsActivated = isActivated;
+            this.IsProjectManager = isProjectManager;
+            this.IsAdmin = isAdmin;
+            this.IsHumanResources = isHumanResources;
+            this.Row_Lst_Upd_Ts = DateTime.Now;
+            this.Row_Lst_Upd_Uid = System.Environment.UserName.ToString();
+        }
     }
 }
