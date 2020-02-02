@@ -51,8 +51,13 @@ namespace COMP4911WebAPI.Repository
 
         public async Task<Employee> Get(int id)
         {
-            throw new NotImplementedException();
+            return await _employeeContext.Employees.FirstAsync(e => e.EmployeeId == id);
         }
+
+        //public async Task<Employee> Get(string id)
+        //{
+        //    return await _employeeContext.Employees.FirstAsync(e => e.EmployeeId == id);
+        //}
 
         public async Task<IEnumerable<Employee>> GetAll()
         {
