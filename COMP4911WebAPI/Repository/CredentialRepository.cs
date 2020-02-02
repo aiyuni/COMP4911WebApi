@@ -117,7 +117,7 @@ namespace COMP4911WebAPI.Repository
             {
                 System.Diagnostics.Debug.Write("record already exists, updating credential...");
                 Credential existingCredential = _credentialContext.Credentials.FirstOrDefault(p => p.CredentialId == entity.CredentialId);
-                this.Update(existingCredential, entity);
+                await this.Update(existingCredential, entity);
                 success = false;
             }
 
@@ -134,8 +134,14 @@ namespace COMP4911WebAPI.Repository
 
         public async Task<Credential> Get(int id)
         {
-            throw new NotImplementedException();
+            return await _credentialContext.Credentials.FindAsync(id);
         }
+
+        //Do not delete this. We might need this later.
+        //public async Task<Credential> Get(string id)
+        //{
+        //    return await _credentialContext.Credentials.FindAsync(id);
+        //}
 
         public async Task<IEnumerable<Credential>> GetAll()
         {
