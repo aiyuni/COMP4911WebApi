@@ -17,7 +17,7 @@ namespace COMP4911WebAPI.Helpers
             string hashedPass2 = PasswordHasher.HashPassword("defaultpassword", salt2);
 
             modelBuilder.Entity<Employee>().HasData(
-                new Employee(1, 1, "AdminFirstName", "AdminLastName", 1, 1, 
+                new Employee(1, 1, "AdminFirstName", "AdminLastName", null, null, 
                     true, true, true, true),
                 new Employee(2, 2, "Perry", "Li", 1, 1,
                 true, true, false, false));
