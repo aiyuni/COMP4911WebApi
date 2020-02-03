@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using COMP4911WebAPI.Models;
 using COMP4911WebAPI.Repository;
 using COMP4911WebAPI.ViewModels;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace COMP4911WebAPI.Controllers
 {
@@ -17,24 +18,37 @@ namespace COMP4911WebAPI.Controllers
     {
         private readonly IDataRepository<Employee> _employeeRepository;
         private readonly CredentialRepository _credentialRepository;
-        public EmployeesController(IDataRepository<Employee> employeeRepository, IDataRepository<Credential> credentialRepository)
+        private readonly IDataRepository<EmployeeProjectAssignment> _employeeProjectAssignmentRepository;
+
+        public EmployeesController(IDataRepository<Employee> employeeRepository, IDataRepository<Credential> credentialRepository,
+            IDataRepository<EmployeeProjectAssignment> employeeProjectAssignmentRepository)
         {
             this._employeeRepository = employeeRepository;
             this._credentialRepository = (CredentialRepository) credentialRepository;
+            this._employeeProjectAssignmentRepository = employeeProjectAssignmentRepository;
         }
 
         //GET: api/Employees/AllEmployees
         [HttpGet("AllEmployees")]
         public async Task<IActionResult> GetAllEmployees()
         {
-            return Ok(await _employeeRepository.GetAll());
+            List<Employee> employeeList = new List<Employee>();
+
+            foreach (Employee item in await _employeeRepository.GetAll())
+            {
+                await this.GetFullEmployeeDetails(item);
+                employeeList.Add(item);
+            }
+
+            return Ok(employeeList);
+            //return Ok(await _employeeRepository.GetAll());
         }
 
         //GET: api/Employees/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetEmployee(int id)
         {
-            return Ok(await _employeeRepository.Get(id));
+            return Ok(await GetFullEmployeeDetails(await _employeeRepository.Get(id)));
         }
 
         //Do not delete this. We might need this later.
@@ -66,5 +80,19 @@ namespace COMP4911WebAPI.Controllers
             return new OkObjectResult(200);
         }
 
+        private async Task<Employee> GetFullEmployeeDetails(Employee emp)
+        {
+            foreach (EmployeeProjectAssignment item in await _employeeProjectAssignmentRepository.GetAll())
+            {
+                if (item.EmployeeId == emp.EmployeeId)
+                {
+                  //  item.Project = null;
+                    item.Employee = null;
+                    emp.EmployeeProjectAssignments.Add(item);
+                }
+            }
+
+            return emp;
+        }
     }
 }
