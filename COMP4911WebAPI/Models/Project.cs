@@ -13,6 +13,7 @@ namespace COMP4911WebAPI.Models
 
         public string ProjectName { get; set; }
         public string ProjectDescription { get; set; }
+        public int ProjectManagerId { get; set; }
 
         public IList<EmployeeProjectAssignment> EmployeeProjectAssignments { get; set; }
         public IList<EmployeeWorkPackageAssignment> EmployeeWorkPackageAssignments { get; set; }
@@ -20,6 +21,31 @@ namespace COMP4911WebAPI.Models
 
         public string LastUpdatedBy { get; set; }
         public DateTime LastUpdatedTime { get; set; }
+
+        public Project()
+        {
+            this.LastUpdatedTime = DateTime.Now;
+            this.LastUpdatedBy = Environment.UserName.ToString();
+        }
+
+        public Project(int id, string name, string description, int projectManagerId)
+        {
+            this.ProjectId = id;
+            this.ProjectName = name;
+            this.ProjectDescription = description;
+            this.ProjectManagerId = projectManagerId;
+            this.LastUpdatedTime = DateTime.Now;
+            this.LastUpdatedBy = Environment.UserName.ToString();
+        }
+
+        public Project(string name, string description, int projectManagerId)
+        {
+            this.ProjectName = name;
+            this.ProjectDescription = description;
+            this.ProjectManagerId = projectManagerId;
+            this.LastUpdatedTime = DateTime.Now;
+            this.LastUpdatedBy = Environment.UserName.ToString();
+        }
 
 
     }
