@@ -51,7 +51,7 @@ namespace COMP4911WebAPI.Repository
         }
         public async Task<Project> Get(int id)
         {
-            return await _projectContext.Projects.FindAsync(id);
+            return  _projectContext.Projects.Find(id);
         }
 
         public async Task<IEnumerable<Project>> GetAll()
