@@ -15,8 +15,8 @@ namespace COMP4911WebAPI.Migrations
                     JobTitleId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     JobTitleName = table.Column<string>(nullable: true),
-                    Row_Lst_Upd_Uid = table.Column<string>(nullable: true),
-                    Row_Lst_Upd_Ts = table.Column<DateTime>(nullable: false)
+                    LastUpdatedBy = table.Column<string>(nullable: true),
+                    LastUpdatedTime = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -31,8 +31,9 @@ namespace COMP4911WebAPI.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ProjectName = table.Column<string>(nullable: true),
                     ProjectDescription = table.Column<string>(nullable: true),
-                    Row_Lst_Upd_Uid = table.Column<string>(nullable: true),
-                    Row_Lst_Upd_Ts = table.Column<DateTime>(nullable: false)
+                    ProjectManagerId = table.Column<int>(nullable: false),
+                    LastUpdatedBy = table.Column<string>(nullable: true),
+                    LastUpdatedTime = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -54,8 +55,8 @@ namespace COMP4911WebAPI.Migrations
                     IsProjectManager = table.Column<bool>(nullable: false),
                     IsAdmin = table.Column<bool>(nullable: false),
                     IsHumanResources = table.Column<bool>(nullable: false),
-                    Row_Lst_Upd_Uid = table.Column<string>(nullable: true),
-                    Row_Lst_Upd_Ts = table.Column<DateTime>(nullable: false)
+                    LastUpdatedBy = table.Column<string>(nullable: true),
+                    LastUpdatedTime = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -98,8 +99,8 @@ namespace COMP4911WebAPI.Migrations
                     Activities = table.Column<string>(nullable: true),
                     Outputs = table.Column<string>(nullable: true),
                     ParentWorkPackageId = table.Column<int>(nullable: true),
-                    Row_Lst_Upd_Uid = table.Column<string>(nullable: true),
-                    Row_Lst_Upd_Ts = table.Column<DateTime>(nullable: false)
+                    LastUpdatedBy = table.Column<string>(nullable: true),
+                    LastUpdatedTime = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -127,8 +128,8 @@ namespace COMP4911WebAPI.Migrations
                     Password = table.Column<string>(nullable: true),
                     Token = table.Column<string>(nullable: true),
                     Salt = table.Column<byte[]>(nullable: true),
-                    Row_Lst_Upd_Uid = table.Column<string>(nullable: true),
-                    Row_Lst_Upd_Ts = table.Column<DateTime>(nullable: false)
+                    LastUpdatedBy = table.Column<string>(nullable: true),
+                    LastUpdatedTime = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -146,7 +147,10 @@ namespace COMP4911WebAPI.Migrations
                 columns: table => new
                 {
                     EmployeeId = table.Column<int>(nullable: false),
-                    ProjectId = table.Column<int>(nullable: false)
+                    ProjectId = table.Column<int>(nullable: false),
+                    isProjectManager = table.Column<bool>(nullable: false),
+                    LastUpdatedBy = table.Column<string>(nullable: true),
+                    LastUpdatedTime = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -173,8 +177,8 @@ namespace COMP4911WebAPI.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     EmployeeId = table.Column<int>(nullable: false),
                     WeekNumber = table.Column<int>(nullable: false),
-                    Row_Lst_Upd_Uid = table.Column<string>(nullable: true),
-                    Row_Lst_Upd_Ts = table.Column<DateTime>(nullable: false)
+                    LastUpdatedBy = table.Column<string>(nullable: true),
+                    LastUpdatedTime = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -193,7 +197,9 @@ namespace COMP4911WebAPI.Migrations
                 {
                     EmployeeId = table.Column<int>(nullable: false),
                     WorkPackageId = table.Column<int>(nullable: false),
-                    ProjectId = table.Column<int>(nullable: false)
+                    ProjectId = table.Column<int>(nullable: false),
+                    LastUpdatedBy = table.Column<string>(nullable: true),
+                    LastUpdatedTime = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -233,8 +239,8 @@ namespace COMP4911WebAPI.Migrations
                     Friday = table.Column<int>(nullable: false),
                     Saturday = table.Column<int>(nullable: false),
                     Sunday = table.Column<int>(nullable: false),
-                    Row_Lst_Upd_Uid = table.Column<string>(nullable: true),
-                    Row_Lst_Upd_Ts = table.Column<DateTime>(nullable: false)
+                    LastUpdatedBy = table.Column<string>(nullable: true),
+                    LastUpdatedTime = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -255,28 +261,48 @@ namespace COMP4911WebAPI.Migrations
 
             migrationBuilder.InsertData(
                 table: "JobTitle",
-                columns: new[] { "JobTitleId", "JobTitleName", "Row_Lst_Upd_Ts", "Row_Lst_Upd_Uid" },
-                values: new object[] { 1, "Software Developer", new DateTime(2020, 2, 1, 11, 51, 42, 180, DateTimeKind.Local).AddTicks(6865), "perry" });
+                columns: new[] { "JobTitleId", "JobTitleName", "LastUpdatedBy", "LastUpdatedTime" },
+                values: new object[,]
+                {
+                    { 1, "Software Developer", "perry", new DateTime(2020, 2, 2, 19, 50, 30, 921, DateTimeKind.Local).AddTicks(4862) },
+                    { 2, "Q/A Analyst", "perry", new DateTime(2020, 2, 2, 19, 50, 30, 921, DateTimeKind.Local).AddTicks(6185) },
+                    { 3, "Business Analyst", "perry", new DateTime(2020, 2, 2, 19, 50, 30, 921, DateTimeKind.Local).AddTicks(6977) }
+                });
 
             migrationBuilder.InsertData(
-                table: "JobTitle",
-                columns: new[] { "JobTitleId", "JobTitleName", "Row_Lst_Upd_Ts", "Row_Lst_Upd_Uid" },
-                values: new object[] { 2, "Q/A Analyst", new DateTime(2020, 2, 1, 11, 51, 42, 180, DateTimeKind.Local).AddTicks(8843), "perry" });
-
-            migrationBuilder.InsertData(
-                table: "JobTitle",
-                columns: new[] { "JobTitleId", "JobTitleName", "Row_Lst_Upd_Ts", "Row_Lst_Upd_Uid" },
-                values: new object[] { 3, "Business Analyst", new DateTime(2020, 2, 1, 11, 51, 42, 180, DateTimeKind.Local).AddTicks(9721), "perry" });
+                table: "Projects",
+                columns: new[] { "ProjectId", "LastUpdatedBy", "LastUpdatedTime", "ProjectDescription", "ProjectManagerId", "ProjectName" },
+                values: new object[] { 1, "perry", new DateTime(2020, 2, 2, 19, 50, 30, 922, DateTimeKind.Local).AddTicks(5834), "NewProjectDescription1", 3, "NewProject1" });
 
             migrationBuilder.InsertData(
                 table: "Employees",
-                columns: new[] { "EmployeeId", "EmployeeFirstName", "EmployeeLastName", "IsActivated", "IsAdmin", "IsHumanResources", "IsProjectManager", "JobTitleId", "Row_Lst_Upd_Ts", "Row_Lst_Upd_Uid", "SupervisorId", "TimesheetApproverId" },
-                values: new object[] { 1, "AdminFirstName", "AdminLastName", true, true, true, true, 1, new DateTime(2020, 2, 1, 11, 51, 42, 177, DateTimeKind.Local).AddTicks(3294), "perry", 1, 1 });
+                columns: new[] { "EmployeeId", "EmployeeFirstName", "EmployeeLastName", "IsActivated", "IsAdmin", "IsHumanResources", "IsProjectManager", "JobTitleId", "LastUpdatedBy", "LastUpdatedTime", "SupervisorId", "TimesheetApproverId" },
+                values: new object[] { 1, "AdminFirstName", "AdminLastName", true, true, true, true, 1, "perry", new DateTime(2020, 2, 2, 19, 50, 30, 919, DateTimeKind.Local).AddTicks(4312), null, null });
 
             migrationBuilder.InsertData(
                 table: "Credentials",
-                columns: new[] { "CredentialId", "EmployeeId", "Password", "Row_Lst_Upd_Ts", "Row_Lst_Upd_Uid", "Salt", "Token" },
-                values: new object[] { "A000001", 1, "password", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null });
+                columns: new[] { "CredentialId", "EmployeeId", "LastUpdatedBy", "LastUpdatedTime", "Password", "Salt", "Token" },
+                values: new object[] { "A100001", 1, "perry", new DateTime(2020, 2, 2, 19, 50, 30, 922, DateTimeKind.Local).AddTicks(1409), "jXH3fI9s1vRT3807X7QrVSK0dEYOXX7liRMbcM0gkUg=", new byte[] { 108, 222, 50, 229, 10, 82, 246, 69, 116, 151, 152, 52, 87, 245, 218, 235 }, null });
+
+            migrationBuilder.InsertData(
+                table: "Employees",
+                columns: new[] { "EmployeeId", "EmployeeFirstName", "EmployeeLastName", "IsActivated", "IsAdmin", "IsHumanResources", "IsProjectManager", "JobTitleId", "LastUpdatedBy", "LastUpdatedTime", "SupervisorId", "TimesheetApproverId" },
+                values: new object[] { 2, "Perry", "Li", true, false, false, true, 2, "perry", new DateTime(2020, 2, 2, 19, 50, 30, 920, DateTimeKind.Local).AddTicks(8569), 1, 1 });
+
+            migrationBuilder.InsertData(
+                table: "Credentials",
+                columns: new[] { "CredentialId", "EmployeeId", "LastUpdatedBy", "LastUpdatedTime", "Password", "Salt", "Token" },
+                values: new object[] { "A100002", 2, "perry", new DateTime(2020, 2, 2, 19, 50, 30, 922, DateTimeKind.Local).AddTicks(2785), "+khlmcRe613q9735fOSO1EPsvaSW03PG+NKDzKi7c1g=", new byte[] { 1, 50, 209, 10, 96, 83, 134, 175, 154, 83, 47, 141, 117, 166, 36, 110 }, null });
+
+            migrationBuilder.InsertData(
+                table: "Employees",
+                columns: new[] { "EmployeeId", "EmployeeFirstName", "EmployeeLastName", "IsActivated", "IsAdmin", "IsHumanResources", "IsProjectManager", "JobTitleId", "LastUpdatedBy", "LastUpdatedTime", "SupervisorId", "TimesheetApproverId" },
+                values: new object[] { 3, "Bruce", "Link", true, false, false, true, 3, "perry", new DateTime(2020, 2, 2, 19, 50, 30, 920, DateTimeKind.Local).AddTicks(9373), 1, 2 });
+
+            migrationBuilder.InsertData(
+                table: "EmployeeProjectAssignments",
+                columns: new[] { "EmployeeId", "ProjectId", "LastUpdatedBy", "LastUpdatedTime", "isProjectManager" },
+                values: new object[] { 3, 1, "perry", new DateTime(2020, 2, 2, 19, 50, 30, 923, DateTimeKind.Local).AddTicks(1393), true });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Credentials_EmployeeId",

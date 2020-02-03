@@ -14,7 +14,7 @@ namespace COMP4911WebAPI.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            return new string[] { "value1", "value2" };
+            return new string[] { "if you see this it means the api is working", "also clannad is best anime" };
         }
 
         // GET api/values/5
