@@ -69,8 +69,9 @@ namespace COMP4911WebAPI.Controllers
             if (!await _credentialRepository.CheckIfExists(tempCredential))
             {
                 Console.WriteLine("new employee, adding...");
-                Employee emp = new Employee(newEmployee.JobTitleId, newEmployee.EmpFirstName, newEmployee.EmpLastName, (int?)newEmployee.TimesheetApproverId,
-                    (int?)newEmployee.SupervisorId, true, newEmployee.isProjectManager, newEmployee.isAdmin, newEmployee.isHumanResources);
+                Employee emp = new Employee(newEmployee);
+              //  Employee emp = new Employee(newEmployee.JobTitleId, newEmployee.EmpFirstName, newEmployee.EmpLastName, (int?)newEmployee.TimesheetApproverId,
+                //    (int?)newEmployee.SupervisorId, true, newEmployee.isProjectManager, newEmployee.isAdmin, newEmployee.isHumanResources);
                 await _employeeRepository.Add(emp);
 
                 Credential credential = new Credential(newEmployee.EmpUsername, newEmployee.EmpPassword, emp.EmployeeId);
@@ -78,6 +79,14 @@ namespace COMP4911WebAPI.Controllers
             }
 
             return new OkObjectResult(200);
+        }
+
+        // PUT: api/Employees
+        [HttpPut]
+        public async Task<IActionResult> PutEmployee(Employee emp)
+        {
+            await _employeeRepository.Update(emp);
+            return Ok(emp);
         }
 
         private async Task<Employee> GetFullEmployeeDetails(Employee emp)
