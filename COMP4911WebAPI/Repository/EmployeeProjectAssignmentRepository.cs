@@ -61,9 +61,9 @@ namespace COMP4911WebAPI.Repository
             throw new NotImplementedException();
         }
 
-        public async Task Update(EmployeeProjectAssignment dbEntity, EmployeeProjectAssignment entity)
+        public async Task Update(EmployeeProjectAssignment entity)
         {
-             _employeeProjectAssignmentContext.Entry(dbEntity).CurrentValues.SetValues(entity);
+            // _employeeProjectAssignmentContext.Entry(dbEntity).CurrentValues.SetValues(entity);
             Debug.WriteLine("updated employeeProjectAssignment");
         }
     }

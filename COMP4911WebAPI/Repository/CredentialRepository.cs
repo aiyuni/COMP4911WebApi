@@ -117,7 +117,7 @@ namespace COMP4911WebAPI.Repository
             {
                 System.Diagnostics.Debug.Write("record already exists, updating credential...");
                 Credential existingCredential = _credentialContext.Credentials.FirstOrDefault(p => p.CredentialId == entity.CredentialId);
-                await this.Update(existingCredential, entity);
+                await this.Update(entity);
                 success = false;
             }
 
@@ -148,9 +148,9 @@ namespace COMP4911WebAPI.Repository
             return await _credentialContext.Credentials.ToListAsync();
         }
 
-        public async Task Update(Credential dbEntity, Credential entity)
+        public async Task Update(Credential entity)
         {
-            _credentialContext.Entry(dbEntity).CurrentValues.SetValues(entity);
+            //_credentialContext.Entry(dbEntity).CurrentValues.SetValues(entity);
             System.Diagnostics.Debug.Write("Updated credentials...");
         }
     }

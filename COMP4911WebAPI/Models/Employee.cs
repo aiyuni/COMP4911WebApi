@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using COMP4911WebAPI.ViewModels;
 
 namespace COMP4911WebAPI.Models
 {
@@ -41,22 +42,24 @@ namespace COMP4911WebAPI.Models
         {
 
         }
-        public Employee(int jobId, string firstName, string lastName, int? timesheetApproverId, int? supervisorId, bool isActivated,
-            bool isProjectManager, bool isAdmin, bool isHumanResources)
+
+        public Employee(RegisteringEmployee emp)
         {
-            JobTitleId = jobId;
-            EmployeeFirstName = firstName;
-            EmployeeLastName = lastName;
-            TimesheetApproverId = timesheetApproverId;
-            SupervisorId = supervisorId;
-            this.IsActivated = isActivated;
-            this.IsProjectManager = isProjectManager;
-            this.IsAdmin = isAdmin;
-            this.IsHumanResources = isHumanResources;
+            this.JobTitleId = emp.JobTitleId;
+            this.EmployeeFirstName = emp.EmpFirstName;
+            this.EmployeeLastName = emp.EmpLastName;
+            this.SupervisorId = emp.SupervisorId;
+            this.TimesheetApproverId = emp.TimesheetApproverId;
+            this.IsActivated = true;
+            this.IsAdmin = emp.isAdmin;
+            this.IsHumanResources = emp.isHumanResources;
+            this.IsProjectManager = emp.isProjectManager;
             this.LastUpdatedBy = System.Environment.UserName;
             this.LastUpdatedTime = DateTime.Now;
+
         }
 
+        //Used for seeding 
         public Employee(int empId, int jobId, string firstName, string lastName, int? timesheetApproverId, int? supervisorId, bool isActivated,
             bool isProjectManager, bool isAdmin, bool isHumanResources)
         {
@@ -73,5 +76,22 @@ namespace COMP4911WebAPI.Models
             this.LastUpdatedBy = System.Environment.UserName;
             this.LastUpdatedTime = DateTime.Now;
         }
+
+        //Replaced
+        /*        public Employee(int jobId, string firstName, string lastName, int? timesheetApproverId, int? supervisorId, bool isActivated,
+            bool isProjectManager, bool isAdmin, bool isHumanResources)
+        {
+            JobTitleId = jobId;
+            EmployeeFirstName = firstName;
+            EmployeeLastName = lastName;
+            TimesheetApproverId = timesheetApproverId;
+            SupervisorId = supervisorId;
+            this.IsActivated = isActivated;
+            this.IsProjectManager = isProjectManager;
+            this.IsAdmin = isAdmin;
+            this.IsHumanResources = isHumanResources;
+            this.LastUpdatedBy = System.Environment.UserName;
+            this.LastUpdatedTime = DateTime.Now;
+        } */
     }
 }

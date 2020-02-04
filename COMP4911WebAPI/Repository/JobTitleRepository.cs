@@ -18,26 +18,26 @@ namespace COMP4911WebAPI.Repository
 
         public async Task<bool> Add(JobTitle entity)
         {
-            bool success;
 
-            if (_jobTitleContext.JobTitle.Any(p => p.JobTitleId == entity.JobTitleId) == false)
-            {
-                System.Diagnostics.Debug.WriteLine("record doesnt exist, adding new job title...");
-                _jobTitleContext.JobTitle.Add(entity);
-                success = true;
-            }
-            else
-            {
-                System.Diagnostics.Debug.Write("record already exists, updating existing job title...");
-                JobTitle existingJobTitle = _jobTitleContext.JobTitle.FirstOrDefault(p => p.JobTitleId == entity.JobTitleId);
-                await this.Update(existingJobTitle, entity);
-                success = false;
-            }
+            //if (_jobTitleContext.JobTitle.Any(p => p.JobTitleId == entity.JobTitleId) == false)
+            //{
+            //    System.Diagnostics.Debug.WriteLine("record doesnt exist, adding new job title...");
+            //    _jobTitleContext.JobTitle.Add(entity);
+            //    success = true;
+            //}
+            //else
+            //{
+            //    System.Diagnostics.Debug.Write("record already exists, updating existing job title...");
+            //    JobTitle existingJobTitle = _jobTitleContext.JobTitle.FirstOrDefault(p => p.JobTitleId == entity.JobTitleId);
+            //    await this.Update(existingJobTitle, entity);
+            //    success = false;
+            //}
 
+            _jobTitleContext.JobTitle.Add(entity);
             await _jobTitleContext.SaveChangesAsync();
             _jobTitleContext.Entry(entity).State = EntityState.Detached;
 
-            return success;
+            return true;
         }
 
         public Task<bool> CheckIfExists(JobTitle entity)
@@ -52,7 +52,7 @@ namespace COMP4911WebAPI.Repository
 
         public async Task<JobTitle> Get(int id)
         {
-            throw new NotImplementedException();
+            return await _jobTitleContext.JobTitle.FindAsync(id);
         }
 
         public async Task<IEnumerable<JobTitle>> GetAll()
@@ -65,10 +65,14 @@ namespace COMP4911WebAPI.Repository
             throw new NotImplementedException();
         }
 
-        public async Task Update(JobTitle dbEntity, JobTitle entity)
+        public async Task Update(JobTitle entity)
         {
+            JobTitle dbEntity = await _jobTitleContext.JobTitle.FindAsync(entity.JobTitleId);
             _jobTitleContext.Entry(dbEntity).CurrentValues.SetValues(entity);
-            System.Diagnostics.Debug.Write("Updated credentials...");
+            await _jobTitleContext.SaveChangesAsync();
+            System.Diagnostics.Debug.Write("Updated jobTitle...");
         }
+
+        
     }
 }
