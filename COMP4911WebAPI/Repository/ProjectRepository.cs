@@ -30,7 +30,7 @@ namespace COMP4911WebAPI.Repository
             {
                 Debug.WriteLine("project record already exists, updating... ");
                 Project existingProject = _projectContext.Projects.FirstOrDefault(p => p.ProjectId == entity.ProjectId);
-                await this.Update(existingProject, entity);
+                await this.Update(entity);
                 success = false;
             }
 
@@ -69,10 +69,13 @@ namespace COMP4911WebAPI.Repository
             throw new NotImplementedException();
         }
 
-        public async Task Update(Project dbEntity, Project entity)
+        public async Task Update(Project entity)
         {
+            //_projectContext.Entry(dbEntity).CurrentValues.SetValues(entity);
+            Project dbEntity = await _projectContext.Projects.FindAsync(entity.ProjectId);
             _projectContext.Entry(dbEntity).CurrentValues.SetValues(entity);
-            Debug.WriteLine("updated...");
+            await _projectContext.SaveChangesAsync();
+            Debug.WriteLine("updated projects...");
         }
     }
 }

@@ -29,7 +29,7 @@ namespace COMP4911WebAPI.Repository
             {
                 System.Diagnostics.Debug.Write("record already exists, updating...");
                 Employee existingEmployee = _employeeContext.Employees.FirstOrDefault(p => p.EmployeeId == entity.EmployeeId);
-                await this.Update(existingEmployee, entity);
+                await this.Update(entity);
                 success = false;
             }
 
@@ -69,10 +69,12 @@ namespace COMP4911WebAPI.Repository
             throw new NotImplementedException();
         }
 
-        public async Task Update(Employee dbEntity, Employee entity)
+        public async Task Update(Employee entity)
         {
+            Employee dbEntity = await _employeeContext.Employees.FindAsync(entity.EmployeeId);
             _employeeContext.Entry(dbEntity).CurrentValues.SetValues(entity);
-            System.Diagnostics.Debug.Write("Updated...");
+            await _employeeContext.SaveChangesAsync();
+            System.Diagnostics.Debug.Write("Updated employee...");
         }
     }
 }

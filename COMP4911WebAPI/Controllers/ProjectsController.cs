@@ -46,17 +46,16 @@ namespace COMP4911WebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Project>> GetProject(int id)
         {
-            //Project dbProject = await this.GetFullProjectDetails(await _projectRepository.Get(id));
-            //return Ok(dbProject);
-
-            return await _projectRepository.Get(id);
+            Project dbProject = await this.GetFullProjectDetails(await _projectRepository.Get(id));
+            return Ok(dbProject);
         }
 
-        // PUT: api/Projects/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutProject(int id, Project project)
+        // PUT: api/Projects/
+        [HttpPut]
+        public async Task<IActionResult> PutProject(Project project)
         {
-            throw new NotImplementedException("implement pls");
+            await _projectRepository.Update(project);
+            return Ok(project);
         }
 
         // POST: api/Projects
@@ -99,9 +98,7 @@ namespace COMP4911WebAPI.Controllers
             }
 
             project.EmployeeProjectAssignments = employeeProjectAssignments;
-
             return project;
-
         }
     }
 }

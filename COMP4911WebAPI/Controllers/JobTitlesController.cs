@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace COMP4911WebAPI.Controllers
 {
-    [Authorize]
+   // [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class JobTitlesController : ControllerBase
@@ -39,6 +39,16 @@ namespace COMP4911WebAPI.Controllers
 
             return new OkObjectResult(200);
         }
+
+
+        // PUT api/JobTitles/id
+        [HttpPut]
+        public async Task<IActionResult> PutJobTitle(JobTitle jobTitle)
+        {
+            await _jobTitleRepository.Update( jobTitle);
+            return Ok(jobTitle);
+        }
+
 
     }
 }

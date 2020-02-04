@@ -9,7 +9,7 @@ namespace COMP4911WebAPI.Repository
     {
         Task<TEntity> Get(int id);
         Task<bool> Add(TEntity entity);
-        Task Update(TEntity dbEntity, TEntity entity);
+        Task Update(TEntity entity);
         Task Delete(TEntity entity);
 
         Task<IEnumerable<TEntity>> GetAll();
