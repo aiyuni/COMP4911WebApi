@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,11 +10,15 @@ namespace COMP4911WebAPI.Models
     public class WorkPackage
     {
         public int WorkPackageId { get; set; }
+
         public int ProjectId { get; set; }
+        public string WorkPackageCode { get; set; }
 
         public string WorkPackageName { get; set; }
         public string WorkPackageDescription { get; set; }
-        public double? WorkPackageCost { get; set; }
+        public double? WorkPackageProposedHours { get; set; }
+        public double? WorkPackageBudgetHours { get; set; }
+        //public double? WorkPackageActualHours { get; set; } calculated field
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Purpose { get; set; }
@@ -22,6 +27,8 @@ namespace COMP4911WebAPI.Models
         public string Inputs { get; set; }
         public string Activities { get; set; }
         public string Outputs { get; set; }
+
+        public bool isClosed { get; set; }
 
         [ForeignKey("ParentWorkPackage")]
         public int? ParentWorkPackageId { get; set; }
