@@ -7,176 +7,148 @@ namespace COMP4911WebAPI.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "Notes",
-                table: "TimesheetRows",
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "Signature",
-                table: "Timesheet",
-                nullable: true);
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "WeekEndingIn",
-                table: "Timesheet",
-                nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
-
             migrationBuilder.UpdateData(
                 table: "Credentials",
                 keyColumn: "CredentialId",
                 keyValue: "A100001",
                 columns: new[] { "LastUpdatedTime", "Password", "Salt" },
-                values: new object[] { new DateTime(2020, 2, 5, 13, 25, 7, 865, DateTimeKind.Local).AddTicks(6861), "uIgZH62aslmxKNxfyGT/P7Kv/UaO8BNHrLSssfd+l7Q=", new byte[] { 207, 218, 23, 142, 237, 224, 94, 107, 178, 96, 159, 135, 101, 119, 238, 133 } });
+                values: new object[] { new DateTime(2020, 2, 6, 13, 14, 41, 183, DateTimeKind.Local).AddTicks(1607), "nNt04inQgThyUY8+laH5aM860bUFcFC9Va84KoVZ+sA=", new byte[] { 7, 61, 179, 209, 199, 220, 68, 158, 16, 110, 99, 51, 149, 176, 1, 212 } });
 
             migrationBuilder.UpdateData(
                 table: "Credentials",
                 keyColumn: "CredentialId",
                 keyValue: "A100002",
                 columns: new[] { "LastUpdatedTime", "Password", "Salt" },
-                values: new object[] { new DateTime(2020, 2, 5, 13, 25, 7, 865, DateTimeKind.Local).AddTicks(8300), "uUA/MehKcnSSKnpez2kUsReL+JlY03KhOBINsN3R2BE=", new byte[] { 180, 79, 244, 116, 38, 78, 161, 130, 131, 248, 79, 93, 8, 210, 217, 181 } });
+                values: new object[] { new DateTime(2020, 2, 6, 13, 14, 41, 183, DateTimeKind.Local).AddTicks(3022), "Dd72cmmkSN1UeRZZ2Bz9EeraKLTgShoSD9B+yCvJwQ4=", new byte[] { 160, 124, 184, 57, 8, 11, 115, 155, 41, 97, 198, 134, 51, 189, 80, 249 } });
 
             migrationBuilder.UpdateData(
                 table: "EmployeeProjectAssignments",
                 keyColumns: new[] { "EmployeeId", "ProjectId" },
                 keyValues: new object[] { 3, 1 },
                 column: "LastUpdatedTime",
-                value: new DateTime(2020, 2, 5, 13, 25, 7, 866, DateTimeKind.Local).AddTicks(8540));
+                value: new DateTime(2020, 2, 6, 13, 14, 41, 184, DateTimeKind.Local).AddTicks(2280));
 
             migrationBuilder.UpdateData(
                 table: "Employees",
                 keyColumn: "EmployeeId",
                 keyValue: 1,
                 column: "LastUpdatedTime",
-                value: new DateTime(2020, 2, 5, 13, 25, 7, 862, DateTimeKind.Local).AddTicks(4441));
+                value: new DateTime(2020, 2, 6, 13, 14, 41, 179, DateTimeKind.Local).AddTicks(7450));
 
             migrationBuilder.UpdateData(
                 table: "Employees",
                 keyColumn: "EmployeeId",
                 keyValue: 2,
                 column: "LastUpdatedTime",
-                value: new DateTime(2020, 2, 5, 13, 25, 7, 864, DateTimeKind.Local).AddTicks(1335));
+                value: new DateTime(2020, 2, 6, 13, 14, 41, 181, DateTimeKind.Local).AddTicks(7086));
 
             migrationBuilder.UpdateData(
                 table: "Employees",
                 keyColumn: "EmployeeId",
                 keyValue: 3,
                 column: "LastUpdatedTime",
-                value: new DateTime(2020, 2, 5, 13, 25, 7, 864, DateTimeKind.Local).AddTicks(2275));
+                value: new DateTime(2020, 2, 6, 13, 14, 41, 181, DateTimeKind.Local).AddTicks(7923));
 
             migrationBuilder.UpdateData(
-                table: "JobTitle",
+                table: "JobTitles",
                 keyColumn: "JobTitleId",
                 keyValue: 1,
                 column: "LastUpdatedTime",
-                value: new DateTime(2020, 2, 5, 13, 25, 7, 864, DateTimeKind.Local).AddTicks(8814));
+                value: new DateTime(2020, 2, 6, 13, 14, 41, 182, DateTimeKind.Local).AddTicks(4273));
 
             migrationBuilder.UpdateData(
-                table: "JobTitle",
+                table: "JobTitles",
                 keyColumn: "JobTitleId",
                 keyValue: 2,
                 column: "LastUpdatedTime",
-                value: new DateTime(2020, 2, 5, 13, 25, 7, 865, DateTimeKind.Local).AddTicks(299));
+                value: new DateTime(2020, 2, 6, 13, 14, 41, 182, DateTimeKind.Local).AddTicks(5700));
 
             migrationBuilder.UpdateData(
-                table: "JobTitle",
+                table: "JobTitles",
                 keyColumn: "JobTitleId",
                 keyValue: 3,
                 column: "LastUpdatedTime",
-                value: new DateTime(2020, 2, 5, 13, 25, 7, 865, DateTimeKind.Local).AddTicks(1196));
+                value: new DateTime(2020, 2, 6, 13, 14, 41, 182, DateTimeKind.Local).AddTicks(6568));
 
             migrationBuilder.UpdateData(
                 table: "Projects",
                 keyColumn: "ProjectId",
                 keyValue: 1,
                 column: "LastUpdatedTime",
-                value: new DateTime(2020, 2, 5, 13, 25, 7, 866, DateTimeKind.Local).AddTicks(2039));
+                value: new DateTime(2020, 2, 6, 13, 14, 41, 183, DateTimeKind.Local).AddTicks(6412));
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "Notes",
-                table: "TimesheetRows");
-
-            migrationBuilder.DropColumn(
-                name: "Signature",
-                table: "Timesheet");
-
-            migrationBuilder.DropColumn(
-                name: "WeekEndingIn",
-                table: "Timesheet");
-
             migrationBuilder.UpdateData(
                 table: "Credentials",
                 keyColumn: "CredentialId",
                 keyValue: "A100001",
                 columns: new[] { "LastUpdatedTime", "Password", "Salt" },
-                values: new object[] { new DateTime(2020, 2, 5, 13, 0, 25, 35, DateTimeKind.Local).AddTicks(5463), "ABYplSnZHVZYa7ZTVraNgslg2cXGi2y8xZdm+orlAFk=", new byte[] { 218, 18, 217, 132, 238, 112, 118, 90, 63, 114, 99, 27, 62, 166, 5, 126 } });
+                values: new object[] { new DateTime(2020, 2, 6, 13, 1, 43, 475, DateTimeKind.Local).AddTicks(9614), "zjGahUlpu3oclCATMvRwfOXXt4AV1daIimVz3DpG+yg=", new byte[] { 246, 83, 193, 89, 27, 136, 19, 136, 141, 36, 224, 222, 106, 35, 170, 220 } });
 
             migrationBuilder.UpdateData(
                 table: "Credentials",
                 keyColumn: "CredentialId",
                 keyValue: "A100002",
                 columns: new[] { "LastUpdatedTime", "Password", "Salt" },
-                values: new object[] { new DateTime(2020, 2, 5, 13, 0, 25, 35, DateTimeKind.Local).AddTicks(6777), "D9jD3lpiGpZnRTrU5XXPQyPzCh8vzKdZ5GUPqJthA3M=", new byte[] { 161, 123, 52, 140, 193, 157, 214, 24, 136, 206, 131, 121, 246, 140, 168, 17 } });
+                values: new object[] { new DateTime(2020, 2, 6, 13, 1, 43, 476, DateTimeKind.Local).AddTicks(1260), "pglZTwX1i3+btI7YMd7ZQ9c492CgECyFqU34B3x9UUY=", new byte[] { 131, 85, 73, 2, 34, 243, 195, 29, 30, 225, 158, 158, 202, 155, 14, 184 } });
 
             migrationBuilder.UpdateData(
                 table: "EmployeeProjectAssignments",
                 keyColumns: new[] { "EmployeeId", "ProjectId" },
                 keyValues: new object[] { 3, 1 },
                 column: "LastUpdatedTime",
-                value: new DateTime(2020, 2, 5, 13, 0, 25, 36, DateTimeKind.Local).AddTicks(5526));
+                value: new DateTime(2020, 2, 6, 13, 1, 43, 477, DateTimeKind.Local).AddTicks(2828));
 
             migrationBuilder.UpdateData(
                 table: "Employees",
                 keyColumn: "EmployeeId",
                 keyValue: 1,
                 column: "LastUpdatedTime",
-                value: new DateTime(2020, 2, 5, 13, 0, 25, 32, DateTimeKind.Local).AddTicks(6686));
+                value: new DateTime(2020, 2, 6, 13, 1, 43, 472, DateTimeKind.Local).AddTicks(6678));
 
             migrationBuilder.UpdateData(
                 table: "Employees",
                 keyColumn: "EmployeeId",
                 keyValue: 2,
                 column: "LastUpdatedTime",
-                value: new DateTime(2020, 2, 5, 13, 0, 25, 34, DateTimeKind.Local).AddTicks(2411));
+                value: new DateTime(2020, 2, 6, 13, 1, 43, 474, DateTimeKind.Local).AddTicks(5017));
 
             migrationBuilder.UpdateData(
                 table: "Employees",
                 keyColumn: "EmployeeId",
                 keyValue: 3,
                 column: "LastUpdatedTime",
-                value: new DateTime(2020, 2, 5, 13, 0, 25, 34, DateTimeKind.Local).AddTicks(3223));
+                value: new DateTime(2020, 2, 6, 13, 1, 43, 474, DateTimeKind.Local).AddTicks(5938));
 
             migrationBuilder.UpdateData(
-                table: "JobTitle",
+                table: "JobTitles",
                 keyColumn: "JobTitleId",
                 keyValue: 1,
                 column: "LastUpdatedTime",
-                value: new DateTime(2020, 2, 5, 13, 0, 25, 34, DateTimeKind.Local).AddTicks(8672));
+                value: new DateTime(2020, 2, 6, 13, 1, 43, 475, DateTimeKind.Local).AddTicks(2223));
 
             migrationBuilder.UpdateData(
-                table: "JobTitle",
+                table: "JobTitles",
                 keyColumn: "JobTitleId",
                 keyValue: 2,
                 column: "LastUpdatedTime",
-                value: new DateTime(2020, 2, 5, 13, 0, 25, 35, DateTimeKind.Local).AddTicks(73));
+                value: new DateTime(2020, 2, 6, 13, 1, 43, 475, DateTimeKind.Local).AddTicks(3624));
 
             migrationBuilder.UpdateData(
-                table: "JobTitle",
+                table: "JobTitles",
                 keyColumn: "JobTitleId",
                 keyValue: 3,
                 column: "LastUpdatedTime",
-                value: new DateTime(2020, 2, 5, 13, 0, 25, 35, DateTimeKind.Local).AddTicks(873));
+                value: new DateTime(2020, 2, 6, 13, 1, 43, 475, DateTimeKind.Local).AddTicks(4451));
 
             migrationBuilder.UpdateData(
                 table: "Projects",
                 keyColumn: "ProjectId",
                 keyValue: 1,
                 column: "LastUpdatedTime",
-                value: new DateTime(2020, 2, 5, 13, 0, 25, 35, DateTimeKind.Local).AddTicks(9986));
+                value: new DateTime(2020, 2, 6, 13, 1, 43, 476, DateTimeKind.Local).AddTicks(5433));
         }
     }
 }
