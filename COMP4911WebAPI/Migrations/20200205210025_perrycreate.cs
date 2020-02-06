@@ -173,8 +173,8 @@ namespace COMP4911WebAPI.Migrations
                 name: "Timesheet",
                 columns: table => new
                 {
-                    TimesheetId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    TimesheetId = table.Column<int>(nullable: false),
+                    VersionNumber = table.Column<int>(nullable: false),
                     EmployeeId = table.Column<int>(nullable: false),
                     WeekNumber = table.Column<int>(nullable: false),
                     LastUpdatedBy = table.Column<string>(nullable: true),
@@ -182,7 +182,7 @@ namespace COMP4911WebAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Timesheet", x => x.TimesheetId);
+                    table.PrimaryKey("PK_Timesheet", x => new { x.TimesheetId, x.VersionNumber });
                     table.ForeignKey(
                         name: "FK_Timesheet_Employees_EmployeeId",
                         column: x => x.EmployeeId,
@@ -231,6 +231,7 @@ namespace COMP4911WebAPI.Migrations
                     TimesheetRowId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     TimesheetId = table.Column<int>(nullable: false),
+                    TimesheetVersionNumber = table.Column<int>(nullable: false),
                     WorkPackageId = table.Column<int>(nullable: false),
                     Monday = table.Column<int>(nullable: false),
                     Tuesday = table.Column<int>(nullable: false),
@@ -246,10 +247,10 @@ namespace COMP4911WebAPI.Migrations
                 {
                     table.PrimaryKey("PK_TimesheetRows", x => x.TimesheetRowId);
                     table.ForeignKey(
-                        name: "FK_TimesheetRows_Timesheet_TimesheetId",
-                        column: x => x.TimesheetId,
+                        name: "FK_TimesheetRows_Timesheet_TimesheetId_TimesheetVersionNumber",
+                        columns: x => new { x.TimesheetId, x.TimesheetVersionNumber },
                         principalTable: "Timesheet",
-                        principalColumn: "TimesheetId",
+                        principalColumns: new[] { "TimesheetId", "VersionNumber" },
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_TimesheetRows_WorkPackages_TimesheetId_WorkPackageId",
@@ -264,45 +265,45 @@ namespace COMP4911WebAPI.Migrations
                 columns: new[] { "JobTitleId", "JobTitleName", "LastUpdatedBy", "LastUpdatedTime" },
                 values: new object[,]
                 {
-                    { 1, "Software Developer", "perry", new DateTime(2020, 2, 2, 19, 50, 30, 921, DateTimeKind.Local).AddTicks(4862) },
-                    { 2, "Q/A Analyst", "perry", new DateTime(2020, 2, 2, 19, 50, 30, 921, DateTimeKind.Local).AddTicks(6185) },
-                    { 3, "Business Analyst", "perry", new DateTime(2020, 2, 2, 19, 50, 30, 921, DateTimeKind.Local).AddTicks(6977) }
+                    { 1, "Software Developer", "perry", new DateTime(2020, 2, 5, 13, 0, 25, 34, DateTimeKind.Local).AddTicks(8672) },
+                    { 2, "Q/A Analyst", "perry", new DateTime(2020, 2, 5, 13, 0, 25, 35, DateTimeKind.Local).AddTicks(73) },
+                    { 3, "Business Analyst", "perry", new DateTime(2020, 2, 5, 13, 0, 25, 35, DateTimeKind.Local).AddTicks(873) }
                 });
 
             migrationBuilder.InsertData(
                 table: "Projects",
                 columns: new[] { "ProjectId", "LastUpdatedBy", "LastUpdatedTime", "ProjectDescription", "ProjectManagerId", "ProjectName" },
-                values: new object[] { 1, "perry", new DateTime(2020, 2, 2, 19, 50, 30, 922, DateTimeKind.Local).AddTicks(5834), "NewProjectDescription1", 3, "NewProject1" });
+                values: new object[] { 1, "perry", new DateTime(2020, 2, 5, 13, 0, 25, 35, DateTimeKind.Local).AddTicks(9986), "NewProjectDescription1", 3, "NewProject1" });
 
             migrationBuilder.InsertData(
                 table: "Employees",
                 columns: new[] { "EmployeeId", "EmployeeFirstName", "EmployeeLastName", "IsActivated", "IsAdmin", "IsHumanResources", "IsProjectManager", "JobTitleId", "LastUpdatedBy", "LastUpdatedTime", "SupervisorId", "TimesheetApproverId" },
-                values: new object[] { 1, "AdminFirstName", "AdminLastName", true, true, true, true, 1, "perry", new DateTime(2020, 2, 2, 19, 50, 30, 919, DateTimeKind.Local).AddTicks(4312), null, null });
+                values: new object[] { 1, "AdminFirstName", "AdminLastName", true, true, true, true, 1, "perry", new DateTime(2020, 2, 5, 13, 0, 25, 32, DateTimeKind.Local).AddTicks(6686), null, null });
 
             migrationBuilder.InsertData(
                 table: "Credentials",
                 columns: new[] { "CredentialId", "EmployeeId", "LastUpdatedBy", "LastUpdatedTime", "Password", "Salt", "Token" },
-                values: new object[] { "A100001", 1, "perry", new DateTime(2020, 2, 2, 19, 50, 30, 922, DateTimeKind.Local).AddTicks(1409), "jXH3fI9s1vRT3807X7QrVSK0dEYOXX7liRMbcM0gkUg=", new byte[] { 108, 222, 50, 229, 10, 82, 246, 69, 116, 151, 152, 52, 87, 245, 218, 235 }, null });
+                values: new object[] { "A100001", 1, "perry", new DateTime(2020, 2, 5, 13, 0, 25, 35, DateTimeKind.Local).AddTicks(5463), "ABYplSnZHVZYa7ZTVraNgslg2cXGi2y8xZdm+orlAFk=", new byte[] { 218, 18, 217, 132, 238, 112, 118, 90, 63, 114, 99, 27, 62, 166, 5, 126 }, null });
 
             migrationBuilder.InsertData(
                 table: "Employees",
                 columns: new[] { "EmployeeId", "EmployeeFirstName", "EmployeeLastName", "IsActivated", "IsAdmin", "IsHumanResources", "IsProjectManager", "JobTitleId", "LastUpdatedBy", "LastUpdatedTime", "SupervisorId", "TimesheetApproverId" },
-                values: new object[] { 2, "Perry", "Li", true, false, false, true, 2, "perry", new DateTime(2020, 2, 2, 19, 50, 30, 920, DateTimeKind.Local).AddTicks(8569), 1, 1 });
+                values: new object[] { 2, "Perry", "Li", true, false, false, true, 2, "perry", new DateTime(2020, 2, 5, 13, 0, 25, 34, DateTimeKind.Local).AddTicks(2411), 1, 1 });
 
             migrationBuilder.InsertData(
                 table: "Credentials",
                 columns: new[] { "CredentialId", "EmployeeId", "LastUpdatedBy", "LastUpdatedTime", "Password", "Salt", "Token" },
-                values: new object[] { "A100002", 2, "perry", new DateTime(2020, 2, 2, 19, 50, 30, 922, DateTimeKind.Local).AddTicks(2785), "+khlmcRe613q9735fOSO1EPsvaSW03PG+NKDzKi7c1g=", new byte[] { 1, 50, 209, 10, 96, 83, 134, 175, 154, 83, 47, 141, 117, 166, 36, 110 }, null });
+                values: new object[] { "A100002", 2, "perry", new DateTime(2020, 2, 5, 13, 0, 25, 35, DateTimeKind.Local).AddTicks(6777), "D9jD3lpiGpZnRTrU5XXPQyPzCh8vzKdZ5GUPqJthA3M=", new byte[] { 161, 123, 52, 140, 193, 157, 214, 24, 136, 206, 131, 121, 246, 140, 168, 17 }, null });
 
             migrationBuilder.InsertData(
                 table: "Employees",
                 columns: new[] { "EmployeeId", "EmployeeFirstName", "EmployeeLastName", "IsActivated", "IsAdmin", "IsHumanResources", "IsProjectManager", "JobTitleId", "LastUpdatedBy", "LastUpdatedTime", "SupervisorId", "TimesheetApproverId" },
-                values: new object[] { 3, "Bruce", "Link", true, false, false, true, 3, "perry", new DateTime(2020, 2, 2, 19, 50, 30, 920, DateTimeKind.Local).AddTicks(9373), 1, 2 });
+                values: new object[] { 3, "Bruce", "Link", true, false, false, true, 3, "perry", new DateTime(2020, 2, 5, 13, 0, 25, 34, DateTimeKind.Local).AddTicks(3223), 1, 2 });
 
             migrationBuilder.InsertData(
                 table: "EmployeeProjectAssignments",
                 columns: new[] { "EmployeeId", "ProjectId", "LastUpdatedBy", "LastUpdatedTime", "isProjectManager" },
-                values: new object[] { 3, 1, "perry", new DateTime(2020, 2, 2, 19, 50, 30, 923, DateTimeKind.Local).AddTicks(1393), true });
+                values: new object[] { 3, 1, "perry", new DateTime(2020, 2, 5, 13, 0, 25, 36, DateTimeKind.Local).AddTicks(5526), true });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Credentials_EmployeeId",
@@ -343,6 +344,11 @@ namespace COMP4911WebAPI.Migrations
                 name: "IX_Timesheet_EmployeeId",
                 table: "Timesheet",
                 column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TimesheetRows_TimesheetId_TimesheetVersionNumber",
+                table: "TimesheetRows",
+                columns: new[] { "TimesheetId", "TimesheetVersionNumber" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_TimesheetRows_TimesheetId_WorkPackageId",

@@ -14,8 +14,8 @@ namespace COMP4911WebAPI.Models
         public DbSet<Project> Projects { get; set; }
         public DbSet<EmployeeProjectAssignment> EmployeeProjectAssignments { get; set; }
         public DbSet<EmployeeWorkPackageAssignment> EmployeeWorkPackageAssignments { get; set; }
-        public DbSet<JobTitle> JobTitle { get; set; }
-        public DbSet<Timesheet> Timesheet { get; set; }
+        public DbSet<JobTitle> JobTitles { get; set; }
+        public DbSet<Timesheet> Timesheets { get; set; }
         public DbSet<TimesheetRow> TimesheetRows { get; set; }
         public DbSet<WorkPackage> WorkPackages { get; set; }
         public DbSet<Credential> Credentials { get; set; }
@@ -84,8 +84,10 @@ namespace COMP4911WebAPI.Models
 
             modelBuilder.Entity<Timesheet>().HasMany(ts => ts.TimesheetRows)
                 .WithOne(tr => tr.Timesheet)
-                .HasForeignKey(tr => new {tr.TimesheetId})
+                .HasForeignKey(tr => new {tr.TimesheetId, tr.TimesheetVersionNumber})
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Timesheet>().HasKey(t => new {t.TimesheetId, t.VersionNumber});
 
             modelBuilder.Seed();
      
