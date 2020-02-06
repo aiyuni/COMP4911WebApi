@@ -10,7 +10,7 @@ namespace COMP4911WebAPI.Models
 {
     public class Employee
     {
-        [Key]
+        //[Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int EmployeeId { get; set; }
 

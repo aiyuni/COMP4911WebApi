@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace COMP4911WebAPI.Models
 {
@@ -12,7 +14,9 @@ namespace COMP4911WebAPI.Models
         public int TimesheetRowId { get; set; }
 
         public int TimesheetId { get; set; }
-        public int WorkPackageId { get; set; }
+        public int TimesheetVersionNumber { get; set; }
+
+        public int WorkPackageId { get; set; }  //FK
         //public int ProjectId { get; set; }  //remove this cuz employees who dont have wp cant have timesheetrows
 
         public int Monday { get; set; }
@@ -22,6 +26,7 @@ namespace COMP4911WebAPI.Models
         public int Friday { get; set; }
         public int Saturday { get; set; }
         public int Sunday { get; set; }
+        public string Notes { get; set; }
 
         public Timesheet Timesheet { get; set; }
         public WorkPackage WorkPackage { get; set; }

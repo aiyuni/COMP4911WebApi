@@ -14,8 +14,8 @@ namespace COMP4911WebAPI.Models
         public DbSet<Project> Projects { get; set; }
         public DbSet<EmployeeProjectAssignment> EmployeeProjectAssignments { get; set; }
         public DbSet<EmployeeWorkPackageAssignment> EmployeeWorkPackageAssignments { get; set; }
-        public DbSet<JobTitle> JobTitle { get; set; }
-        public DbSet<Timesheet> Timesheet { get; set; }
+        public DbSet<JobTitle> JobTitles { get; set; }
+        public DbSet<Timesheet> Timesheets { get; set; }
         public DbSet<TimesheetRow> TimesheetRows { get; set; }
         public DbSet<WorkPackage> WorkPackages { get; set; }
         public DbSet<Credential> Credentials { get; set; }
@@ -41,11 +41,11 @@ namespace COMP4911WebAPI.Models
                 .WithOne(t => t.Employee)
                 .HasForeignKey(t => t.EmployeeId);
 
-            modelBuilder.Entity<WorkPackage>().HasKey(wp => new { wp.WorkPackageId, wp.ProjectId });  //specify composite PK of work package
+         //   modelBuilder.Entity<WorkPackage>().HasKey(wp => new { wp.WorkPackageId });  //specify composite PK of work package
 
             modelBuilder.Entity<WorkPackage>().HasOne(wp => wp.ParentWorkPackage)
                 .WithMany(wp => wp.ChildrenWorkPackages)
-                .HasForeignKey(wp => new { wp.ParentWorkPackageId, wp.ProjectId })
+                .HasForeignKey(wp => new { wp.ParentWorkPackageId })
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<EmployeeProjectAssignment>().HasKey(epa => new { epa.EmployeeId, epa.ProjectId });
@@ -54,13 +54,15 @@ namespace COMP4911WebAPI.Models
             modelBuilder.Entity<EmployeeProjectAssignment>().HasOne(epa => epa.Employee)
                 .WithMany(e => e.EmployeeProjectAssignments);
 
-            modelBuilder.Entity<EmployeeWorkPackageAssignment>().HasKey(epa => new { epa.EmployeeId, epa.WorkPackageId, epa.ProjectId });
+            modelBuilder.Entity<EmployeeWorkPackageAssignment>().HasKey(epa => new { epa.EmployeeId, epa.WorkPackageId });
             modelBuilder.Entity<EmployeeWorkPackageAssignment>().HasOne(epa => epa.WorkPackage)
                 .WithMany(wp => wp.EmployeeWorkPackageAssignments)
                 .OnDelete(DeleteBehavior.Restrict);
+ 
             modelBuilder.Entity<EmployeeWorkPackageAssignment>().HasOne(epa => epa.Employee)
                 .WithMany(e => e.EmployeeWorkPackageAssignments)
                 .OnDelete(DeleteBehavior.Restrict);
+
             //modelBuilder.Entity<EmployeeWorkPackageAssignment>().HasOne(epa => epa.Project)
             //    .WithMany(epa => epa.EmployeeWorkPackageAssignments);
             //modelBuilder.Entity<EmployeeWorkPackageAssignment>().HasOne(epa => epa.Project)
@@ -77,15 +79,23 @@ namespace COMP4911WebAPI.Models
             //    .HasForeignKey(tr => new { tr.TimesheetId })
             //.OnDelete(DeleteBehavior.Restrict);
 
+
             modelBuilder.Entity<WorkPackage>().HasMany(wp => wp.TimesheetRows)
                 .WithOne(tr => tr.WorkPackage)
-                .HasForeignKey(tr => new { tr.TimesheetId, tr.WorkPackageId})
+                .HasForeignKey(tr => new { tr.WorkPackageId })
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<TimesheetRow>().HasOne(tr => tr.Timesheet)
+                .WithMany(ts => ts.TimesheetRows)
+                .HasForeignKey(tr => new { tr.TimesheetId})
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Timesheet>().HasMany(ts => ts.TimesheetRows)
                 .WithOne(tr => tr.Timesheet)
-                .HasForeignKey(tr => new {tr.TimesheetId})
+                .HasForeignKey(tr => new {tr.TimesheetId, tr.TimesheetVersionNumber})
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Timesheet>().HasKey(t => new {t.TimesheetId, t.VersionNumber});
 
             modelBuilder.Seed();
      
