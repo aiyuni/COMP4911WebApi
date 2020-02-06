@@ -51,7 +51,7 @@ namespace COMP4911WebAPI.Repository
 
         public async Task<Employee> Get(int id)
         {
-            return await _employeeContext.Employees.FirstAsync(e => e.EmployeeId == id);
+            return await _employeeContext.Employees.FirstAsync(e => e.EmployeeId == id);  //investigate difference between toListAsync
         }
 
         //public async Task<Employee> Get(string id)

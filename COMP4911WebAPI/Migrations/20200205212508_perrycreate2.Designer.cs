@@ -4,14 +4,16 @@ using COMP4911WebAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace COMP4911WebAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200205212508_perrycreate2")]
+    partial class perrycreate2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,18 +50,18 @@ namespace COMP4911WebAPI.Migrations
                             CredentialId = "A100001",
                             EmployeeId = 1,
                             LastUpdatedBy = "perry",
-                            LastUpdatedTime = new DateTime(2020, 2, 5, 16, 39, 16, 463, DateTimeKind.Local).AddTicks(7097),
-                            Password = "yRjyM7vaVIdjreygJKvcT/xeXNjn0J/HbtHg56cDyEk=",
-                            Salt = new byte[] { 231, 249, 141, 66, 204, 12, 20, 35, 211, 121, 46, 187, 149, 243, 138, 5 }
+                            LastUpdatedTime = new DateTime(2020, 2, 5, 13, 25, 7, 865, DateTimeKind.Local).AddTicks(6861),
+                            Password = "uIgZH62aslmxKNxfyGT/P7Kv/UaO8BNHrLSssfd+l7Q=",
+                            Salt = new byte[] { 207, 218, 23, 142, 237, 224, 94, 107, 178, 96, 159, 135, 101, 119, 238, 133 }
                         },
                         new
                         {
                             CredentialId = "A100002",
                             EmployeeId = 2,
                             LastUpdatedBy = "perry",
-                            LastUpdatedTime = new DateTime(2020, 2, 5, 16, 39, 16, 463, DateTimeKind.Local).AddTicks(8429),
-                            Password = "YunUT8GLoBLzDNYmmrylzOeUgti5l4554q3ujJOBRyE=",
-                            Salt = new byte[] { 23, 86, 205, 44, 224, 223, 151, 3, 13, 240, 89, 220, 222, 58, 167, 53 }
+                            LastUpdatedTime = new DateTime(2020, 2, 5, 13, 25, 7, 865, DateTimeKind.Local).AddTicks(8300),
+                            Password = "uUA/MehKcnSSKnpez2kUsReL+JlY03KhOBINsN3R2BE=",
+                            Salt = new byte[] { 180, 79, 244, 116, 38, 78, 161, 130, 131, 248, 79, 93, 8, 210, 217, 181 }
                         });
                 });
 
@@ -113,7 +115,7 @@ namespace COMP4911WebAPI.Migrations
                             IsProjectManager = true,
                             JobTitleId = 1,
                             LastUpdatedBy = "perry",
-                            LastUpdatedTime = new DateTime(2020, 2, 5, 16, 39, 16, 460, DateTimeKind.Local).AddTicks(5864)
+                            LastUpdatedTime = new DateTime(2020, 2, 5, 13, 25, 7, 862, DateTimeKind.Local).AddTicks(4441)
                         },
                         new
                         {
@@ -126,7 +128,7 @@ namespace COMP4911WebAPI.Migrations
                             IsProjectManager = true,
                             JobTitleId = 2,
                             LastUpdatedBy = "perry",
-                            LastUpdatedTime = new DateTime(2020, 2, 5, 16, 39, 16, 462, DateTimeKind.Local).AddTicks(2500),
+                            LastUpdatedTime = new DateTime(2020, 2, 5, 13, 25, 7, 864, DateTimeKind.Local).AddTicks(1335),
                             SupervisorId = 1,
                             TimesheetApproverId = 1
                         },
@@ -141,7 +143,7 @@ namespace COMP4911WebAPI.Migrations
                             IsProjectManager = true,
                             JobTitleId = 3,
                             LastUpdatedBy = "perry",
-                            LastUpdatedTime = new DateTime(2020, 2, 5, 16, 39, 16, 462, DateTimeKind.Local).AddTicks(3327),
+                            LastUpdatedTime = new DateTime(2020, 2, 5, 13, 25, 7, 864, DateTimeKind.Local).AddTicks(2275),
                             SupervisorId = 1,
                             TimesheetApproverId = 2
                         });
@@ -171,7 +173,7 @@ namespace COMP4911WebAPI.Migrations
                             EmployeeId = 3,
                             ProjectId = 1,
                             LastUpdatedBy = "perry",
-                            LastUpdatedTime = new DateTime(2020, 2, 5, 16, 39, 16, 464, DateTimeKind.Local).AddTicks(7257),
+                            LastUpdatedTime = new DateTime(2020, 2, 5, 13, 25, 7, 866, DateTimeKind.Local).AddTicks(8540),
                             isProjectManager = true
                         });
                 });
@@ -211,7 +213,7 @@ namespace COMP4911WebAPI.Migrations
 
                     b.HasKey("JobTitleId");
 
-                    b.ToTable("JobTitles");
+                    b.ToTable("JobTitle");
 
                     b.HasData(
                         new
@@ -219,21 +221,21 @@ namespace COMP4911WebAPI.Migrations
                             JobTitleId = 1,
                             JobTitleName = "Software Developer",
                             LastUpdatedBy = "perry",
-                            LastUpdatedTime = new DateTime(2020, 2, 5, 16, 39, 16, 462, DateTimeKind.Local).AddTicks(9862)
+                            LastUpdatedTime = new DateTime(2020, 2, 5, 13, 25, 7, 864, DateTimeKind.Local).AddTicks(8814)
                         },
                         new
                         {
                             JobTitleId = 2,
                             JobTitleName = "Q/A Analyst",
                             LastUpdatedBy = "perry",
-                            LastUpdatedTime = new DateTime(2020, 2, 5, 16, 39, 16, 463, DateTimeKind.Local).AddTicks(1279)
+                            LastUpdatedTime = new DateTime(2020, 2, 5, 13, 25, 7, 865, DateTimeKind.Local).AddTicks(299)
                         },
                         new
                         {
                             JobTitleId = 3,
                             JobTitleName = "Business Analyst",
                             LastUpdatedBy = "perry",
-                            LastUpdatedTime = new DateTime(2020, 2, 5, 16, 39, 16, 463, DateTimeKind.Local).AddTicks(2084)
+                            LastUpdatedTime = new DateTime(2020, 2, 5, 13, 25, 7, 865, DateTimeKind.Local).AddTicks(1196)
                         });
                 });
 
@@ -262,7 +264,7 @@ namespace COMP4911WebAPI.Migrations
                         {
                             ProjectId = 1,
                             LastUpdatedBy = "perry",
-                            LastUpdatedTime = new DateTime(2020, 2, 5, 16, 39, 16, 464, DateTimeKind.Local).AddTicks(1580),
+                            LastUpdatedTime = new DateTime(2020, 2, 5, 13, 25, 7, 866, DateTimeKind.Local).AddTicks(2039),
                             ProjectDescription = "NewProjectDescription1",
                             ProjectManagerId = 3,
                             ProjectName = "NewProject1"
@@ -283,8 +285,6 @@ namespace COMP4911WebAPI.Migrations
 
                     b.Property<string>("Signature");
 
-                    b.Property<int>("Status");
-
                     b.Property<DateTime>("WeekEndingIn");
 
                     b.Property<int>("WeekNumber");
@@ -293,7 +293,7 @@ namespace COMP4911WebAPI.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("Timesheets");
+                    b.ToTable("Timesheet");
                 });
 
             modelBuilder.Entity("COMP4911WebAPI.Models.TimesheetRow", b =>

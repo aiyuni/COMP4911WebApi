@@ -33,7 +33,7 @@ namespace COMP4911WebAPI.Repository
             //    success = false;
             //}
 
-            _jobTitleContext.JobTitle.Add(entity);
+            _jobTitleContext.JobTitles.Add(entity);
             await _jobTitleContext.SaveChangesAsync();
             _jobTitleContext.Entry(entity).State = EntityState.Detached;
 
@@ -52,12 +52,12 @@ namespace COMP4911WebAPI.Repository
 
         public async Task<JobTitle> Get(int id)
         {
-            return await _jobTitleContext.JobTitle.FindAsync(id);
+            return await _jobTitleContext.JobTitles.FindAsync(id);
         }
 
         public async Task<IEnumerable<JobTitle>> GetAll()
         {
-            return await _jobTitleContext.JobTitle.ToListAsync();
+            return await _jobTitleContext.JobTitles.ToListAsync();
         }
 
         public Task<JobTitle> GetLastId()
@@ -67,7 +67,7 @@ namespace COMP4911WebAPI.Repository
 
         public async Task Update(JobTitle entity)
         {
-            JobTitle dbEntity = await _jobTitleContext.JobTitle.FindAsync(entity.JobTitleId);
+            JobTitle dbEntity = await _jobTitleContext.JobTitles.FindAsync(entity.JobTitleId);
             _jobTitleContext.Entry(dbEntity).CurrentValues.SetValues(entity);
             await _jobTitleContext.SaveChangesAsync();
             System.Diagnostics.Debug.Write("Updated jobTitle...");

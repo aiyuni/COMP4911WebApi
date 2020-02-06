@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -48,7 +49,10 @@ namespace COMP4911WebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetEmployee(int id)
         {
-            return Ok(await GetFullEmployeeDetails(await _employeeRepository.Get(id)));
+            Employee emp = await _employeeRepository.Get(id);
+            emp = await GetFullEmployeeDetails(emp);
+            return Ok(emp);
+            //return Ok(await GetFullEmployeeDetails(await _employeeRepository.Get(id)));
         }
 
         //Do not delete this. We might need this later.
@@ -91,13 +95,17 @@ namespace COMP4911WebAPI.Controllers
 
         private async Task<Employee> GetFullEmployeeDetails(Employee emp)
         {
+            Debug.WriteLine("inside getfullemployee details");
+            Debug.WriteLine("emp id is: " + emp.EmployeeId);
             foreach (EmployeeProjectAssignment item in await _employeeProjectAssignmentRepository.GetAll())
             {
+                Debug.WriteLine("hello");
                 if (item.EmployeeId == emp.EmployeeId)
                 {
                   //  item.Project = null;
                     item.Employee = null;
                     emp.EmployeeProjectAssignments.Add(item);
+                    Debug.WriteLine("emp supervisor is: " + emp.Supervisor);
                 }
             }
 

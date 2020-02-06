@@ -84,6 +84,7 @@ namespace COMP4911WebAPI
             services.AddScoped<IDataRepository<Credential>, CredentialRepository>();
             services.AddScoped<IDataRepository<Project>, ProjectRepository>();
             services.AddScoped<IDataRepository<EmployeeProjectAssignment>, EmployeeProjectAssignmentRepository>();
+            services.AddScoped<IDataRepository<Timesheet>, TimesheetRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
