@@ -21,6 +21,7 @@ namespace COMP4911WebAPI.ViewModels
         public bool isProjectManager { get; set; }
         public bool isAdmin { get; set; }
         public bool isHumanResources { get; set; }
+        public bool isActivated { get; set; }
 
         public EmployeeViewModel()
         {
@@ -28,7 +29,7 @@ namespace COMP4911WebAPI.ViewModels
         }
 
         public EmployeeViewModel(string empUsername, string empPassword, int jobTitleId, int labourGradeId, string empFirstName, string empLastName,
-            int? timesheetApproverId, int? supervisorId, bool isProjectManager, bool isAdmin, bool isHumanResources, int empCode)
+            int? timesheetApproverId, int? supervisorId, bool isProjectManager, bool isAdmin, bool isHumanResources, int empCode, bool isActive)
         {
             this.EmpUsername = empUsername;
             this.EmpPassword = empPassword;
@@ -42,6 +43,7 @@ namespace COMP4911WebAPI.ViewModels
             this.isAdmin = isAdmin;
             this.isHumanResources = isHumanResources;
             this.EmpCode = empCode;
+            this.isActivated = isActive;
         }
     }
 }

@@ -57,7 +57,7 @@ namespace COMP4911WebAPI.Models
             this.EmployeeLastName = emp.EmpLastName;
             this.SupervisorId = emp.SupervisorId;
             this.TimesheetApproverId = emp.TimesheetApproverId;
-            this.IsActivated = true;
+            this.IsActivated = emp.isActivated;
             this.IsAdmin = emp.isAdmin;
             this.IsHumanResources = emp.isHumanResources;
             this.IsProjectManager = emp.isProjectManager;
