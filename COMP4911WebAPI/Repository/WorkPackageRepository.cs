@@ -18,10 +18,17 @@ namespace COMP4911WebAPI.Repository
 
         public async Task<bool> Add(WorkPackage entity)
         {
-            _workPackageContext.WorkPackages.Add(entity);
-            await _workPackageContext.SaveChangesAsync();
-            _workPackageContext.Entry(entity).State = EntityState.Detached;
-            return true;
+            try
+            {
+                _workPackageContext.WorkPackages.Add(entity);
+                await _workPackageContext.SaveChangesAsync();
+                _workPackageContext.Entry(entity).State = EntityState.Detached;
+                return true;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Failed to add Work Package: " + e.ToString());
+            }
         }
 
         public Task<bool> CheckIfExists(WorkPackage entity)
@@ -45,7 +52,6 @@ namespace COMP4911WebAPI.Repository
         {
             return await _workPackageContext.WorkPackages.FindAsync(id);
         }
-
 
         public async Task<IEnumerable<WorkPackage>> GetAll()
         {

@@ -27,7 +27,6 @@ namespace COMP4911WebAPI.Controllers
         [HttpGet("AllJobTitles")]
         public async Task<IActionResult> GetAllJobTitles()
         {
-
             return Ok(await _jobTitleRepository.GetAll());
         }
 
@@ -36,7 +35,6 @@ namespace COMP4911WebAPI.Controllers
         public async Task<ActionResult<JobTitle>> PostJobTitle(JobTitle jobTitle)
         {
             await _jobTitleRepository.Add(jobTitle);
-
             return new OkObjectResult(200);
         }
 
@@ -45,7 +43,7 @@ namespace COMP4911WebAPI.Controllers
         [HttpPut]
         public async Task<IActionResult> PutJobTitle(JobTitle jobTitle)
         {
-            await _jobTitleRepository.Update( jobTitle);
+            await _jobTitleRepository.Update(jobTitle);
             return Ok(jobTitle);
         }
 

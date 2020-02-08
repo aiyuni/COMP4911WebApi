@@ -49,8 +49,9 @@ namespace COMP4911WebAPI.Models
 
         }
 
-        public Employee(RegisteringEmployee emp)
+        public Employee(EmployeeViewModel emp)
         {
+            this.EmployeeId = emp.EmployeeId;
             this.JobTitleId = emp.JobTitleId;
             this.EmployeeFirstName = emp.EmpFirstName;
             this.EmployeeLastName = emp.EmpLastName;
@@ -89,22 +90,5 @@ namespace COMP4911WebAPI.Models
             this.LastUpdatedBy = "Seeded";
             this.LastUpdatedTime = DateTime.Now;
         }
-
-        //Replaced
-        /*        public Employee(int jobId, string firstName, string lastName, int? timesheetApproverId, int? supervisorId, bool isActivated,
-            bool isProjectManager, bool isAdmin, bool isHumanResources)
-        {
-            JobTitleId = jobId;
-            EmployeeFirstName = firstName;
-            EmployeeLastName = lastName;
-            TimesheetApproverId = timesheetApproverId;
-            SupervisorId = supervisorId;
-            this.IsActivated = isActivated;
-            this.IsProjectManager = isProjectManager;
-            this.IsAdmin = isAdmin;
-            this.IsHumanResources = isHumanResources;
-            this.LastUpdatedBy = System.Environment.UserName;
-            this.LastUpdatedTime = DateTime.Now;
-        } */
     }
 }

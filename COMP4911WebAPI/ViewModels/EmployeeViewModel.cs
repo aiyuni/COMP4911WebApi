@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 
 namespace COMP4911WebAPI.ViewModels
 {
-    public class RegisteringEmployee
+    /**Model to represent the employee view */
+    public class EmployeeViewModel
     {
+        public int EmployeeId { get; set; }  
         public string EmpUsername { get; set; }
         public string EmpPassword { get; set; }
         public int EmpCode { get; set; }
@@ -20,12 +22,12 @@ namespace COMP4911WebAPI.ViewModels
         public bool isAdmin { get; set; }
         public bool isHumanResources { get; set; }
 
-        public RegisteringEmployee()
+        public EmployeeViewModel()
         {
 
         }
 
-        public RegisteringEmployee(string empUsername, string empPassword, int jobTitleId, int labourGradeId, string empFirstName, string empLastName,
+        public EmployeeViewModel(string empUsername, string empPassword, int jobTitleId, int labourGradeId, string empFirstName, string empLastName,
             int? timesheetApproverId, int? supervisorId, bool isProjectManager, bool isAdmin, bool isHumanResources, int empCode)
         {
             this.EmpUsername = empUsername;

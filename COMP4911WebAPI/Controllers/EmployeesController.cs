@@ -37,24 +37,19 @@ namespace COMP4911WebAPI.Controllers
 
             foreach (Employee item in await _employeeRepository.GetAll())
             {
-                await this.GetFullEmployeeDetails(item);
-                employeeList.Add(item);
+                employeeList.Add(await this.GetFullEmployeeDetails(item));  
             }
-
             return Ok(employeeList);
-            //return Ok(await _employeeRepository.GetAll());
         }
 
         //GET: api/Employees/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetEmployee(int id)
         {
-            Employee emp = await _employeeRepository.Get(id);
-            emp = await GetFullEmployeeDetails(emp);
-            return Ok(emp);
-            //return Ok(await GetFullEmployeeDetails(await _employeeRepository.Get(id)));
+            return Ok(await GetFullEmployeeDetails(await _employeeRepository.Get(id)));
         }
 
+        //GET: api/Employees/CheckEmployeCodeAvailability/5
         [HttpGet("CheckEmployeeCodeAvailability/{id}")]
         public async Task<IActionResult> GetEmployeeCodeAvailability(int id)
         {
@@ -64,48 +59,41 @@ namespace COMP4911WebAPI.Controllers
 
         // POST: api/Employees
         [HttpPost]
-        public async Task<ActionResult<Employee>> PostEmployee(RegisteringEmployee newEmployee)
+        public async Task<ActionResult<Employee>> PostEmployee(EmployeeViewModel newEmployeeViewModel)
         {
-            Credential tempCredential = new Credential(newEmployee.EmpUsername, "temp", 1);
+            Credential tempCredential = new Credential(newEmployeeViewModel.EmpUsername, "temp", 1);
             if (!await _credentialRepository.CheckIfExists(tempCredential))
             {
                 Console.WriteLine("new employee, adding...");
-                Employee emp = new Employee(newEmployee);
-              //  Employee emp = new Employee(newEmployee.JobTitleId, newEmployee.EmpFirstName, newEmployee.EmpLastName, (int?)newEmployee.TimesheetApproverId,
-                //    (int?)newEmployee.SupervisorId, true, newEmployee.isProjectManager, newEmployee.isAdmin, newEmployee.isHumanResources);
+                Employee emp = new Employee(newEmployeeViewModel);
                 await _employeeRepository.Add(emp);
-
-                Credential credential = new Credential(newEmployee.EmpUsername, newEmployee.EmpPassword, emp.EmployeeId);
-                await _credentialRepository.Add(credential);
+                await _credentialRepository.Add(new Credential(newEmployeeViewModel.EmpUsername, newEmployeeViewModel.EmpPassword, emp.EmployeeId));
             }
-
             return new OkObjectResult(200);
         }
 
         // PUT: api/Employees
         [HttpPut]
-        public async Task<IActionResult> PutEmployee(Employee emp)
+        public async Task<IActionResult> PutEmployee(EmployeeViewModel emp)
         {
-            await _employeeRepository.Update(emp);
+            await _employeeRepository.Update(new Employee(emp));
+            await _credentialRepository.Delete(
+                (await _credentialRepository.GetAll()).SingleOrDefault(c => c.EmployeeId == emp.EmployeeId));
+            await _credentialRepository.Add(new Credential(emp.EmpUsername, emp.EmpPassword, emp.EmployeeId));
             return Ok(emp);
         }
 
         private async Task<Employee> GetFullEmployeeDetails(Employee emp)
         {
-            Debug.WriteLine("inside getfullemployee details");
-            Debug.WriteLine("emp id is: " + emp.EmployeeId);
             foreach (EmployeeProjectAssignment item in await _employeeProjectAssignmentRepository.GetAll())
             {
-                Debug.WriteLine("hello");
                 if (item.EmployeeId == emp.EmployeeId)
                 {
                   //  item.Project = null;
                     item.Employee = null;
                     emp.EmployeeProjectAssignments.Add(item);
-                    Debug.WriteLine("emp supervisor is: " + emp.Supervisor);
                 }
             }
-
             return emp;
         }
     }

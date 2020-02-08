@@ -1,13 +1,12 @@
 ﻿using COMP4911WebAPI.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using COMP4911WebAPI.Controllers;
 
 namespace COMP4911WebAPI.ViewModels
 {
-    /// <summary>
-    /// Timesheet view
-    /// </summary>
+    /** Model to represent a timesheet */
     public class TimesheetViewModel
     {
         public int TimesheetId { get; set; }
@@ -35,6 +34,7 @@ namespace COMP4911WebAPI.ViewModels
             this.Status = ts.Status.ToString();
             this.WeekNumber = WeekNumber;
             this.WeekEndingIn = WeekEndingIn;
+            this.TimesheetRows = ts.TimesheetRows.ToList();
         }
 
         public TimesheetViewModel(int timesheetId, int versionNumber, int employeeId, string status)

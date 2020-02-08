@@ -20,7 +20,6 @@ namespace COMP4911WebAPI.Repository
 
         public async Task<bool> Add(Timesheet entity)
         {
-            Debug.Write("inside timesheet add...");
             bool exists = await _timesheetContext.Timesheets.
                 AnyAsync(ts => ts.TimesheetId == entity.TimesheetId && ts.VersionNumber == entity.VersionNumber &&
                                ts.WeekEndingIn.Equals(entity.WeekEndingIn));
@@ -33,21 +32,10 @@ namespace COMP4911WebAPI.Repository
             return false;
         }
 
-        public Task<bool> CheckIfExists(Timesheet entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task Delete(Timesheet entity)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<Timesheet> Get(int id)
         {
             return await _timesheetContext.Timesheets.OrderByDescending(x => x.VersionNumber)
                 .Where(x => x.TimesheetId == id).FirstOrDefaultAsync();
-    
         }
 
         public async Task<Timesheet> Get(int id, int versionId)
@@ -71,6 +59,16 @@ namespace COMP4911WebAPI.Repository
             _timesheetContext.Entry(dbEntity).CurrentValues.SetValues(entity);
             await _timesheetContext.SaveChangesAsync();
             Debug.Write("updated timesheet...");
+        }
+
+        public Task<bool> CheckIfExists(Timesheet entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task Delete(Timesheet entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -19,30 +19,17 @@ namespace COMP4911WebAPI.Repository
 
         public async Task<bool> Add(Employee entity)
         {
-            bool success = false;
-            if (_employeeContext.Employees.Any(p => p.EmployeeId == entity.EmployeeId) == false)
+            try
             {
-                System.Diagnostics.Debug.WriteLine("record doesnt exist, adding...");
                 _employeeContext.Employees.Add(entity);
-                success = true;
+                await _employeeContext.SaveChangesAsync();
+                _employeeContext.Entry(entity).State = EntityState.Detached;
+                return true;
             }
-            else
+            catch (Exception e )
             {
-                System.Diagnostics.Debug.Write("record already exists, updating...");
-                Employee existingEmployee = _employeeContext.Employees.FirstOrDefault(p => p.EmployeeId == entity.EmployeeId);
-                await this.Update(entity);
-                success = false;
+                throw new Exception("Failed to add Employee: " + e.ToString());
             }
-
-            await _employeeContext.SaveChangesAsync();  
-            _employeeContext.Entry(entity).State = EntityState.Detached;
-
-            return success;
-        }
-
-        public Task<bool> CheckIfExists(Employee entity)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<bool> CheckIfEmpCodeExists(int code)
@@ -51,29 +38,14 @@ namespace COMP4911WebAPI.Repository
             return exists;
         }
 
-        public async Task Delete(Employee entity)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<Employee> Get(int id)
         {
             return await _employeeContext.Employees.FirstAsync(e => e.EmployeeId == id);  //investigate difference between toListAsync
         }
 
-        //public async Task<Employee> Get(string id)
-        //{
-        //    return await _employeeContext.Employees.FirstAsync(e => e.EmployeeId == id);
-        //}
-
         public async Task<IEnumerable<Employee>> GetAll()
         {
             return await _employeeContext.Employees.ToListAsync();
-        }
-
-        public Task<Employee> GetLastId()
-        {
-            throw new NotImplementedException();
         }
 
         public async Task Update(Employee entity)
@@ -83,5 +55,21 @@ namespace COMP4911WebAPI.Repository
             await _employeeContext.SaveChangesAsync();
             System.Diagnostics.Debug.Write("Updated employee...");
         }
+
+        public async Task Delete(Employee entity)
+        {
+            throw new NotImplementedException("Why are you trying to delete evidence...");
+        }
+
+        public Task<bool> CheckIfExists(Employee entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Employee> GetLastId()
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

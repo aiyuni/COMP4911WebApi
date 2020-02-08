@@ -6,12 +6,11 @@ using COMP4911WebAPI.Models;
 
 namespace COMP4911WebAPI.ViewModels
 {
-    //this will represent the returning json object when user authenticates 
+    /**Model to represent the returning json object when user authenticates*/
     public class AuthenticateReturn
     {
         public string CredentialId { get; set; }
         public int EmployeeId { get; set; }
-        //public string Password { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public int JobTitleId { get; set; }  //can remove
@@ -24,7 +23,6 @@ namespace COMP4911WebAPI.ViewModels
         {
             this.CredentialId = credential.CredentialId;
             this.EmployeeId = credential.EmployeeId;
-            //this.Password = credential.Password;
             this.Token = credential.Token;
             this.IsAdmin = emp.IsAdmin;
             this.IsProjectManager = emp.IsProjectManager;
@@ -32,7 +30,6 @@ namespace COMP4911WebAPI.ViewModels
             this.FirstName = emp.EmployeeFirstName;
             this.LastName = emp.EmployeeLastName;
             this.JobTitleId = emp.JobTitleId;
-
         }
     }
 }

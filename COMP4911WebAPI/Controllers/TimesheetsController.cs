@@ -42,11 +42,7 @@ namespace COMP4911WebAPI.Controllers
             return Ok(tsList);
         }
 
-        /// <summary>
-        /// Not used
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        // Not Used for now.
         // GET: api/Timesheets/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Timesheet>> GetTimesheet(int id)
@@ -56,12 +52,7 @@ namespace COMP4911WebAPI.Controllers
             return Ok(new TimesheetViewModel(ts));
         }
 
-        /// <summary>
-        /// Gets a specific version of a timesheet.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="versionId"></param>
-        /// <returns></returns>
+        //Gets a specific version of a timesheet 
         // GET: api/Timesheets/5/2
         [HttpGet("{id}/{versionId}")]
         public async Task<ActionResult<TimesheetViewModel>> GetTimesheet(int id, int versionId)
@@ -78,19 +69,16 @@ namespace COMP4911WebAPI.Controllers
             return Ok(new AvailableId(ts.TimesheetId + 1));
         }
 
-
+        //This is only called when a timesheet is labelled as "In Progress".
+        //Otherwise, frontend will call Post method instead.
         // PUT: api/Timesheets/5
         [HttpPut("{id}/{versionId}")]
         public async Task<IActionResult> PutTimesheet(int id, int versionId, TimesheetViewModel timesheetViewModel)
         {
-            //frontend handles 'put' by calling post.
             await _timesheetRepository.Update(new Timesheet(timesheetViewModel));
+
             //delete existing rows and then add, dont update
-
-            var tsRows = await _timesheetRowRepository.GetAll();
-
-            tsRows = tsRows.Where(t => t.TimesheetId == id && t.TimesheetVersionNumber == versionId);
-            Debug.WriteLine("filtered tsrows is: " + tsRows);
+            var tsRows = (await _timesheetRowRepository.GetAll()).Where(t => t.TimesheetId == id && t.TimesheetVersionNumber == versionId);
 
             foreach (TimesheetRow item in tsRows)
             {
@@ -121,9 +109,6 @@ namespace COMP4911WebAPI.Controllers
         }
 
         
-
-       
-
         private bool TimesheetExists(int id)
         {
             return true;
@@ -135,7 +120,13 @@ namespace COMP4911WebAPI.Controllers
             emp.Timesheets = null;
             ts.Employee = emp;
 
-            //implement timesheetrows here
+            var timesheetRows = (await _timesheetRowRepository.GetAll())
+                .Where(t => t.TimesheetId == ts.TimesheetId && t.TimesheetVersionNumber == ts.VersionNumber);
+            foreach (var tsTimesheetRow in ts.TimesheetRows)
+            {
+                tsTimesheetRow.Timesheet = null;
+            }
+            ts.TimesheetRows = timesheetRows.ToList();
 
             return ts;
         }

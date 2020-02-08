@@ -51,8 +51,7 @@ namespace COMP4911WebAPI.Repository
             };
             var signinKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(_appSettings.Secret));
-
-            int expiryInMinutes = Convert.ToInt32("50");
+            int expiryInMinutes = Convert.ToInt32(_appSettings.ExpiryTime);
 
             var token = new JwtSecurityToken(
                 expires: DateTime.UtcNow.AddMinutes(expiryInMinutes),
@@ -60,23 +59,8 @@ namespace COMP4911WebAPI.Repository
             );
             var tokenHandler = new JwtSecurityTokenHandler();
             credential.Token = tokenHandler.WriteToken(token);
-            //// authentication successful so generate jwt token
-            //var tokenHandler = new JwtSecurityTokenHandler();
-            ////var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
-            //var key = Encoding.ASCII.GetBytes("THIS IS USED TO SIGN AND VERIFY JWT TOKENS");
-            //var tokenDescriptor = new SecurityTokenDescriptor
-            //{
-            //    Subject = new ClaimsIdentity(new Claim[]
-            //    {
-            //        new Claim(ClaimTypes.Name, user.CredentialId.ToString())
-            //    }),
-            //    Expires = DateTime.UtcNow.AddDays(7),
-            //    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            //};
-            //var token = tokenHandler.CreateToken(tokenDescriptor);
-            //user.Token = tokenHandler.WriteToken(token);
 
-            // remove password before returning
+            //Hide the password
             credential.Password = null;
 
             return credential;
@@ -133,21 +117,10 @@ namespace COMP4911WebAPI.Repository
             return success;
         }
 
-        public async Task Delete(Credential entity)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<Credential> Get(int id)
         {
             return await _credentialContext.Credentials.FindAsync(id);
         }
-
-        //Do not delete this. We might need this later.
-        //public async Task<Credential> Get(string id)
-        //{
-        //    return await _credentialContext.Credentials.FindAsync(id);
-        //}
 
         public async Task<IEnumerable<Credential>> GetAll()
         {
@@ -156,8 +129,22 @@ namespace COMP4911WebAPI.Repository
 
         public async Task Update(Credential entity)
         {
-            //_credentialContext.Entry(dbEntity).CurrentValues.SetValues(entity);
+            byte[] salt = PasswordHasher.GenerateSalt();
+            string hashedPass = PasswordHasher.HashPassword(entity.Password, salt);
+
+            entity.Salt = salt;
+            entity.Password = hashedPass;
+
+            Credential dbEntity = await _credentialContext.FindAsync<Credential>(entity.CredentialId);
+            _credentialContext.Entry(dbEntity).CurrentValues.SetValues(entity);
+            await _credentialContext.SaveChangesAsync();
             System.Diagnostics.Debug.Write("Updated credentials...");
+        }
+
+        public async Task Delete(Credential entity)
+        {
+            _credentialContext.Remove(entity);
+            await _credentialContext.SaveChangesAsync();
         }
     }
 }
