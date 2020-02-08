@@ -89,6 +89,12 @@ namespace COMP4911WebAPI.Repository
             return exists;
         }
 
+        public async Task<bool> CheckIfUsernameExists(string name)
+        {
+            bool exists = await _credentialContext.Credentials.AnyAsync(c => c.CredentialId.Equals(name));
+            return exists;
+        }
+
         public async Task<Credential> GetLastId()
         {
             Credential cred = _credentialContext.Credentials.OrderBy(c =>c.CredentialId).LastOrDefault();

@@ -24,6 +24,20 @@ namespace COMP4911WebAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "LabourGrades",
+                columns: table => new
+                {
+                    LabourGradeId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    LabourGradeCode = table.Column<string>(nullable: true),
+                    Multiplier = table.Column<double>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LabourGrades", x => x.LabourGradeId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Projects",
                 columns: table => new
                 {
@@ -32,6 +46,8 @@ namespace COMP4911WebAPI.Migrations
                     ProjectName = table.Column<string>(nullable: true),
                     ProjectDescription = table.Column<string>(nullable: true),
                     ProjectManagerId = table.Column<int>(nullable: false),
+                    StartDate = table.Column<DateTime>(nullable: false),
+                    EndDate = table.Column<DateTime>(nullable: false),
                     LastUpdatedBy = table.Column<string>(nullable: true),
                     LastUpdatedTime = table.Column<DateTime>(nullable: false)
                 },
@@ -47,6 +63,8 @@ namespace COMP4911WebAPI.Migrations
                     EmployeeId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     JobTitleId = table.Column<int>(nullable: false),
+                    LabourGradeId = table.Column<int>(nullable: false),
+                    EmployeeCode = table.Column<int>(nullable: false),
                     EmployeeFirstName = table.Column<string>(nullable: true),
                     EmployeeLastName = table.Column<string>(nullable: true),
                     IsActivated = table.Column<bool>(nullable: false),
@@ -66,6 +84,12 @@ namespace COMP4911WebAPI.Migrations
                         column: x => x.JobTitleId,
                         principalTable: "JobTitles",
                         principalColumn: "JobTitleId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Employees_LabourGrades_LabourGradeId",
+                        column: x => x.LabourGradeId,
+                        principalTable: "LabourGrades",
+                        principalColumn: "LabourGradeId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Employees_Employees_SupervisorId",
@@ -88,20 +112,14 @@ namespace COMP4911WebAPI.Migrations
                     WorkPackageId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ProjectId = table.Column<int>(nullable: false),
-                    WorkPackageCode = table.Column<string>(nullable: true),
-                    WorkPackageName = table.Column<string>(nullable: true),
-                    WorkPackageDescription = table.Column<string>(nullable: true),
-                    WorkPackageProposedHours = table.Column<double>(nullable: true),
-                    WorkPackageBudgetHours = table.Column<double>(nullable: true),
-                    StartDate = table.Column<DateTime>(nullable: false),
-                    EndDate = table.Column<DateTime>(nullable: false),
-                    Purpose = table.Column<string>(nullable: true),
                     ResponsibleEngineerId = table.Column<int>(nullable: false),
-                    Contractor = table.Column<string>(nullable: true),
-                    Inputs = table.Column<string>(nullable: true),
-                    Activities = table.Column<string>(nullable: true),
-                    Outputs = table.Column<string>(nullable: true),
-                    isClosed = table.Column<bool>(nullable: false),
+                    WorkPackageCode = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    ProposedHours = table.Column<double>(nullable: true),
+                    BudgetHours = table.Column<double>(nullable: true),
+                    IssueDate = table.Column<DateTime>(nullable: false),
+                    IsClosed = table.Column<bool>(nullable: false),
                     ParentWorkPackageId = table.Column<int>(nullable: true),
                     LastUpdatedBy = table.Column<string>(nullable: true),
                     LastUpdatedTime = table.Column<DateTime>(nullable: false)
@@ -183,7 +201,6 @@ namespace COMP4911WebAPI.Migrations
                     WeekNumber = table.Column<int>(nullable: false),
                     WeekEndingIn = table.Column<DateTime>(nullable: false),
                     Status = table.Column<int>(nullable: false),
-                    Signature = table.Column<string>(nullable: true),
                     LastUpdatedBy = table.Column<string>(nullable: true),
                     LastUpdatedTime = table.Column<DateTime>(nullable: false)
                 },
@@ -233,13 +250,13 @@ namespace COMP4911WebAPI.Migrations
                     TimesheetId = table.Column<int>(nullable: false),
                     TimesheetVersionNumber = table.Column<int>(nullable: false),
                     WorkPackageId = table.Column<int>(nullable: false),
-                    Monday = table.Column<int>(nullable: false),
-                    Tuesday = table.Column<int>(nullable: false),
-                    Wednesday = table.Column<int>(nullable: false),
-                    Thursday = table.Column<int>(nullable: false),
-                    Friday = table.Column<int>(nullable: false),
-                    Saturday = table.Column<int>(nullable: false),
-                    Sunday = table.Column<int>(nullable: false),
+                    Monday = table.Column<double>(nullable: false),
+                    Tuesday = table.Column<double>(nullable: false),
+                    Wednesday = table.Column<double>(nullable: false),
+                    Thursday = table.Column<double>(nullable: false),
+                    Friday = table.Column<double>(nullable: false),
+                    Saturday = table.Column<double>(nullable: false),
+                    Sunday = table.Column<double>(nullable: false),
                     Notes = table.Column<string>(nullable: true),
                     LastUpdatedBy = table.Column<string>(nullable: true),
                     LastUpdatedTime = table.Column<DateTime>(nullable: false)
@@ -266,45 +283,161 @@ namespace COMP4911WebAPI.Migrations
                 columns: new[] { "JobTitleId", "JobTitleName", "LastUpdatedBy", "LastUpdatedTime" },
                 values: new object[,]
                 {
-                    { 1, "Software Developer", "perry", new DateTime(2020, 2, 6, 13, 1, 43, 475, DateTimeKind.Local).AddTicks(2223) },
-                    { 2, "Q/A Analyst", "perry", new DateTime(2020, 2, 6, 13, 1, 43, 475, DateTimeKind.Local).AddTicks(3624) },
-                    { 3, "Business Analyst", "perry", new DateTime(2020, 2, 6, 13, 1, 43, 475, DateTimeKind.Local).AddTicks(4451) }
+                    { 1, "Software Developer", "perry", new DateTime(2020, 2, 7, 22, 16, 44, 697, DateTimeKind.Local).AddTicks(2871) },
+                    { 2, "Q/A Analyst", "perry", new DateTime(2020, 2, 7, 22, 16, 44, 698, DateTimeKind.Local).AddTicks(9643) },
+                    { 3, "Business Analyst", "perry", new DateTime(2020, 2, 7, 22, 16, 44, 699, DateTimeKind.Local).AddTicks(508) }
+                });
+
+            migrationBuilder.InsertData(
+                table: "LabourGrades",
+                columns: new[] { "LabourGradeId", "LabourGradeCode", "Multiplier" },
+                values: new object[,]
+                {
+                    { 1, "code1", 22.0 },
+                    { 2, "code2", 23.0 },
+                    { 3, "code3", 10.0 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Projects",
-                columns: new[] { "ProjectId", "LastUpdatedBy", "LastUpdatedTime", "ProjectDescription", "ProjectManagerId", "ProjectName" },
-                values: new object[] { 1, "perry", new DateTime(2020, 2, 6, 13, 1, 43, 476, DateTimeKind.Local).AddTicks(5433), "NewProjectDescription1", 3, "NewProject1" });
+                columns: new[] { "ProjectId", "EndDate", "LastUpdatedBy", "LastUpdatedTime", "ProjectDescription", "ProjectManagerId", "ProjectName", "StartDate" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2020, 2, 7, 22, 16, 44, 701, DateTimeKind.Local).AddTicks(2099), "seeded", new DateTime(2020, 2, 7, 22, 16, 44, 701, DateTimeKind.Local).AddTicks(5998), "NewProjectDescription1", 2, "NewProject1", new DateTime(2020, 2, 7, 22, 16, 44, 701, DateTimeKind.Local).AddTicks(2094) },
+                    { 2, new DateTime(2020, 2, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), "seeded", new DateTime(2020, 2, 7, 22, 16, 44, 702, DateTimeKind.Local).AddTicks(126), "ProjectDescription3", 2, "ProjectName2", new DateTime(2020, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, new DateTime(2020, 3, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), "seeded", new DateTime(2020, 2, 7, 22, 16, 44, 702, DateTimeKind.Local).AddTicks(157), "ProjectDescription3", 3, "ProjectName3", new DateTime(2020, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                });
 
             migrationBuilder.InsertData(
                 table: "Employees",
-                columns: new[] { "EmployeeId", "EmployeeFirstName", "EmployeeLastName", "IsActivated", "IsAdmin", "IsHumanResources", "IsProjectManager", "JobTitleId", "LastUpdatedBy", "LastUpdatedTime", "SupervisorId", "TimesheetApproverId" },
-                values: new object[] { 1, "AdminFirstName", "AdminLastName", true, true, true, true, 1, "perry", new DateTime(2020, 2, 6, 13, 1, 43, 472, DateTimeKind.Local).AddTicks(6678), null, null });
+                columns: new[] { "EmployeeId", "EmployeeCode", "EmployeeFirstName", "EmployeeLastName", "IsActivated", "IsAdmin", "IsHumanResources", "IsProjectManager", "JobTitleId", "LabourGradeId", "LastUpdatedBy", "LastUpdatedTime", "SupervisorId", "TimesheetApproverId" },
+                values: new object[] { 1, 888, "AdminFirstName", "AdminLastName", true, true, true, true, 1, 1, "Seeded", new DateTime(2020, 2, 7, 22, 16, 44, 700, DateTimeKind.Local).AddTicks(3771), null, null });
+
+            migrationBuilder.InsertData(
+                table: "WorkPackages",
+                columns: new[] { "WorkPackageId", "BudgetHours", "Description", "IsClosed", "IssueDate", "LastUpdatedBy", "LastUpdatedTime", "Name", "ParentWorkPackageId", "ProjectId", "ProposedHours", "ResponsibleEngineerId", "WorkPackageCode" },
+                values: new object[,]
+                {
+                    { 1, null, "WpDescription1Root", false, new DateTime(2020, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Seeded", new DateTime(2020, 2, 7, 22, 16, 44, 703, DateTimeKind.Local).AddTicks(7542), "WpName1Root", null, 1, null, 2, "A" },
+                    { 3, null, "WpDescription2Root", false, new DateTime(2020, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "Seeded", new DateTime(2020, 2, 7, 22, 16, 44, 703, DateTimeKind.Local).AddTicks(8794), "WpName2Root", null, 2, null, 3, "B" },
+                    { 7, null, "WpDescription3Root", false, new DateTime(2020, 2, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), "Seeded", new DateTime(2020, 2, 7, 22, 16, 44, 703, DateTimeKind.Local).AddTicks(8830), "WpName3Root", null, 3, null, 4, "C" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Credentials",
                 columns: new[] { "CredentialId", "EmployeeId", "LastUpdatedBy", "LastUpdatedTime", "Password", "Salt", "Token" },
-                values: new object[] { "A100001", 1, "perry", new DateTime(2020, 2, 6, 13, 1, 43, 475, DateTimeKind.Local).AddTicks(9614), "zjGahUlpu3oclCATMvRwfOXXt4AV1daIimVz3DpG+yg=", new byte[] { 246, 83, 193, 89, 27, 136, 19, 136, 141, 36, 224, 222, 106, 35, 170, 220 }, null });
+                values: new object[] { "A100001", 1, "perry", new DateTime(2020, 2, 7, 22, 16, 44, 700, DateTimeKind.Local).AddTicks(9969), "h5UTtGc3WB2ZdAlUaQaMNdU93AKNUGfhZj/42NltDZI=", new byte[] { 47, 170, 140, 108, 143, 242, 214, 21, 37, 14, 174, 77, 139, 86, 92, 50 }, null });
 
             migrationBuilder.InsertData(
                 table: "Employees",
-                columns: new[] { "EmployeeId", "EmployeeFirstName", "EmployeeLastName", "IsActivated", "IsAdmin", "IsHumanResources", "IsProjectManager", "JobTitleId", "LastUpdatedBy", "LastUpdatedTime", "SupervisorId", "TimesheetApproverId" },
-                values: new object[] { 2, "Perry", "Li", true, false, false, true, 2, "perry", new DateTime(2020, 2, 6, 13, 1, 43, 474, DateTimeKind.Local).AddTicks(5017), 1, 1 });
+                columns: new[] { "EmployeeId", "EmployeeCode", "EmployeeFirstName", "EmployeeLastName", "IsActivated", "IsAdmin", "IsHumanResources", "IsProjectManager", "JobTitleId", "LabourGradeId", "LastUpdatedBy", "LastUpdatedTime", "SupervisorId", "TimesheetApproverId" },
+                values: new object[] { 2, 778, "Perry", "Li", true, false, false, true, 2, 2, "Seeded", new DateTime(2020, 2, 7, 22, 16, 44, 700, DateTimeKind.Local).AddTicks(4364), 1, 1 });
+
+            migrationBuilder.InsertData(
+                table: "WorkPackages",
+                columns: new[] { "WorkPackageId", "BudgetHours", "Description", "IsClosed", "IssueDate", "LastUpdatedBy", "LastUpdatedTime", "Name", "ParentWorkPackageId", "ProjectId", "ProposedHours", "ResponsibleEngineerId", "WorkPackageCode" },
+                values: new object[,]
+                {
+                    { 2, 15.0, "WpDescription1Child1", false, new DateTime(2020, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "Seeded", new DateTime(2020, 2, 7, 22, 16, 44, 703, DateTimeKind.Local).AddTicks(8771), "WpName1Child1", 1, 1, 10.0, 2, "AB" },
+                    { 4, null, "WpDescription2Child1", false, new DateTime(2020, 2, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "Seeded", new DateTime(2020, 2, 7, 22, 16, 44, 703, DateTimeKind.Local).AddTicks(8805), "WpName2Child1", 3, 2, null, 5, "BA" },
+                    { 6, 8.0, "WpDescription2Child2", false, new DateTime(2020, 2, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), "Seeded", new DateTime(2020, 2, 7, 22, 16, 44, 703, DateTimeKind.Local).AddTicks(8822), "WpName2Child2", 3, 2, 5.0, 5, "BB" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Credentials",
                 columns: new[] { "CredentialId", "EmployeeId", "LastUpdatedBy", "LastUpdatedTime", "Password", "Salt", "Token" },
-                values: new object[] { "A100002", 2, "perry", new DateTime(2020, 2, 6, 13, 1, 43, 476, DateTimeKind.Local).AddTicks(1260), "pglZTwX1i3+btI7YMd7ZQ9c492CgECyFqU34B3x9UUY=", new byte[] { 131, 85, 73, 2, 34, 243, 195, 29, 30, 225, 158, 158, 202, 155, 14, 184 }, null });
-
-            migrationBuilder.InsertData(
-                table: "Employees",
-                columns: new[] { "EmployeeId", "EmployeeFirstName", "EmployeeLastName", "IsActivated", "IsAdmin", "IsHumanResources", "IsProjectManager", "JobTitleId", "LastUpdatedBy", "LastUpdatedTime", "SupervisorId", "TimesheetApproverId" },
-                values: new object[] { 3, "Bruce", "Link", true, false, false, true, 3, "perry", new DateTime(2020, 2, 6, 13, 1, 43, 474, DateTimeKind.Local).AddTicks(5938), 1, 2 });
+                values: new object[] { "A100002", 2, "perry", new DateTime(2020, 2, 7, 22, 16, 44, 701, DateTimeKind.Local).AddTicks(1553), "YMgsxQ9EOq91o/uRFVfaPSUeiWDH7sBOMOhvqvn2Bm0=", new byte[] { 46, 79, 16, 191, 201, 154, 120, 73, 197, 109, 211, 47, 77, 125, 63, 170 }, null });
 
             migrationBuilder.InsertData(
                 table: "EmployeeProjectAssignments",
                 columns: new[] { "EmployeeId", "ProjectId", "LastUpdatedBy", "LastUpdatedTime", "isProjectManager" },
-                values: new object[] { 3, 1, "perry", new DateTime(2020, 2, 6, 13, 1, 43, 477, DateTimeKind.Local).AddTicks(2828), true });
+                values: new object[] { 2, 1, "perry", new DateTime(2020, 2, 7, 22, 16, 44, 702, DateTimeKind.Local).AddTicks(4580), true });
+
+            migrationBuilder.InsertData(
+                table: "EmployeeWorkPackageAssignments",
+                columns: new[] { "EmployeeId", "WorkPackageId", "LastUpdatedBy", "LastUpdatedTime" },
+                values: new object[,]
+                {
+                    { 2, 1, "perry", new DateTime(2020, 2, 7, 22, 16, 44, 704, DateTimeKind.Local).AddTicks(2418) },
+                    { 2, 2, "perry", new DateTime(2020, 2, 7, 22, 16, 44, 704, DateTimeKind.Local).AddTicks(5504) }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Employees",
+                columns: new[] { "EmployeeId", "EmployeeCode", "EmployeeFirstName", "EmployeeLastName", "IsActivated", "IsAdmin", "IsHumanResources", "IsProjectManager", "JobTitleId", "LabourGradeId", "LastUpdatedBy", "LastUpdatedTime", "SupervisorId", "TimesheetApproverId" },
+                values: new object[] { 3, 111, "Bruce", "Link", true, false, false, true, 3, 3, "Seeded", new DateTime(2020, 2, 7, 22, 16, 44, 700, DateTimeKind.Local).AddTicks(4377), 1, 2 });
+
+            migrationBuilder.InsertData(
+                table: "Timesheets",
+                columns: new[] { "TimesheetId", "VersionNumber", "EmployeeId", "LastUpdatedBy", "LastUpdatedTime", "Status", "WeekEndingIn", "WeekNumber" },
+                values: new object[] { 1, 1, 2, "Seeded", new DateTime(2020, 2, 7, 22, 16, 44, 705, DateTimeKind.Local).AddTicks(6668), 2, new DateTime(2020, 5, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), 10 });
+
+            migrationBuilder.InsertData(
+                table: "WorkPackages",
+                columns: new[] { "WorkPackageId", "BudgetHours", "Description", "IsClosed", "IssueDate", "LastUpdatedBy", "LastUpdatedTime", "Name", "ParentWorkPackageId", "ProjectId", "ProposedHours", "ResponsibleEngineerId", "WorkPackageCode" },
+                values: new object[] { 5, 25.0, "WpDescription2ChildChild1", false, new DateTime(2020, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "Seeded", new DateTime(2020, 2, 7, 22, 16, 44, 703, DateTimeKind.Local).AddTicks(8813), "WpName2ChildChild1", 4, 2, 20.0, 2, "BAA" });
+
+            migrationBuilder.InsertData(
+                table: "EmployeeProjectAssignments",
+                columns: new[] { "EmployeeId", "ProjectId", "LastUpdatedBy", "LastUpdatedTime", "isProjectManager" },
+                values: new object[,]
+                {
+                    { 3, 1, "perry", new DateTime(2020, 2, 7, 22, 16, 44, 702, DateTimeKind.Local).AddTicks(5979), false },
+                    { 3, 2, "perry", new DateTime(2020, 2, 7, 22, 16, 44, 702, DateTimeKind.Local).AddTicks(6831), true },
+                    { 3, 3, "perry", new DateTime(2020, 2, 7, 22, 16, 44, 702, DateTimeKind.Local).AddTicks(9608), false }
+                });
+
+            migrationBuilder.InsertData(
+                table: "EmployeeWorkPackageAssignments",
+                columns: new[] { "EmployeeId", "WorkPackageId", "LastUpdatedBy", "LastUpdatedTime" },
+                values: new object[,]
+                {
+                    { 3, 1, "perry", new DateTime(2020, 2, 7, 22, 16, 44, 704, DateTimeKind.Local).AddTicks(3811) },
+                    { 3, 2, "perry", new DateTime(2020, 2, 7, 22, 16, 44, 704, DateTimeKind.Local).AddTicks(4665) },
+                    { 3, 3, "perry", new DateTime(2020, 2, 7, 22, 16, 44, 704, DateTimeKind.Local).AddTicks(6350) },
+                    { 3, 7, "perry", new DateTime(2020, 2, 7, 22, 16, 44, 705, DateTimeKind.Local).AddTicks(1625) },
+                    { 2, 5, "perry", new DateTime(2020, 2, 7, 22, 16, 44, 704, DateTimeKind.Local).AddTicks(9943) }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Employees",
+                columns: new[] { "EmployeeId", "EmployeeCode", "EmployeeFirstName", "EmployeeLastName", "IsActivated", "IsAdmin", "IsHumanResources", "IsProjectManager", "JobTitleId", "LabourGradeId", "LastUpdatedBy", "LastUpdatedTime", "SupervisorId", "TimesheetApproverId" },
+                values: new object[,]
+                {
+                    { 4, 123, "Employee4FirstName", "Employee4LastName", true, false, false, false, 2, 2, "Seeded", new DateTime(2020, 2, 7, 22, 16, 44, 700, DateTimeKind.Local).AddTicks(4381), 3, 3 },
+                    { 5, 222, "Employee5FirstName", "Employee5LastName", true, false, false, true, 3, 3, "Seeded", new DateTime(2020, 2, 7, 22, 16, 44, 700, DateTimeKind.Local).AddTicks(4384), 3, 3 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "TimesheetRows",
+                columns: new[] { "TimesheetRowId", "Friday", "LastUpdatedBy", "LastUpdatedTime", "Monday", "Notes", "Saturday", "Sunday", "Thursday", "TimesheetId", "TimesheetVersionNumber", "Tuesday", "Wednesday", "WorkPackageId" },
+                values: new object[,]
+                {
+                    { 1, 7.0, "Seeded", new DateTime(2020, 2, 7, 22, 16, 44, 706, DateTimeKind.Local).AddTicks(4603), 3.0, "dota is best", 8.0, 9.0, 6.0, 1, 1, 4.0, 5.0, 2 },
+                    { 2, 3.0, "Seeded", new DateTime(2020, 2, 7, 22, 16, 44, 706, DateTimeKind.Local).AddTicks(5570), 3.0, "PIG GOD!!!", 3.0, 3.0, 3.0, 1, 1, 3.0, 3.0, 3 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "EmployeeProjectAssignments",
+                columns: new[] { "EmployeeId", "ProjectId", "LastUpdatedBy", "LastUpdatedTime", "isProjectManager" },
+                values: new object[,]
+                {
+                    { 4, 3, "perry", new DateTime(2020, 2, 7, 22, 16, 44, 703, DateTimeKind.Local).AddTicks(440), false },
+                    { 5, 2, "perry", new DateTime(2020, 2, 7, 22, 16, 44, 702, DateTimeKind.Local).AddTicks(7674), false },
+                    { 5, 3, "perry", new DateTime(2020, 2, 7, 22, 16, 44, 702, DateTimeKind.Local).AddTicks(8772), true }
+                });
+
+            migrationBuilder.InsertData(
+                table: "EmployeeWorkPackageAssignments",
+                columns: new[] { "EmployeeId", "WorkPackageId", "LastUpdatedBy", "LastUpdatedTime" },
+                values: new object[,]
+                {
+                    { 4, 3, "perry", new DateTime(2020, 2, 7, 22, 16, 44, 704, DateTimeKind.Local).AddTicks(7185) },
+                    { 4, 7, "perry", new DateTime(2020, 2, 7, 22, 16, 44, 705, DateTimeKind.Local).AddTicks(2449) },
+                    { 5, 4, "perry", new DateTime(2020, 2, 7, 22, 16, 44, 704, DateTimeKind.Local).AddTicks(8254) },
+                    { 5, 5, "perry", new DateTime(2020, 2, 7, 22, 16, 44, 704, DateTimeKind.Local).AddTicks(9102) },
+                    { 5, 6, "perry", new DateTime(2020, 2, 7, 22, 16, 44, 705, DateTimeKind.Local).AddTicks(794) }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Credentials_EmployeeId",
@@ -320,6 +453,11 @@ namespace COMP4911WebAPI.Migrations
                 name: "IX_Employees_JobTitleId",
                 table: "Employees",
                 column: "JobTitleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employees_LabourGradeId",
+                table: "Employees",
+                column: "LabourGradeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_SupervisorId",
@@ -390,6 +528,9 @@ namespace COMP4911WebAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "JobTitles");
+
+            migrationBuilder.DropTable(
+                name: "LabourGrades");
         }
     }
 }

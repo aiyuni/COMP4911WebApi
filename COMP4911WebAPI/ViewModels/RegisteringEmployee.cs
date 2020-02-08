@@ -9,8 +9,9 @@ namespace COMP4911WebAPI.ViewModels
     {
         public string EmpUsername { get; set; }
         public string EmpPassword { get; set; }
+        public int EmpCode { get; set; }
         public int JobTitleId { get; set; }
-        public string LabourGrade { get; set; }
+        public int LabourGradeId { get; set; }
         public string EmpFirstName { get; set; }
         public string EmpLastName { get; set; }
         public int? TimesheetApproverId { get; set; }
@@ -24,13 +25,13 @@ namespace COMP4911WebAPI.ViewModels
 
         }
 
-        public RegisteringEmployee(string empUsername, string empPassword, int jobTitleId, string labourGrade, string empFirstName, string empLastName,
-            int? timesheetApproverId, int? supervisorId, bool isProjectManager, bool isAdmin, bool isHumanResources)
+        public RegisteringEmployee(string empUsername, string empPassword, int jobTitleId, int labourGradeId, string empFirstName, string empLastName,
+            int? timesheetApproverId, int? supervisorId, bool isProjectManager, bool isAdmin, bool isHumanResources, int empCode)
         {
             this.EmpUsername = empUsername;
             this.EmpPassword = empPassword;
             this.JobTitleId = jobTitleId;
-            this.LabourGrade = labourGrade;
+            this.LabourGradeId = labourGradeId;
             this.EmpFirstName = empFirstName;
             this.EmpLastName = empLastName;
             this.TimesheetApproverId = timesheetApproverId;
@@ -38,6 +39,7 @@ namespace COMP4911WebAPI.ViewModels
             this.isProjectManager = isProjectManager;
             this.isAdmin = isAdmin;
             this.isHumanResources = isHumanResources;
+            this.EmpCode = empCode;
         }
     }
 }

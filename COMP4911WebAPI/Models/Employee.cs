@@ -16,9 +16,14 @@ namespace COMP4911WebAPI.Models
 
         [ForeignKey("JobId")]
         public int JobTitleId { get; set; }
+        [ForeignKey("LabourGradeId")]
+        public int LabourGradeId { get; set; }
+
+        public int EmployeeCode { get; set; }  //logically speaking, this should be unique 
 
         public string EmployeeFirstName { get; set; }
         public string EmployeeLastName { get; set; }
+       
         public bool IsActivated { get; set; }
         public int? TimesheetApproverId { get; set; }
         public int? SupervisorId { get; set; }
@@ -29,6 +34,7 @@ namespace COMP4911WebAPI.Models
         public Employee TimesheetApprover { get; set; }
         public Employee Supervisor { get; set; }
         public JobTitle JobTitle { get; set; }
+        public LabourGrade LabourGrade { get; set; }
 
         public IList<Timesheet> Timesheets { get; set; }
 
@@ -54,14 +60,19 @@ namespace COMP4911WebAPI.Models
             this.IsAdmin = emp.isAdmin;
             this.IsHumanResources = emp.isHumanResources;
             this.IsProjectManager = emp.isProjectManager;
+
+            this.EmployeeCode = emp.EmpCode;
+            this.LabourGradeId = emp.LabourGradeId;
+
             this.LastUpdatedBy = System.Environment.UserName;
             this.LastUpdatedTime = DateTime.Now;
+    
 
         }
 
         //Used for seeding 
         public Employee(int empId, int jobId, string firstName, string lastName, int? timesheetApproverId, int? supervisorId, bool isActivated,
-            bool isProjectManager, bool isAdmin, bool isHumanResources)
+            bool isProjectManager, bool isAdmin, bool isHumanResources, int empCode, int labourGradeId)
         {
             this.EmployeeId = empId;
             JobTitleId = jobId;
@@ -73,7 +84,9 @@ namespace COMP4911WebAPI.Models
             this.IsProjectManager = isProjectManager;
             this.IsAdmin = isAdmin;
             this.IsHumanResources = isHumanResources;
-            this.LastUpdatedBy = System.Environment.UserName;
+            this.EmployeeCode = empCode;
+            this.LabourGradeId = labourGradeId;
+            this.LastUpdatedBy = "Seeded";
             this.LastUpdatedTime = DateTime.Now;
         }
 

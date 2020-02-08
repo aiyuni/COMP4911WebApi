@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using COMP4911WebAPI.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace COMP4911WebAPI.Repository
@@ -42,6 +43,12 @@ namespace COMP4911WebAPI.Repository
         public Task<bool> CheckIfExists(Employee entity)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<bool> CheckIfEmpCodeExists(int code)
+        {
+            bool exists = await _employeeContext.Employees.AnyAsync(e => e.EmployeeCode == code);
+            return exists;
         }
 
         public async Task Delete(Employee entity)

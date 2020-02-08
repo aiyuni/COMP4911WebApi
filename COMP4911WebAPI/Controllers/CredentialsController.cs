@@ -21,10 +21,11 @@ namespace COMP4911WebAPI.Controllers
     public class CredentialsController : ControllerBase
     {
         private readonly CredentialRepository _credentialRepository;
-
-        public CredentialsController(IDataRepository<Credential> credentialRepository)
+        private readonly IDataRepository<Employee> _employeeRepository;
+        public CredentialsController(IDataRepository<Credential> credentialRepository, IDataRepository<Employee> employeeRepository)
         {
             _credentialRepository = (CredentialRepository)credentialRepository;
+            _employeeRepository = employeeRepository;
         }
 
         [AllowAnonymous]
@@ -38,7 +39,9 @@ namespace COMP4911WebAPI.Controllers
                 return BadRequest("Username or password is incorrect");
             }
 
-            return Ok(user);
+            Employee emp = await _employeeRepository.Get(user.EmployeeId);
+
+            return Ok(new AuthenticateReturn(user, emp));
         }
 
         [HttpGet("AvailableUsername")]
@@ -49,6 +52,14 @@ namespace COMP4911WebAPI.Controllers
             int num = Int32.Parse(cred.CredentialId.Substring(1));
             AvailableUsername username = new AvailableUsername("A" + ++num);
             return Ok(JsonConvert.SerializeObject(username));
+        }
+
+        [AllowAnonymous]
+        [HttpGet("CheckUsernameAvailability/{id}")]
+        public async Task<IActionResult> GetUsernameAvailability(string id)
+        {
+            bool value = await _credentialRepository.CheckIfUsernameExists(id);
+            return Ok(value);
         }
 
     }
