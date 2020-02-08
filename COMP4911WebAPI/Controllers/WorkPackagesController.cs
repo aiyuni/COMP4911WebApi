@@ -42,8 +42,8 @@ namespace COMP4911WebAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutWorkPackage(int id, WorkPackage workPackage)
         {
-           
 
+            await _workPackageRepository.Update(workPackage);
             return NoContent();
         }
 
@@ -55,8 +55,6 @@ namespace COMP4911WebAPI.Controllers
             await _workPackageRepository.Add(workPackage);
             return Ok(200);
         }
-
-       
 
         private bool WorkPackageExists(int id)
         {

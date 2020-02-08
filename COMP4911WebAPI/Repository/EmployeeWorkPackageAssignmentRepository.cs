@@ -18,21 +18,17 @@ namespace COMP4911WebAPI.Repository
 
         public async Task<bool> Add(EmployeeWorkPackageAssignment entity)
         {
-            _employeeWorkPackageAssignmentContext.Add(entity);
-            await _employeeWorkPackageAssignmentContext.SaveChangesAsync();
-            _employeeWorkPackageAssignmentContext.Entry(entity).State = EntityState.Detached;
-
-            return true;
-        }
-
-        public Task<bool> CheckIfExists(EmployeeWorkPackageAssignment entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task Delete(EmployeeWorkPackageAssignment entity)
-        {
-            throw new NotImplementedException();
+            try
+            {
+                _employeeWorkPackageAssignmentContext.Add(entity);
+                await _employeeWorkPackageAssignmentContext.SaveChangesAsync();
+                _employeeWorkPackageAssignmentContext.Entry(entity).State = EntityState.Detached;
+                return true;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Failed to add employeeWorkPackageAssignment: " + e);
+            }
         }
 
         public async Task<EmployeeWorkPackageAssignment> Get(int id)
@@ -51,6 +47,16 @@ namespace COMP4911WebAPI.Repository
         }
 
         public Task Update(EmployeeWorkPackageAssignment entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> CheckIfExists(EmployeeWorkPackageAssignment entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task Delete(EmployeeWorkPackageAssignment entity)
         {
             throw new NotImplementedException();
         }

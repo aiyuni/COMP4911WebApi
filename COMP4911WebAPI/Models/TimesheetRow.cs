@@ -57,7 +57,7 @@ namespace COMP4911WebAPI.Models
             this.LastUpdatedBy = Environment.UserName.ToString();
         }
 
-        //For seeding directly
+        //For seeding 
         public TimesheetRow(int rowId, int timesheetId, int tsVersion, int wpId, double mon, double tues,
             double wed, double thurs, double fri, double sat, double sun, string notes)
         {

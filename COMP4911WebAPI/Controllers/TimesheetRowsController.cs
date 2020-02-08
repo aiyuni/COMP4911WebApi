@@ -49,11 +49,6 @@ namespace COMP4911WebAPI.Controllers
             return null;
         }
 
-        [HttpDelete]
-        public void Delete(int id)
-        {
-        }
-
         private bool TimesheetRowExists(int id)
         {
             return true;

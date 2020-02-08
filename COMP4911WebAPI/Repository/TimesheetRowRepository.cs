@@ -19,9 +19,16 @@ namespace COMP4911WebAPI.Repository
 
         public async Task<bool> Add(TimesheetRow entity)
         {
-            await _timesheetRowContext.AddAsync(entity);
-            await _timesheetRowContext.SaveChangesAsync();
-            return true;
+            try
+            {
+                await _timesheetRowContext.AddAsync(entity);
+                await _timesheetRowContext.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Failed to add timesheetrow: " + e.ToString());
+            }
         }
 
         public Task<bool> CheckIfExists(TimesheetRow entity)

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace COMP4911WebAPI.ViewModels
 {
+    /**Model to represent an available Employee Id */
     public class AvailableId
     {
         public int Id { get; set; }

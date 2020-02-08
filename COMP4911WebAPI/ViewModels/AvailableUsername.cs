@@ -5,9 +5,7 @@ using System.Threading.Tasks;
 
 namespace COMP4911WebAPI.ViewModels
 {
-    /// <summary>
-    /// Model to represent the username for a new Employee
-    /// </summary>
+    /** Model to represent the username for a new Employee */
     public class AvailableUsername
     {
         public string Username { get; set; }
