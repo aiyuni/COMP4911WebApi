@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using COMP4911WebAPI.Models;
 using COMP4911WebAPI.Repository;
+using COMP4911WebAPI.ViewModels;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.CodeAnalysis;
 using Project = COMP4911WebAPI.Models.Project;
@@ -19,11 +20,14 @@ namespace COMP4911WebAPI.Controllers
     {
         private readonly IDataRepository<Project> _projectRepository;
         private readonly IDataRepository<EmployeeProjectAssignment> _employeeProjectAssignmentRepository;
+        private readonly IDataRepository<Employee> _employeeRepository;
 
-        public ProjectsController(IDataRepository<Project> projectRepository, IDataRepository<EmployeeProjectAssignment> employeeProjectAssignmentRepository)
+        public ProjectsController(IDataRepository<Project> projectRepository, 
+            IDataRepository<EmployeeProjectAssignment> employeeProjectAssignmentRepository, IDataRepository<Employee> employeeRepository)
         {
             this._projectRepository = projectRepository;
             this._employeeProjectAssignmentRepository = employeeProjectAssignmentRepository;
+            this._employeeRepository = employeeRepository;
         }
 
         // GET: api/Projects
@@ -37,7 +41,6 @@ namespace COMP4911WebAPI.Controllers
                 await this.GetFullProjectDetails(item);
                 projectsList.Add(item);
             }
-
             return Ok(projectsList);
             //return Ok(await _projectRepository.GetAll());  //somehow this also works cuz it saves the state??
         }
@@ -46,8 +49,22 @@ namespace COMP4911WebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Project>> GetProject(int id)
         {
-            Project dbProject = await this.GetFullProjectDetails(await _projectRepository.Get(id));
-            return Ok(dbProject);
+            return Ok(await this.GetFullProjectDetails(await _projectRepository.Get(id)));
+        }
+
+        // GET: api/Projects/GetProjectsByEmpId/5
+        [HttpGet("GetProjectsByEmpId/{id}")]
+        public async Task<IActionResult> GetProjectsByEmployeeId(int id)
+        {
+            var empProjectAssignmentList = (await _employeeProjectAssignmentRepository.GetAll()).Where(x => x.EmployeeId == id);
+            List<Project> projList = new List<Project>();
+            int empCode = (await _employeeRepository.Get(id)).EmployeeCode;
+            foreach (EmployeeProjectAssignment item in empProjectAssignmentList)
+            {
+                projList.Add(await _projectRepository.Get(item.ProjectId));
+            }
+
+            return Ok(new EmployeeProjectListViewModel(id, empCode, projList));
         }
 
         // PUT: api/Projects/

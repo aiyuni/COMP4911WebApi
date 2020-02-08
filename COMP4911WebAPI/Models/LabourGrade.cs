@@ -19,15 +19,22 @@ namespace COMP4911WebAPI.Models
 
         public IList<Employee> Employee { get; set; }
 
+        public string LastUpdatedBy { get; set; }
+        public DateTime LastUpdatedTime { get; set; }
+
         public LabourGrade()
         {
 
         }
+
+        //For seeding
         public LabourGrade(int id, string code, double multiplier)
         {
             this.LabourGradeId = id;
             this.LabourGradeCode = code;
             this.Multiplier = multiplier;
+            this.LastUpdatedTime = DateTime.Now;
+            this.LastUpdatedBy = "seeded";
         }
     }
 }

@@ -22,7 +22,6 @@ namespace COMP4911WebAPI.Repository
             try
             {
                 _employeeProjectAssignmentContext.EmployeeProjectAssignments.Add(entity);
-
                 await _employeeProjectAssignmentContext.SaveChangesAsync();
                 _employeeProjectAssignmentContext.Entry(entity).State = EntityState.Detached;
                 Debug.WriteLine("successfully added an employeeprojectAssignment!");
@@ -64,7 +63,7 @@ namespace COMP4911WebAPI.Repository
         public async Task Update(EmployeeProjectAssignment entity)
         {
             // _employeeProjectAssignmentContext.Entry(dbEntity).CurrentValues.SetValues(entity);
-            Debug.WriteLine("updated employeeProjectAssignment");
+            Debug.WriteLine("updating employeeProjectAssignment");
         }
     }
 }

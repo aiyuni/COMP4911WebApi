@@ -37,13 +37,14 @@ namespace COMP4911WebAPI.Models
             this.LastUpdatedTime = DateTime.Now;
         }
 
+        //For seeding
         public Credential(string userName, string password, int employeeId, byte[] salt)
         {
             this.CredentialId = userName;
             this.Password = password;
             this.EmployeeId = employeeId;
             this.Salt = salt;
-            this.LastUpdatedBy = System.Environment.UserName;
+            this.LastUpdatedBy = "seeded";
             this.LastUpdatedTime = DateTime.Now;
         }
 

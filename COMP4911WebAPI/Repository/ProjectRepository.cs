@@ -19,25 +19,17 @@ namespace COMP4911WebAPI.Repository
 
         public async Task<bool> Add(Project entity)
         {
-            bool success = false;
-            if (_projectContext.Projects.Any(p => p.ProjectId == entity.ProjectId) == false)
+            try
             {
-                Debug.WriteLine("project record doesnt exist, adding...");
                 _projectContext.Add(entity);
-                success = true;
+                await _projectContext.SaveChangesAsync();
+                _projectContext.Entry(entity).State = EntityState.Detached;
+                return true;
             }
-            else
+            catch (Exception e)
             {
-                Debug.WriteLine("project record already exists, updating... ");
-                Project existingProject = _projectContext.Projects.FirstOrDefault(p => p.ProjectId == entity.ProjectId);
-                await this.Update(entity);
-                success = false;
+                throw new Exception("Failed to add project: " + e.ToString());
             }
-
-            await _projectContext.SaveChangesAsync();
-            _projectContext.Entry(entity).State = EntityState.Detached;
-
-            return success;
         }
 
         public async Task<bool> CheckIfExists(Project entity)
@@ -71,7 +63,6 @@ namespace COMP4911WebAPI.Repository
 
         public async Task Update(Project entity)
         {
-            //_projectContext.Entry(dbEntity).CurrentValues.SetValues(entity);
             Project dbEntity = await _projectContext.Projects.FindAsync(entity.ProjectId);
             _projectContext.Entry(dbEntity).CurrentValues.SetValues(entity);
             await _projectContext.SaveChangesAsync();

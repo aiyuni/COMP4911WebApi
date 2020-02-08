@@ -37,7 +37,10 @@ namespace COMP4911WebAPI.Models
         public string LastUpdatedBy { get; set; }
         public DateTime LastUpdatedTime { get; set; }
 
-        public WorkPackage() { }
+        public WorkPackage()
+        {
+
+        }
 
         //For seeding
         public WorkPackage(int wpId, int projId, int responsibleEngineerId, string code, string name, string description, 
