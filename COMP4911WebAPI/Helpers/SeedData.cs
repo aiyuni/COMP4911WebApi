@@ -16,7 +16,11 @@ namespace COMP4911WebAPI.Helpers
             byte[] salt2 = PasswordHasher.GenerateSalt();
             string hashedPass2 = PasswordHasher.HashPassword("defaultpassword", salt2);
             byte[] salt3 = PasswordHasher.GenerateSalt();
-            string hashedPass3 = PasswordHasher.HashPassword("password123", salt3);
+            string hashedPass3 = PasswordHasher.HashPassword("piggod", salt3);
+            byte[] salt4 = PasswordHasher.GenerateSalt();
+            string hashedPass4 = PasswordHasher.HashPassword("nezuko", salt3);
+            byte[] salt5 = PasswordHasher.GenerateSalt();
+            string hashedPass5 = PasswordHasher.HashPassword("NierAutomata", salt3);
 
             modelBuilder.Entity<JobTitle>().HasData(
                 new JobTitle(1, "Software Developer"),
@@ -37,19 +41,21 @@ namespace COMP4911WebAPI.Helpers
                     true, false, false, false, 123, 2),
                 new Employee(5, 3, "Employee5FirstName", "Employee5LastName", 3, 3,
                     true, true, false, false, 222, 3));
- 
-            //should generate logins for other seeded employees to ensure DB consistency
+            
             modelBuilder.Entity<Credential>().HasData(
                 new Credential("A100001", hashedPass1, 1, salt1),
-                new Credential("A100002", hashedPass2, 2, salt2));
+                new Credential("A100002", hashedPass2, 2, salt2),
+                new Credential("A100003", hashedPass3, 3, salt3),
+                new Credential("Nezuko", hashedPass4, 4, salt4),
+                new Credential("Nier", hashedPass5, 5, salt5));
 
             modelBuilder.Entity<Project>().HasData(
                 new Project(1, "NewProject1", "NewProjectDescription1", 2, 
-                    DateTime.Now, DateTime.Now),
+                    DateTime.Now, DateTime.Now, false),
                 new Project(2, "ProjectName2", "ProjectDescription3", 2, 
-                    DateTime.Parse("2020-2-2"), DateTime.Parse("2020-2-18")),
+                    DateTime.Parse("2020-2-2"), DateTime.Parse("2020-2-18"), false),
                 new Project(3, "ProjectName3", "ProjectDescription3", 3, 
-                    DateTime.Parse("2020-3-3"), DateTime.Parse("2020-3-28")));
+                    DateTime.Parse("2020-3-3"), DateTime.Parse("2020-3-28"), false));
 
             modelBuilder.Entity<EmployeeProjectAssignment>().HasData(
                 new EmployeeProjectAssignment(2, 1, true),
