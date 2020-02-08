@@ -19,6 +19,7 @@ namespace COMP4911WebAPI.Models
         public DbSet<TimesheetRow> TimesheetRows { get; set; }
         public DbSet<WorkPackage> WorkPackages { get; set; }
         public DbSet<Credential> Credentials { get; set; }
+        public DbSet<LabourGrade> LabourGrades { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -29,6 +30,7 @@ namespace COMP4911WebAPI.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
 
             modelBuilder.Entity<Employee>().HasOne(e => e.TimesheetApprover)
                 .WithMany()

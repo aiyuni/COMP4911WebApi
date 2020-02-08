@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using COMP4911WebAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace COMP4911WebAPI.Repository
 {
@@ -18,6 +19,8 @@ namespace COMP4911WebAPI.Repository
         public async Task<bool> Add(WorkPackage entity)
         {
             _workPackageContext.WorkPackages.Add(entity);
+            await _workPackageContext.SaveChangesAsync();
+            _workPackageContext.Entry(entity).State = EntityState.Detached;
             return true;
         }
 
@@ -26,24 +29,27 @@ namespace COMP4911WebAPI.Repository
             throw new NotImplementedException();
         }
 
+        public async Task<bool> CheckIfWorkPackageCodeExists(string code, int projectId)
+        {
+            bool value = await _workPackageContext.WorkPackages.AnyAsync(
+                wp => wp.ProjectId == projectId && wp.WorkPackageCode.Equals(code));
+            return value;
+        }
+
         public Task Delete(WorkPackage entity)
         {
             throw new NotImplementedException();
         }
 
-        public Task<WorkPackage> Get(int id)
+        public async Task<WorkPackage> Get(int id)
         {
-            throw new NotImplementedException();
+            return await _workPackageContext.WorkPackages.FindAsync(id);
         }
 
-        public Task<WorkPackage> Get(int wpId, int projId)
-        {
-            throw new NotImplementedException();
-        }
 
-        public Task<IEnumerable<WorkPackage>> GetAll()
+        public async Task<IEnumerable<WorkPackage>> GetAll()
         {
-            throw new NotImplementedException();
+            return await _workPackageContext.WorkPackages.ToListAsync();
         }
 
         public Task<WorkPackage> GetLastId()

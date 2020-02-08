@@ -29,9 +29,11 @@ namespace COMP4911WebAPI.Repository
             throw new NotImplementedException();
         }
 
-        public Task Delete(TimesheetRow entity)
+        public async Task Delete(TimesheetRow entity)
         {
-            throw new NotImplementedException();
+            _timesheetRowContext.Remove(entity);
+            await _timesheetRowContext.SaveChangesAsync();
+          //  _timesheetRowContext.Entry(entity).State = EntityState.Deleted;
         }
 
         public async Task<TimesheetRow> Get(int id)

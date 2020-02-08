@@ -14,10 +14,10 @@ namespace COMP4911WebAPI.Models
         public string ProjectDescription { get; set; }
         public int ProjectManagerId { get; set; }
 
-        //add start date, end date
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
 
-        public IList<EmployeeProjectAssignment> EmployeeProjectAssignments { get; set; }
-      //  public IList<EmployeeWorkPackageAssignment> EmployeeWorkPackageAssignments { get; set; }
+        public IList<EmployeeProjectAssignment> EmployeeProjectAssignments { get; set; } 
         public IList<WorkPackage> WorkPackages { get; set; }
 
         public string LastUpdatedBy { get; set; }
@@ -29,21 +29,26 @@ namespace COMP4911WebAPI.Models
             this.LastUpdatedBy = Environment.UserName.ToString();
         }
 
-        public Project(int id, string name, string description, int projectManagerId)
+        //For seeding
+        public Project(int id, string name, string description, int projectManagerId, DateTime startDate, DateTime endDate)
         {
             this.ProjectId = id;
             this.ProjectName = name;
             this.ProjectDescription = description;
             this.ProjectManagerId = projectManagerId;
+            this.StartDate = startDate;
+            this.EndDate = endDate;
             this.LastUpdatedTime = DateTime.Now;
-            this.LastUpdatedBy = Environment.UserName.ToString();
+            this.LastUpdatedBy = "seeded";
         }
 
-        public Project(string name, string description, int projectManagerId)
+        public Project(string name, string description, int projectManagerId, DateTime startDate, DateTime endDate)
         {
             this.ProjectName = name;
             this.ProjectDescription = description;
             this.ProjectManagerId = projectManagerId;
+            this.StartDate = startDate;
+            this.EndDate = endDate;
             this.LastUpdatedTime = DateTime.Now;
             this.LastUpdatedBy = Environment.UserName.ToString();
         }

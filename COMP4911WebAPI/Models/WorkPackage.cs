@@ -9,31 +9,25 @@ namespace COMP4911WebAPI.Models
 {
     public class WorkPackage
     {
-        public int WorkPackageId { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] //unnecessary
+        public int WorkPackageId { get; set; }  //internal id
 
         public int ProjectId { get; set; }
-        public string WorkPackageCode { get; set; }
 
-        public string WorkPackageName { get; set; }
-        public string WorkPackageDescription { get; set; }
-        public double? WorkPackageProposedHours { get; set; }
-        public double? WorkPackageBudgetHours { get; set; }
-        //public double? WorkPackageActualHours { get; set; } calculated field
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public string Purpose { get; set; }
-        public int ResponsibleEngineerId { get; set; } 
-        public string Contractor { get; set; }
-        public string Inputs { get; set; }
-        public string Activities { get; set; }
-        public string Outputs { get; set; }
-
-        public bool isClosed { get; set; }
+        public int ResponsibleEngineerId { get; set; }  // not a relation
+        public string WorkPackageCode { get; set; } //this is the frontend id 
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public double? ProposedHours { get; set; }
+        public double? BudgetHours { get; set; }
+        public DateTime IssueDate { get; set; }
+        public bool IsClosed { get; set; }
 
         [ForeignKey("ParentWorkPackage")]
         public int? ParentWorkPackageId { get; set; }
-        public virtual WorkPackage ParentWorkPackage { get; set; }
-        public virtual IList<WorkPackage> ChildrenWorkPackages { get; set; }
+        public WorkPackage ParentWorkPackage { get; set; }
+        public IList<WorkPackage> ChildrenWorkPackages { get; set; }
 
         public Project Project { get; set; }
 
@@ -42,5 +36,27 @@ namespace COMP4911WebAPI.Models
 
         public string LastUpdatedBy { get; set; }
         public DateTime LastUpdatedTime { get; set; }
+
+        public WorkPackage() { }
+
+        //For seeding
+        public WorkPackage(int wpId, int projId, int responsibleEngineerId, string code, string name, string description, 
+            DateTime issueDate, bool isClosed, double? proposedHours, double? budgetHours, int? parentWorkPackageId)
+        {
+            this.WorkPackageId = wpId;
+            this.ProjectId = projId;
+            this.ResponsibleEngineerId = responsibleEngineerId;
+            this.WorkPackageCode = code;
+            this.Name = name;
+            this.Description = description;
+            this.IssueDate = issueDate;
+            this.IsClosed = isClosed;
+            this.ProposedHours = proposedHours;
+            this.BudgetHours = budgetHours;
+            this.ParentWorkPackageId = parentWorkPackageId;
+
+            this.LastUpdatedTime = DateTime.Now;
+            this.LastUpdatedBy = "Seeded";
+        }
     }
 }
