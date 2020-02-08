@@ -13,6 +13,7 @@ namespace COMP4911WebAPI.Models
         public string ProjectName { get; set; }
         public string ProjectDescription { get; set; }
         public int ProjectManagerId { get; set; }
+        public bool IsClosed { get; set; }
 
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
@@ -30,7 +31,7 @@ namespace COMP4911WebAPI.Models
         }
 
         //For seeding
-        public Project(int id, string name, string description, int projectManagerId, DateTime startDate, DateTime endDate)
+        public Project(int id, string name, string description, int projectManagerId, DateTime startDate, DateTime endDate, bool isClosed)
         {
             this.ProjectId = id;
             this.ProjectName = name;
@@ -40,6 +41,7 @@ namespace COMP4911WebAPI.Models
             this.EndDate = endDate;
             this.LastUpdatedTime = DateTime.Now;
             this.LastUpdatedBy = "seeded";
+            this.IsClosed = isClosed;
         }
 
         public Project(string name, string description, int projectManagerId, DateTime startDate, DateTime endDate)

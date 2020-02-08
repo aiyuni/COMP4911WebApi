@@ -10,7 +10,7 @@ namespace COMP4911WebAPI.Models
         public int EmployeeId { get; set; }
         public int ProjectId { get; set; }
 
-        public bool isProjectManager { get; set; }
+        public bool IsProjectManager { get; set; }
 
         public Employee Employee { get; set; }
         public Project Project { get; set; }
@@ -28,7 +28,7 @@ namespace COMP4911WebAPI.Models
         {
             this.EmployeeId = empId;
             this.ProjectId = projId;
-            this.isProjectManager = isProjectManager;
+            this.IsProjectManager = isProjectManager;
             this.LastUpdatedBy = Environment.UserName;
             this.LastUpdatedTime = DateTime.Now;
         }
