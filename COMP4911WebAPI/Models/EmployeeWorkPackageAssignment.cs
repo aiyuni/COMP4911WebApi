@@ -16,5 +16,19 @@ namespace COMP4911WebAPI.Models
 
         public string LastUpdatedBy { get; set; }
         public DateTime LastUpdatedTime { get; set; }
+
+        public EmployeeWorkPackageAssignment()
+        {
+            this.LastUpdatedBy = Environment.UserName;
+            this.LastUpdatedTime = DateTime.Now;
+        }
+
+        public EmployeeWorkPackageAssignment(int empId, int wpId)
+        {
+            this.EmployeeId = empId;
+            this.WorkPackageId = wpId;
+            this.LastUpdatedBy = Environment.UserName;
+            this.LastUpdatedTime = DateTime.Now;
+        }
     }
 }

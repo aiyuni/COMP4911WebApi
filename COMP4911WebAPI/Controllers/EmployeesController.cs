@@ -17,14 +17,14 @@ namespace COMP4911WebAPI.Controllers
     [ApiController]
     public class EmployeesController : ControllerBase
     {
-        private readonly IDataRepository<Employee> _employeeRepository;
+        private readonly EmployeeRepository _employeeRepository;
         private readonly CredentialRepository _credentialRepository;
         private readonly IDataRepository<EmployeeProjectAssignment> _employeeProjectAssignmentRepository;
 
         public EmployeesController(IDataRepository<Employee> employeeRepository, IDataRepository<Credential> credentialRepository,
             IDataRepository<EmployeeProjectAssignment> employeeProjectAssignmentRepository)
         {
-            this._employeeRepository = employeeRepository;
+            this._employeeRepository = (EmployeeRepository)employeeRepository;
             this._credentialRepository = (CredentialRepository) credentialRepository;
             this._employeeProjectAssignmentRepository = employeeProjectAssignmentRepository;
         }
@@ -55,15 +55,12 @@ namespace COMP4911WebAPI.Controllers
             //return Ok(await GetFullEmployeeDetails(await _employeeRepository.Get(id)));
         }
 
-        //Do not delete this. We might need this later.
-        ////GET: api/Employees/5
-        //[HttpGet("{id}")]
-        //public async Task<IActionResult> GetEmployee(string id)
-        //{
-        //    Credential cred = await _credentialRepository.Get(id);
-        //    return Ok(await _employeeRepository.Get(cred.EmployeeId));
-        //}
-
+        [HttpGet("CheckEmployeeCodeAvailability/{id}")]
+        public async Task<IActionResult> GetEmployeeCodeAvailability(int id)
+        {
+            bool value = await _employeeRepository.CheckIfEmpCodeExists(id);
+            return Ok(value);
+        }
 
         // POST: api/Employees
         [HttpPost]

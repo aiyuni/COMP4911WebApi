@@ -17,11 +17,20 @@ namespace COMP4911WebAPI.Repository
         {
             this._timesheetContext = context;
         }
+
         public async Task<bool> Add(Timesheet entity)
         {
-            _timesheetContext.Timesheets.Add(entity);
-            await _timesheetContext.SaveChangesAsync();
-            return true;
+            Debug.Write("inside timesheet add...");
+            bool exists = await _timesheetContext.Timesheets.
+                AnyAsync(ts => ts.TimesheetId == entity.TimesheetId && ts.VersionNumber == entity.VersionNumber &&
+                               ts.WeekEndingIn.Equals(entity.WeekEndingIn));
+            if (!exists)
+            {
+                _timesheetContext.Timesheets.Add(entity);
+                await _timesheetContext.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
 
         public Task<bool> CheckIfExists(Timesheet entity)
@@ -51,9 +60,9 @@ namespace COMP4911WebAPI.Repository
             return await _timesheetContext.Timesheets.ToListAsync();
         }
 
-        public Task<Timesheet> GetLastId()
+        public async Task<Timesheet> GetLastId()
         {
-            throw new NotImplementedException();
+            return await _timesheetContext.Timesheets.OrderBy(t => t.TimesheetId).LastOrDefaultAsync();
         }
 
         public async Task Update(Timesheet entity)

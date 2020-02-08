@@ -81,7 +81,7 @@ namespace COMP4911WebAPI.Controllers
 
         private async Task<bool> ProjectExists(int id)
         {
-            return await _projectRepository.CheckIfExists(new Project(id, null, null, 1));
+            return await _projectRepository.CheckIfExists(new Project(id, null, null, 1, DateTime.Now, DateTime.Now));
         }
 
         private async Task<Project> GetFullProjectDetails(Project project)

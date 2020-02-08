@@ -25,8 +25,7 @@ namespace COMP4911WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TimesheetRow>>> GetTimesheetRows()
         {
-           // return await _timesheetRowRepository.GetAll();
-           return null;
+           return Ok(await _timesheetRowRepository.GetAll());
         }
 
         // GET: api/TimesheetRows/5
@@ -50,7 +49,10 @@ namespace COMP4911WebAPI.Controllers
             return null;
         }
 
-       
+        [HttpDelete]
+        public void Delete(int id)
+        {
+        }
 
         private bool TimesheetRowExists(int id)
         {
