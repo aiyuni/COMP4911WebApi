@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\perry\\source\\repos\\COMP4911WebAPI\\COMP4911WebAPI\\COMP4911WebAPI.csproj": {}
+    "D:\\BCIT CST\\CST 2020 WINT\\DotNet\\repository\\COMP4911PROJECTBackEnd\\COMP4911WebApi\\COMP4911WebAPI\\COMP4911WebAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\perry\\source\\repos\\COMP4911WebAPI\\COMP4911WebAPI\\COMP4911WebAPI.csproj": {
+    "D:\\BCIT CST\\CST 2020 WINT\\DotNet\\repository\\COMP4911PROJECTBackEnd\\COMP4911WebApi\\COMP4911WebAPI\\COMP4911WebAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\perry\\source\\repos\\COMP4911WebAPI\\COMP4911WebAPI\\COMP4911WebAPI.csproj",
+        "projectUniqueName": "D:\\BCIT CST\\CST 2020 WINT\\DotNet\\repository\\COMP4911PROJECTBackEnd\\COMP4911WebApi\\COMP4911WebAPI\\COMP4911WebAPI.csproj",
         "projectName": "COMP4911WebAPI",
-        "projectPath": "C:\\Users\\perry\\source\\repos\\COMP4911WebAPI\\COMP4911WebAPI\\COMP4911WebAPI.csproj",
-        "packagesPath": "C:\\Users\\perry\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\perry\\source\\repos\\COMP4911WebAPI\\COMP4911WebAPI\\obj\\",
+        "projectPath": "D:\\BCIT CST\\CST 2020 WINT\\DotNet\\repository\\COMP4911PROJECTBackEnd\\COMP4911WebApi\\COMP4911WebAPI\\COMP4911WebAPI.csproj",
+        "packagesPath": "C:\\Users\\Peter Ahn\\.nuget\\packages\\",
+        "outputPath": "D:\\BCIT CST\\CST 2020 WINT\\DotNet\\repository\\COMP4911PROJECTBackEnd\\COMP4911WebApi\\COMP4911WebAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\perry\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Peter Ahn\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -97,7 +97,7 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
         }
       }
     }
