@@ -59,7 +59,7 @@ namespace COMP4911WebAPI.Controllers
         public async Task<IActionResult> GetUsernameAvailability(string id)
         {
             bool value = await _credentialRepository.CheckIfUsernameExists(id);
-            return Ok(value);
+            return Ok(!value);
         }
 
     }
