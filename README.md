@@ -3,3 +3,4 @@ Web API for COMP4911 Term Project
 
 Developed using gitflow workflow https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
 
+Azure Test Environment: https://comp4911webapi-dev-as.azurewebsites.net/
