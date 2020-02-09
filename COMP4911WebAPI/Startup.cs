@@ -96,7 +96,7 @@ namespace COMP4911WebAPI
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "COMP 4911 Capstone Project - Web API", Version = "Version 1.0" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "COMP 4911 Project - Web API", Version = "Version 1.0" });
 
                 //var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 //var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
@@ -126,7 +126,7 @@ namespace COMP4911WebAPI
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "COMP 4911 Capstone Project - Web API");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "COMP 4911 Project - Web API");
                 c.RoutePrefix = string.Empty;
             });
 
