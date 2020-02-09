@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sitemanifest>
+  <IisApp path="C:\Users\perry\source\repos\COMP4911WebAPI\COMP4911WebAPI\obj\Release\netcoreapp2.2\PubTmp\Out\" />
+  <dbfullsql path="C:\Users\perry\source\repos\COMP4911WebAPI\COMP4911WebAPI\obj\Release\netcoreapp2.2\PubTmp\EFSQLScripts\COMP4911WebAPI.Models.ApplicationDbContext.sql" />
+</sitemanifest>
