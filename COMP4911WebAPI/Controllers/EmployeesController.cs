@@ -54,7 +54,7 @@ namespace COMP4911WebAPI.Controllers
         public async Task<IActionResult> GetEmployeeCodeAvailability(int id)
         {
             bool value = await _employeeRepository.CheckIfEmpCodeExists(id);
-            return Ok(value);
+            return Ok(!value);
         }
 
         // POST: api/Employees
