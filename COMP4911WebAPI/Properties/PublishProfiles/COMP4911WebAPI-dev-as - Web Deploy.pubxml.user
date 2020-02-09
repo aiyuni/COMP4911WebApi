@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA7xP36HN/kkmxsQNb9XglRgAAAAACAAAAAAAQZgAAAAEAACAAAAAjNTBS9KeMMzAYW9XDVwUwXRwAopjbNM8gBxx/dnC+vAAAAAAOgAAAAAIAACAAAABP9xxxGyRkqLTsHcmzHcTugbNTEpcoVZmykMC9mB5QLIAAAAB4XsBEI9jUksNz+rvmg1uujOe1E+VTzdAN9Y6+CduxiGjR8htQOqImgeexxLUSUUFFmAzPGJbpHfKmMyXGorR85O9knnTNTT6dTKrcTO0TkceyefZ5GbpsofbEcWdvIIdF8CuIZn7DwJRBq38J4xBgxy/4Ugjwgb8v1M8mVgvCX0AAAAA5FSHJD7q6h1UZjaDwPI8Of1biNH3DrO2Shsss3tr5KCQ1aZ+qdK+li2GMYT6YLbzre7g/V5urOBId3Ync+uh4</EncryptedPassword>
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="ConnString">
+      <Value>Data Source=tcp:comp4911webapidbserver.database.windows.net,1433%3bInitial Catalog=COMP4911WebAPI_db%3bUser Id=perry%40comp4911webapidbserver%3bPassword=Password123</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+  <ItemGroup>
+    <EFMigrations Include="COMP4911WebAPI.Models.ApplicationDbContext">
+      <Value>Data Source=tcp:comp4911webapidbserver.database.windows.net,1433%3bInitial Catalog=COMP4911WebAPI_db%3bUser Id=perry%40comp4911webapidbserver%3bPassword=Password123</Value>
+    </EFMigrations>
+  </ItemGroup>
+</Project>
