@@ -33,8 +33,4 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: AzureWebApp@1
-  inputs:
-    azureSubscription: 'COMP4911WebAPI-dev-as - Azure'
-    appName: '<COMP4911 Capstone Project>'
-    package: $(System.ArtifactsDirectory)/**/*.zip    
+
