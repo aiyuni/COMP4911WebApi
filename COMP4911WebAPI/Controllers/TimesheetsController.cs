@@ -62,12 +62,43 @@ namespace COMP4911WebAPI.Controllers
             return Ok(new TimesheetViewModel(ts));
         }
 
+        //Gets all timesheet respective to a particular user
+        // GET: api/Timesheets/GetTimesheetsByEmpId/5
+        [HttpGet("GetTimesheetsByEmpId/{id}")]
+        public async Task<IActionResult> GetTimesheetsByEmployeeId(int id)
+        {
+
+            var timesheetList = (await _timesheetRepository.GetAll()).Where(x => x.EmployeeId == id);
+
+            List<TimesheetViewModel> timesheetListParam = new List<TimesheetViewModel>();
+
+            foreach (Timesheet item in timesheetList)
+            {
+
+                //Timesheet ts = await(GetFullTimesheetDetails(await _timesheetRepository.Get(id)));
+                //Timesheet ts = await (GetFullTimesheetDetails(item));
+                TimesheetViewModel timesheetViewModel = new TimesheetViewModel(await (GetFullTimesheetDetails(item)));
+                timesheetListParam.Add(timesheetViewModel);
+            }
+
+            Employee emp = (await _employeeRepository.Get(id));
+            int empCode = emp.EmployeeCode;
+
+            return Ok(new EmployeeTimesheetListViewModel(id, empCode, timesheetListParam));
+            
+        }
+
+
+
+
         [HttpGet("availableTimesheetId")]
         public async Task<IActionResult> GetAvailableTimesheetId()
         {
             Timesheet ts = await _timesheetRepository.GetLastId();
             return Ok(new AvailableId(ts.TimesheetId + 1));
         }
+
+
 
         //This is only called when a timesheet is labelled as "In Progress".
         //Otherwise, frontend will call Post method instead.
@@ -113,6 +144,7 @@ namespace COMP4911WebAPI.Controllers
         {
             return true;
         }
+
 
         private async Task<Timesheet> GetFullTimesheetDetails(Timesheet ts)
         {
