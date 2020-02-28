@@ -19,7 +19,7 @@ namespace COMP4911WebAPI.Models
         [ForeignKey("LabourGradeId")]
         public int LabourGradeId { get; set; }
 
-        public int EmployeeCode { get; set; }  //logically speaking, this should be unique 
+        public int EmployeeCode { get; set; }  //logically speaking, this should be unique, i.e 3005, 5002, 8001
 
         public string EmployeeFirstName { get; set; }
         public string EmployeeLastName { get; set; }
@@ -67,8 +67,6 @@ namespace COMP4911WebAPI.Models
 
             this.LastUpdatedBy = System.Environment.UserName;
             this.LastUpdatedTime = DateTime.Now;
-    
-
         }
 
         //Used for seeding 

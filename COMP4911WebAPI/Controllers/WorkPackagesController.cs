@@ -28,7 +28,16 @@ namespace COMP4911WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<WorkPackage>>> GetWorkPackages()
         {
-            return Ok(await _workPackageRepository.GetAll());
+
+            //return Ok(await _workPackageRepository.GetAll());
+            List<WorkPackage> workPackages = new List<WorkPackage>();
+
+            foreach (WorkPackage wp in await _workPackageRepository.GetAll())
+            {
+                wp.ChildrenWorkPackages = null;
+                workPackages.Add(wp);
+            }
+            return workPackages;
         }
 
         // GET: api/WorkPackages/5

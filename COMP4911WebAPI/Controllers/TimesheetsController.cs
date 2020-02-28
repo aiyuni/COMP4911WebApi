@@ -62,11 +62,41 @@ namespace COMP4911WebAPI.Controllers
             return Ok(new TimesheetViewModel(ts));
         }
 
+        //Gets all timesheet respective to a particular user
+        // GET: api/Timesheets/GetTimesheetsByEmpId/5
+        [HttpGet("GetTimesheetsByEmpId/{id}")]
+        public async Task<IActionResult> GetTimesheetsByEmployeeId(int id)
+        {
+            var timesheetList = (await _timesheetRepository.GetAll()).Where(x => x.EmployeeId == id);
+
+            List<TimesheetViewModel> timesheetListParam = new List<TimesheetViewModel>();
+
+            foreach (Timesheet item in timesheetList)
+            {
+                TimesheetViewModel timesheetViewModel = new TimesheetViewModel(await (GetFullTimesheetDetails(item)));
+                timesheetListParam.Add(timesheetViewModel);
+            }
+
+            Employee emp = (await _employeeRepository.Get(id));
+            int empCode = emp.EmployeeCode;
+
+            return Ok(new EmployeeTimesheetListViewModel(id, empCode, timesheetListParam));
+            
+        }
+
+        //Get the next available timesheet id
         [HttpGet("availableTimesheetId")]
         public async Task<IActionResult> GetAvailableTimesheetId()
         {
             Timesheet ts = await _timesheetRepository.GetLastId();
             return Ok(new AvailableId(ts.TimesheetId + 1));
+        }
+
+        [HttpGet("pendingTimesheetsForApprover")]
+        public async Task<IActionResult> GetAllPendingTimesheetsForApproverId(int id)
+        {
+            IEnumerable<Timesheet> timesheetList = await _timesheetRepository.GetAll();
+            return Ok("in progress");
         }
 
         //This is only called when a timesheet is labelled as "In Progress".
@@ -113,6 +143,7 @@ namespace COMP4911WebAPI.Controllers
         {
             return true;
         }
+
 
         private async Task<Timesheet> GetFullTimesheetDetails(Timesheet ts)
         {
