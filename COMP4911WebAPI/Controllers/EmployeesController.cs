@@ -67,7 +67,6 @@ namespace COMP4911WebAPI.Controllers
                 new EmployeeNameViewModel(empTimesheetApprover), new EmployeeNameViewModel(empSupervisor));
 
             return Ok(thisEmployee);
-            // return Ok(await GetFullEmployeeDetails(await _employeeRepository.Get(id)));
         }
 
         //GET: api/Employees/CheckEmployeCodeAvailability/5
