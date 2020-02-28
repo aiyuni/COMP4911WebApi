@@ -21,13 +21,18 @@ namespace COMP4911WebAPI.Controllers
         private readonly IDataRepository<Project> _projectRepository;
         private readonly IDataRepository<EmployeeProjectAssignment> _employeeProjectAssignmentRepository;
         private readonly IDataRepository<Employee> _employeeRepository;
+        private readonly IDataRepository<WorkPackage> _workPackageRepository;
 
         public ProjectsController(IDataRepository<Project> projectRepository, 
-            IDataRepository<EmployeeProjectAssignment> employeeProjectAssignmentRepository, IDataRepository<Employee> employeeRepository)
+            IDataRepository<EmployeeProjectAssignment> employeeProjectAssignmentRepository, 
+            IDataRepository<Employee> employeeRepository,
+            IDataRepository<WorkPackage> workPackageRepository)
         {
             this._projectRepository = projectRepository;
             this._employeeProjectAssignmentRepository = employeeProjectAssignmentRepository;
             this._employeeRepository = employeeRepository;
+            this._workPackageRepository = workPackageRepository;
+            
         }
 
         // GET: api/Projects
@@ -61,8 +66,11 @@ namespace COMP4911WebAPI.Controllers
             int empCode = (await _employeeRepository.Get(id)).EmployeeCode;
             foreach (EmployeeProjectAssignment item in empProjectAssignmentList)
             {
-                projList.Add(await _projectRepository.Get(item.ProjectId));
+
+                Project projFull = await this.GetFullProjectDetails(await _projectRepository.Get(item.ProjectId));
+                projList.Add(projFull);
             }
+            
 
             return Ok(new EmployeeProjectListViewModel(id, empCode, projList));
         }
@@ -114,7 +122,30 @@ namespace COMP4911WebAPI.Controllers
                 }
             }
 
+            List<WorkPackage> workPackages = new List<WorkPackage>();
+
+            
+
+
+            foreach (WorkPackage wp in await _workPackageRepository.GetAll())
+            {
+                if (wp.ProjectId == project.ProjectId)
+                {
+                    WorkPackage wpResult = new WorkPackage();
+                    wpResult = wp;
+                    wpResult.ChildrenWorkPackages = null;
+                    workPackages.Add(wpResult);
+                }
+            }
+            //List<WorkPackage> workPackages = new List<WorkPackage>();
+            //foreach (WorkPackage item in await _workPackageContext.WorkPackages.ToListAsync())
+            //{
+            //    item.ChildrenWorkPackages = null;
+            //    workPackages.Add(item);
+            //}
+            //return workPackages;
             project.EmployeeProjectAssignments = employeeProjectAssignments;
+            project.WorkPackages = workPackages;
             return project;
         }
     }
