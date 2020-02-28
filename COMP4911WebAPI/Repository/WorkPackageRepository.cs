@@ -55,7 +55,19 @@ namespace COMP4911WebAPI.Repository
 
         public async Task<IEnumerable<WorkPackage>> GetAll()
         {
+
+            //workPackages = await _workPackageContext.WorkPackages.ToListAsync();
+            
             return await _workPackageContext.WorkPackages.ToListAsync();
+
+            //List<WorkPackage> workPackages = new List<WorkPackage>();
+            //foreach (WorkPackage item in await _workPackageContext.WorkPackages.ToListAsync())
+            //{
+            //    item.ChildrenWorkPackages = null;
+            //    workPackages.Add(item);
+            //}
+            //return workPackages;
+
         }
 
         public Task<WorkPackage> GetLastId()
