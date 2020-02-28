@@ -58,15 +58,15 @@ namespace COMP4911WebAPI.Repository
 
             //workPackages = await _workPackageContext.WorkPackages.ToListAsync();
             
-            //return await _workPackageContext.WorkPackages.ToListAsync();
+            return await _workPackageContext.WorkPackages.ToListAsync();
 
-            List<WorkPackage> workPackages = new List<WorkPackage>();
-            foreach (WorkPackage item in await _workPackageContext.WorkPackages.ToListAsync())
-            {
-                item.ChildrenWorkPackages = null;
-                workPackages.Add(item);
-            }
-            return workPackages;
+            //List<WorkPackage> workPackages = new List<WorkPackage>();
+            //foreach (WorkPackage item in await _workPackageContext.WorkPackages.ToListAsync())
+            //{
+            //    item.ChildrenWorkPackages = null;
+            //    workPackages.Add(item);
+            //}
+            //return workPackages;
 
         }
 

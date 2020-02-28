@@ -131,10 +131,19 @@ namespace COMP4911WebAPI.Controllers
             {
                 if (wp.ProjectId == project.ProjectId)
                 {
-                    workPackages.Add(wp);
+                    WorkPackage wpResult = new WorkPackage();
+                    wpResult = wp;
+                    wpResult.ChildrenWorkPackages = null;
+                    workPackages.Add(wpResult);
                 }
             }
-
+            //List<WorkPackage> workPackages = new List<WorkPackage>();
+            //foreach (WorkPackage item in await _workPackageContext.WorkPackages.ToListAsync())
+            //{
+            //    item.ChildrenWorkPackages = null;
+            //    workPackages.Add(item);
+            //}
+            //return workPackages;
             project.EmployeeProjectAssignments = employeeProjectAssignments;
             project.WorkPackages = workPackages;
             return project;
