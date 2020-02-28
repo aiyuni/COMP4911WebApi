@@ -20,13 +20,16 @@ namespace COMP4911WebAPI.Controllers
         private readonly EmployeeRepository _employeeRepository;
         private readonly CredentialRepository _credentialRepository;
         private readonly IDataRepository<EmployeeProjectAssignment> _employeeProjectAssignmentRepository;
+        private readonly IDataRepository<LabourGrade> _labourGradeRepository;
 
         public EmployeesController(IDataRepository<Employee> employeeRepository, IDataRepository<Credential> credentialRepository,
-            IDataRepository<EmployeeProjectAssignment> employeeProjectAssignmentRepository)
+            IDataRepository<EmployeeProjectAssignment> employeeProjectAssignmentRepository,
+            IDataRepository<LabourGrade> labourGradeRepository)
         {
             this._employeeRepository = (EmployeeRepository)employeeRepository;
             this._credentialRepository = (CredentialRepository) credentialRepository;
             this._employeeProjectAssignmentRepository = employeeProjectAssignmentRepository;
+            this._labourGradeRepository = labourGradeRepository;
         }
 
         //GET: api/Employees/AllEmployees
@@ -46,7 +49,25 @@ namespace COMP4911WebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetEmployee(int id)
         {
-            return Ok(await GetFullEmployeeDetails(await _employeeRepository.Get(id)));
+            Employee emp = await _employeeRepository.Get(id);
+            Credential empCred = (await _credentialRepository.GetAll()).FirstOrDefault(c => c.EmployeeId == emp.EmployeeId);
+            LabourGrade labourGrade = await _labourGradeRepository.Get(emp.LabourGradeId);
+            Employee empTimesheetApprover = null;
+            Employee empSupervisor = null;
+            if (emp.TimesheetApproverId != null)
+            {
+                empTimesheetApprover = await _employeeRepository.Get((int)emp.TimesheetApproverId); //cast nullable to int
+            }
+
+            if (emp.SupervisorId != null)
+            {
+                empSupervisor = await _employeeRepository.Get((int) emp.SupervisorId);
+            }
+            EmployeeDetailsViewModel thisEmployee = new EmployeeDetailsViewModel(emp, empCred, new LabourGradeViewModel(labourGrade), 
+                new EmployeeNameViewModel(empTimesheetApprover), new EmployeeNameViewModel(empSupervisor));
+
+            return Ok(thisEmployee);
+            // return Ok(await GetFullEmployeeDetails(await _employeeRepository.Get(id)));
         }
 
         //GET: api/Employees/CheckEmployeCodeAvailability/5

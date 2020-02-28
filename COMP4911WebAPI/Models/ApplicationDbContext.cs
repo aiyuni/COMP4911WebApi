@@ -39,6 +39,10 @@ namespace COMP4911WebAPI.Models
                 .WithMany()
                 .HasForeignKey(e => e.SupervisorId);
 
+            modelBuilder.Entity<Employee>().HasOne(e => e.LabourGrade)
+                .WithMany()
+                .HasForeignKey(e => e.LabourGradeId);
+
             modelBuilder.Entity<Employee>().HasMany<Timesheet>(e => e.Timesheets)
                 .WithOne(t => t.Employee)
                 .HasForeignKey(t => t.EmployeeId);

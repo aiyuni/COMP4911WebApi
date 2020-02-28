@@ -93,6 +93,7 @@ namespace COMP4911WebAPI
             services.AddScoped<IDataRepository<Timesheet>, TimesheetRepository>();
             services.AddScoped<IDataRepository<TimesheetRow>, TimesheetRowRepository>();
             services.AddScoped<IDataRepository<WorkPackage>, WorkPackageRepository>();
+            services.AddScoped<IDataRepository<LabourGrade>, LabourGradeRepository>();
 
             services.AddSwaggerGen(c =>
             {

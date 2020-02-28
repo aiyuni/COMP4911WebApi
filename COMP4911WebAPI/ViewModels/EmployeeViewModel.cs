@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using COMP4911WebAPI.Models;
 
 namespace COMP4911WebAPI.ViewModels
 {
-    /**Model to represent the employee view */
+    /**Model to represent the employee view for post/put */
     public class EmployeeViewModel
     {
         public int EmployeeId { get; set; }  
@@ -22,6 +23,9 @@ namespace COMP4911WebAPI.ViewModels
         public bool isAdmin { get; set; }
         public bool isHumanResources { get; set; }
         public bool isActivated { get; set; }
+
+        public EmployeeNameViewModel TimesheetApprover { get; set; }
+        public EmployeeNameViewModel Supervisor { get; set; }
 
         public EmployeeViewModel()
         {
