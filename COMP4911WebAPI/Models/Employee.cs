@@ -16,33 +16,53 @@ namespace COMP4911WebAPI.Models
 
         [ForeignKey("JobId")]
         public int JobTitleId { get; set; }
+
         [ForeignKey("LabourGradeId")]
+        [Required]
+        [Range(0, Int32.MaxValue)]
         public int LabourGradeId { get; set; }
 
+        [Required]
+        [Range(0, Int32.MaxValue)]
         public int EmployeeCode { get; set; }  //logically speaking, this should be unique, i.e 3005, 5002, 8001
 
+        [Required]
+        [RegularExpression("[A-Za-z]")]
         public string EmployeeFirstName { get; set; }
+
+        [Required]
+        [RegularExpression("[A-Za-z]")]
         public string EmployeeLastName { get; set; }
        
+        [Required]
         public bool IsActivated { get; set; }
+
+        [Range(0, Int32.MaxValue)]
         public int? TimesheetApproverId { get; set; }
+
+        [Range(0, Int32.MaxValue)]
         public int? SupervisorId { get; set; }
+
+        [Required]
         public bool IsProjectManager { get; set; }
+
+        [Required]
         public bool IsAdmin { get; set; }
+
+        [Required]
         public bool IsHumanResources { get; set; }
+
+        public string LastUpdatedBy { get; set; }
+        public DateTime LastUpdatedTime { get; set; }
 
         public Employee TimesheetApprover { get; set; }
         public Employee Supervisor { get; set; }
         public JobTitle JobTitle { get; set; }
         public LabourGrade LabourGrade { get; set; }
-
         public IList<Timesheet> Timesheets { get; set; }
-
         public IList<EmployeeProjectAssignment> EmployeeProjectAssignments { get; set; }
         public IList<EmployeeWorkPackageAssignment> EmployeeWorkPackageAssignments { get; set; }
 
-        public string LastUpdatedBy { get; set; }
-        public DateTime LastUpdatedTime { get; set; }
 
         public Employee()
         {

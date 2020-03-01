@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace COMP4911WebAPI.Models
 {
+    //This model is no longer used and will be deleted.
     public class JobTitle
     {
         [Key]

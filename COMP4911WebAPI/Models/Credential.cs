@@ -13,15 +13,20 @@ namespace COMP4911WebAPI.Models
         public string CredentialId { get; set; }  //this is the username
 
         [ForeignKey("EmployeeId")]
+        [Required]
         public int EmployeeId { get; set; }
-        public string Password { get; set; }
-        public string Token { get; set; }
-        public byte[] Salt { get; set; }
 
-        public Employee Employee { get; set; }
+        [Required]
+        public string Password { get; set; }
+
+        public string Token { get; set; }
+
+        public byte[] Salt { get; set; }
 
         public string LastUpdatedBy { get; set; }
         public DateTime LastUpdatedTime { get; set; }
+
+        public Employee Employee { get; set; }
 
         public Credential()
         {

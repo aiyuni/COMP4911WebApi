@@ -81,15 +81,24 @@ namespace COMP4911WebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Employee>> PostEmployee(EmployeeViewModel newEmployeeViewModel)
         {
-            Credential tempCredential = new Credential(newEmployeeViewModel.EmpUsername, "temp", 1);
-            if (!await _credentialRepository.CheckIfExists(tempCredential))
+            if (ModelState.IsValid)
             {
-                Console.WriteLine("new employee, adding...");
-                Employee emp = new Employee(newEmployeeViewModel);
-                await _employeeRepository.Add(emp);
-                await _credentialRepository.Add(new Credential(newEmployeeViewModel.EmpUsername, newEmployeeViewModel.EmpPassword, emp.EmployeeId));
+                Credential tempCredential = new Credential(newEmployeeViewModel.EmpUsername, "temp", 1);
+                if (!await _credentialRepository.CheckIfExists(tempCredential))
+                {
+                    Console.WriteLine("new employee, adding...");
+                    Employee emp = new Employee(newEmployeeViewModel);
+                    await _employeeRepository.Add(emp);
+                    await _credentialRepository.Add(new Credential(newEmployeeViewModel.EmpUsername, newEmployeeViewModel.EmpPassword, emp.EmployeeId));
+                }
+                return new OkObjectResult(200);
             }
-            return new OkObjectResult(200);
+            else
+            {
+                Debug.WriteLine("error");
+                return new OkObjectResult(402);
+            }
+       
         }
 
         // PUT: api/Employees

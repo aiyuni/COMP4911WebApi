@@ -97,10 +97,19 @@ namespace COMP4911WebAPI.Helpers
                 new EmployeeWorkPackageAssignment(4, 7)); //RE
 
             modelBuilder.Entity<Timesheet>().HasData(
-                new Timesheet(1, 1, 2, 10, DateTime.Parse("2020-5-20"), TimesheetStatus.Approved));
+                new Timesheet(1, 1, 2, 10, DateTime.Parse("2020-5-20"), TimesheetStatus.Approved),
+                new Timesheet(2, 1, 3, 10, DateTime.Parse("2020-5-20"), TimesheetStatus.Approved),
+                new Timesheet(2, 2, 3, 10, DateTime.Parse("2020-5-20"), TimesheetStatus.Approved),
+                new Timesheet(3, 1, 3, 11, DateTime.Parse("2020-5-27"), TimesheetStatus.Approved),
+                new Timesheet(4, 1, 2, 11, DateTime.Parse("2020-5-27"), TimesheetStatus.Pending),
+                new Timesheet(5, 1, 5, 11, DateTime.Parse("2020-5-27"), TimesheetStatus.Approved),
+                new Timesheet(6, 1, 3, 9, DateTime.Parse("2020-5-14"), TimesheetStatus.Approved));
             modelBuilder.Entity<TimesheetRow>().HasData(
                 new TimesheetRow(1, 1, 1, 2, 3, 4, 5, 6, 7, 8, 9, "dota is best"),
-                new TimesheetRow(2, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, "PIG GOD!!!"));
+                new TimesheetRow(2, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, "PIG GOD!!!"),
+                new TimesheetRow(3, 2, 1, 5, 3, 3, 3, 3, 3, 3, 3, "NEZUKO"),
+                new TimesheetRow(4, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, "clannad"),
+                new TimesheetRow(5, 3, 1, 7, 3, 3, 8, 8, 3, 3, 3, "emp3note"));
         }
     }
 }
