@@ -8,21 +8,34 @@ namespace COMP4911WebAPI.Models
 {
     public class Project
     {
+        [Key]
         public int ProjectId { get; set; }
 
+        [Required]
         public string ProjectName { get; set; }
+
+        [Required]
         public string ProjectDescription { get; set; }
+
+        [Required]
         public int ProjectManagerId { get; set; }
+
+        [Required]
         public bool IsClosed { get; set; }
 
+        [Required]
+        [DataType(DataType.DateTime)]
         public DateTime StartDate { get; set; }
+
+        [DataType(DataType.DateTime)]
         public DateTime EndDate { get; set; }
+
+        public string LastUpdatedBy { get; set; }
+        public DateTime LastUpdatedTime { get; set; }
 
         public IList<EmployeeProjectAssignment> EmployeeProjectAssignments { get; set; } 
         public IList<WorkPackage> WorkPackages { get; set; }
 
-        public string LastUpdatedBy { get; set; }
-        public DateTime LastUpdatedTime { get; set; }
 
         public Project()
         {

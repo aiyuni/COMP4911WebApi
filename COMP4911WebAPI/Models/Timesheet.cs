@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using COMP4911WebAPI.ViewModels;
@@ -18,20 +19,28 @@ namespace COMP4911WebAPI.Models
     public class Timesheet
     {
         //not auto-increment because composite PK! 
+        [Required]
         public int TimesheetId { get; set; }
+
+        [Required]
         public int VersionNumber { get; set; }
 
+        [Required]
         public int EmployeeId { get; set; }
 
+        [Required]
         public int WeekNumber { get; set; }
-        public DateTime WeekEndingIn { get; set; }
-        public TimesheetStatus Status { get; set; }
 
-        public Employee Employee { get; set; }
-        public IList<TimesheetRow> TimesheetRows { get; set; }
+        [Required]
+        [DataType(DataType.DateTime)]
+        public DateTime WeekEndingIn { get; set; }
 
         public string LastUpdatedBy { get; set; }
         public DateTime LastUpdatedTime { get; set; }
+
+        public TimesheetStatus Status { get; set; }
+        public Employee Employee { get; set; }
+        public IList<TimesheetRow> TimesheetRows { get; set; }
 
         public Timesheet()
         {
