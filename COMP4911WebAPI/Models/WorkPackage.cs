@@ -13,29 +13,44 @@ namespace COMP4911WebAPI.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)] //unnecessary
         public int WorkPackageId { get; set; }  //internal id
 
+        [Required]
         public int ProjectId { get; set; }
 
+        [Required]
+        [Range(0, Int32.MaxValue)]
         public int ResponsibleEngineerId { get; set; }  // not a relation
-        public string WorkPackageCode { get; set; } //this is the frontend id 
+
+        [Required]
+        public string WorkPackageCode { get; set; } //this is the frontend id, must be unique 
+
+        [Required]
         public string Name { get; set; }
+
+        [Required]
         public string Description { get; set; }
+
         public double? ProposedHours { get; set; }
+
         public double? BudgetHours { get; set; }
+
+        [Required]
+        [DataType(DataType.DateTime)]
         public DateTime IssueDate { get; set; }
+
+        [Required]
         public bool IsClosed { get; set; }
 
         [ForeignKey("ParentWorkPackage")]
         public int? ParentWorkPackageId { get; set; }
-        public WorkPackage ParentWorkPackage { get; set; }
-        public IList<WorkPackage> ChildrenWorkPackages { get; set; }
-
-        public Project Project { get; set; }
-
-        public IList<TimesheetRow> TimesheetRows { get; set; }
-        public IList<EmployeeWorkPackageAssignment> EmployeeWorkPackageAssignments { get; set; }
 
         public string LastUpdatedBy { get; set; }
         public DateTime LastUpdatedTime { get; set; }
+
+        public WorkPackage ParentWorkPackage { get; set; }
+        public IList<WorkPackage> ChildrenWorkPackages { get; set; }
+        public Project Project { get; set; }
+        public IList<TimesheetRow> TimesheetRows { get; set; }
+        public IList<EmployeeWorkPackageAssignment> EmployeeWorkPackageAssignments { get; set; }
 
         public WorkPackage()
         {

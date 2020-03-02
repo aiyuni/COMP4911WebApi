@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace COMP4911WebAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200228202057_perryfeb28")]
-    partial class perryfeb28
+    [Migration("20200302221251_initialcreate")]
+    partial class initialcreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -32,7 +32,8 @@ namespace COMP4911WebAPI.Migrations
 
                     b.Property<DateTime>("LastUpdatedTime");
 
-                    b.Property<string>("Password");
+                    b.Property<string>("Password")
+                        .IsRequired();
 
                     b.Property<byte[]>("Salt");
 
@@ -50,45 +51,45 @@ namespace COMP4911WebAPI.Migrations
                             CredentialId = "A100001",
                             EmployeeId = 1,
                             LastUpdatedBy = "seeded",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 52, DateTimeKind.Local).AddTicks(2393),
-                            Password = "ZMXz3VOw8AHpBYtfxOj4OrDRmaPatyIdkDITyEbP4Ho=",
-                            Salt = new byte[] { 89, 93, 204, 229, 18, 37, 243, 175, 156, 205, 151, 27, 240, 96, 28, 136 }
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 849, DateTimeKind.Local).AddTicks(9694),
+                            Password = "aWUsVxhGI+FDx2YmXk0JRu5IWWOkJfJrBzw4YWASIyc=",
+                            Salt = new byte[] { 17, 68, 182, 36, 230, 82, 18, 80, 228, 50, 102, 115, 181, 117, 156, 207 }
                         },
                         new
                         {
                             CredentialId = "A100002",
                             EmployeeId = 2,
                             LastUpdatedBy = "seeded",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 52, DateTimeKind.Local).AddTicks(2860),
-                            Password = "8RapmH4vY0H23Xb0XOedOdDWZBSS9AxAoC6ml1BrrUA=",
-                            Salt = new byte[] { 106, 132, 112, 194, 126, 148, 75, 189, 64, 88, 155, 175, 62, 81, 16, 247 }
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 850, DateTimeKind.Local).AddTicks(152),
+                            Password = "ZlvdkyCO2re8hquA600bZ7G2PHxwAymG872CUrDOsRw=",
+                            Salt = new byte[] { 73, 124, 6, 243, 171, 118, 188, 81, 142, 55, 130, 112, 63, 113, 139, 77 }
                         },
                         new
                         {
                             CredentialId = "A100003",
                             EmployeeId = 3,
                             LastUpdatedBy = "seeded",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 52, DateTimeKind.Local).AddTicks(2871),
-                            Password = "Vz7B49sEMx1SiqhSPqoVa7zV1nhak3w5Y6F1L0y5Bdw=",
-                            Salt = new byte[] { 124, 45, 81, 169, 2, 111, 181, 238, 20, 101, 6, 47, 2, 116, 31, 41 }
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 850, DateTimeKind.Local).AddTicks(164),
+                            Password = "Xzy+6ulLvpc61gWecY4EUryETwT2fRFPALYuEh5Fyak=",
+                            Salt = new byte[] { 240, 177, 164, 93, 153, 74, 13, 153, 9, 24, 42, 195, 201, 195, 68, 166 }
                         },
                         new
                         {
                             CredentialId = "Nezuko",
                             EmployeeId = 4,
                             LastUpdatedBy = "seeded",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 52, DateTimeKind.Local).AddTicks(2875),
-                            Password = "SvDtG65qYG8er0ByMsj3RIcWCIRRLjqPhWSmGN4GGlc=",
-                            Salt = new byte[] { 229, 207, 47, 31, 238, 109, 242, 160, 21, 60, 244, 81, 22, 74, 37, 150 }
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 850, DateTimeKind.Local).AddTicks(167),
+                            Password = "zswRHy2ryKb+cFP/YkWNUYyzYOH/yG2Nc/xnkvRtTGE=",
+                            Salt = new byte[] { 120, 126, 104, 130, 60, 168, 200, 205, 41, 202, 164, 64, 244, 54, 243, 121 }
                         },
                         new
                         {
                             CredentialId = "Nier",
                             EmployeeId = 5,
                             LastUpdatedBy = "seeded",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 52, DateTimeKind.Local).AddTicks(2877),
-                            Password = "ngOaoRANTgEpQ5UjrYXM/FtbRp73Uco1E3uaF1jRuwI=",
-                            Salt = new byte[] { 47, 72, 173, 179, 100, 87, 45, 78, 59, 44, 188, 138, 231, 240, 130, 91 }
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 850, DateTimeKind.Local).AddTicks(170),
+                            Password = "37kRmucyk9KRBA7IMlHupLJMK+Yio2MKjNSgXg/YQzE=",
+                            Salt = new byte[] { 167, 137, 228, 158, 86, 151, 205, 226, 168, 216, 208, 104, 8, 71, 26, 243 }
                         });
                 });
 
@@ -100,9 +101,11 @@ namespace COMP4911WebAPI.Migrations
 
                     b.Property<int>("EmployeeCode");
 
-                    b.Property<string>("EmployeeFirstName");
+                    b.Property<string>("EmployeeFirstName")
+                        .IsRequired();
 
-                    b.Property<string>("EmployeeLastName");
+                    b.Property<string>("EmployeeLastName")
+                        .IsRequired();
 
                     b.Property<bool>("IsActivated");
 
@@ -115,6 +118,8 @@ namespace COMP4911WebAPI.Migrations
                     b.Property<int>("JobTitleId");
 
                     b.Property<int>("LabourGradeId");
+
+                    b.Property<int?>("LabourGradeId1");
 
                     b.Property<string>("LastUpdatedBy");
 
@@ -129,6 +134,8 @@ namespace COMP4911WebAPI.Migrations
                     b.HasIndex("JobTitleId");
 
                     b.HasIndex("LabourGradeId");
+
+                    b.HasIndex("LabourGradeId1");
 
                     b.HasIndex("SupervisorId");
 
@@ -150,7 +157,7 @@ namespace COMP4911WebAPI.Migrations
                             JobTitleId = 1,
                             LabourGradeId = 1,
                             LastUpdatedBy = "Seeded",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 51, DateTimeKind.Local).AddTicks(8539)
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 849, DateTimeKind.Local).AddTicks(6018)
                         },
                         new
                         {
@@ -165,7 +172,7 @@ namespace COMP4911WebAPI.Migrations
                             JobTitleId = 2,
                             LabourGradeId = 2,
                             LastUpdatedBy = "Seeded",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 51, DateTimeKind.Local).AddTicks(9162),
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 849, DateTimeKind.Local).AddTicks(6530),
                             SupervisorId = 1,
                             TimesheetApproverId = 1
                         },
@@ -182,7 +189,7 @@ namespace COMP4911WebAPI.Migrations
                             JobTitleId = 3,
                             LabourGradeId = 3,
                             LastUpdatedBy = "Seeded",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 51, DateTimeKind.Local).AddTicks(9175),
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 849, DateTimeKind.Local).AddTicks(6544),
                             SupervisorId = 1,
                             TimesheetApproverId = 2
                         },
@@ -199,7 +206,7 @@ namespace COMP4911WebAPI.Migrations
                             JobTitleId = 2,
                             LabourGradeId = 2,
                             LastUpdatedBy = "Seeded",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 51, DateTimeKind.Local).AddTicks(9178),
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 849, DateTimeKind.Local).AddTicks(6547),
                             SupervisorId = 3,
                             TimesheetApproverId = 3
                         },
@@ -216,7 +223,7 @@ namespace COMP4911WebAPI.Migrations
                             JobTitleId = 3,
                             LabourGradeId = 3,
                             LastUpdatedBy = "Seeded",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 51, DateTimeKind.Local).AddTicks(9181),
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 849, DateTimeKind.Local).AddTicks(6551),
                             SupervisorId = 3,
                             TimesheetApproverId = 3
                         });
@@ -247,7 +254,7 @@ namespace COMP4911WebAPI.Migrations
                             ProjectId = 1,
                             IsProjectManager = true,
                             LastUpdatedBy = "perry",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 53, DateTimeKind.Local).AddTicks(4677)
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 851, DateTimeKind.Local).AddTicks(2212)
                         },
                         new
                         {
@@ -255,7 +262,7 @@ namespace COMP4911WebAPI.Migrations
                             ProjectId = 1,
                             IsProjectManager = false,
                             LastUpdatedBy = "perry",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 53, DateTimeKind.Local).AddTicks(6020)
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 851, DateTimeKind.Local).AddTicks(3539)
                         },
                         new
                         {
@@ -263,7 +270,7 @@ namespace COMP4911WebAPI.Migrations
                             ProjectId = 2,
                             IsProjectManager = true,
                             LastUpdatedBy = "perry",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 53, DateTimeKind.Local).AddTicks(6834)
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 851, DateTimeKind.Local).AddTicks(4348)
                         },
                         new
                         {
@@ -271,7 +278,7 @@ namespace COMP4911WebAPI.Migrations
                             ProjectId = 2,
                             IsProjectManager = false,
                             LastUpdatedBy = "perry",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 53, DateTimeKind.Local).AddTicks(7641)
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 851, DateTimeKind.Local).AddTicks(5156)
                         },
                         new
                         {
@@ -279,7 +286,7 @@ namespace COMP4911WebAPI.Migrations
                             ProjectId = 3,
                             IsProjectManager = true,
                             LastUpdatedBy = "perry",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 53, DateTimeKind.Local).AddTicks(8574)
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 851, DateTimeKind.Local).AddTicks(5947)
                         },
                         new
                         {
@@ -287,7 +294,7 @@ namespace COMP4911WebAPI.Migrations
                             ProjectId = 3,
                             IsProjectManager = false,
                             LastUpdatedBy = "perry",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 53, DateTimeKind.Local).AddTicks(9394)
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 851, DateTimeKind.Local).AddTicks(6795)
                         },
                         new
                         {
@@ -295,7 +302,7 @@ namespace COMP4911WebAPI.Migrations
                             ProjectId = 3,
                             IsProjectManager = false,
                             LastUpdatedBy = "perry",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 54, DateTimeKind.Local).AddTicks(219)
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 851, DateTimeKind.Local).AddTicks(7580)
                         });
                 });
 
@@ -321,84 +328,84 @@ namespace COMP4911WebAPI.Migrations
                             EmployeeId = 2,
                             WorkPackageId = 1,
                             LastUpdatedBy = "perry",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 55, DateTimeKind.Local).AddTicks(1147)
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 852, DateTimeKind.Local).AddTicks(8319)
                         },
                         new
                         {
                             EmployeeId = 3,
                             WorkPackageId = 1,
                             LastUpdatedBy = "perry",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 55, DateTimeKind.Local).AddTicks(2466)
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 852, DateTimeKind.Local).AddTicks(9609)
                         },
                         new
                         {
                             EmployeeId = 3,
                             WorkPackageId = 2,
                             LastUpdatedBy = "perry",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 55, DateTimeKind.Local).AddTicks(3282)
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 853, DateTimeKind.Local).AddTicks(408)
                         },
                         new
                         {
                             EmployeeId = 2,
                             WorkPackageId = 2,
                             LastUpdatedBy = "perry",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 55, DateTimeKind.Local).AddTicks(4089)
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 853, DateTimeKind.Local).AddTicks(1255)
                         },
                         new
                         {
                             EmployeeId = 3,
                             WorkPackageId = 3,
                             LastUpdatedBy = "perry",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 55, DateTimeKind.Local).AddTicks(4891)
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 853, DateTimeKind.Local).AddTicks(2083)
                         },
                         new
                         {
                             EmployeeId = 4,
                             WorkPackageId = 3,
                             LastUpdatedBy = "perry",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 55, DateTimeKind.Local).AddTicks(5693)
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 853, DateTimeKind.Local).AddTicks(2891)
                         },
                         new
                         {
                             EmployeeId = 5,
                             WorkPackageId = 4,
                             LastUpdatedBy = "perry",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 55, DateTimeKind.Local).AddTicks(6498)
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 853, DateTimeKind.Local).AddTicks(3676)
                         },
                         new
                         {
                             EmployeeId = 5,
                             WorkPackageId = 5,
                             LastUpdatedBy = "perry",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 55, DateTimeKind.Local).AddTicks(7301)
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 853, DateTimeKind.Local).AddTicks(4481)
                         },
                         new
                         {
                             EmployeeId = 2,
                             WorkPackageId = 5,
                             LastUpdatedBy = "perry",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 55, DateTimeKind.Local).AddTicks(8150)
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 853, DateTimeKind.Local).AddTicks(5269)
                         },
                         new
                         {
                             EmployeeId = 5,
                             WorkPackageId = 6,
                             LastUpdatedBy = "perry",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 55, DateTimeKind.Local).AddTicks(8962)
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 853, DateTimeKind.Local).AddTicks(6061)
                         },
                         new
                         {
                             EmployeeId = 3,
                             WorkPackageId = 7,
                             LastUpdatedBy = "perry",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 55, DateTimeKind.Local).AddTicks(9764)
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 853, DateTimeKind.Local).AddTicks(6843)
                         },
                         new
                         {
                             EmployeeId = 4,
                             WorkPackageId = 7,
                             LastUpdatedBy = "perry",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 56, DateTimeKind.Local).AddTicks(567)
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 853, DateTimeKind.Local).AddTicks(7625)
                         });
                 });
 
@@ -424,21 +431,21 @@ namespace COMP4911WebAPI.Migrations
                             JobTitleId = 1,
                             JobTitleName = "Software Developer",
                             LastUpdatedBy = "perry",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 48, DateTimeKind.Local).AddTicks(9084)
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 846, DateTimeKind.Local).AddTicks(7451)
                         },
                         new
                         {
                             JobTitleId = 2,
                             JobTitleName = "Q/A Analyst",
                             LastUpdatedBy = "perry",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 50, DateTimeKind.Local).AddTicks(4143)
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 848, DateTimeKind.Local).AddTicks(2406)
                         },
                         new
                         {
                             JobTitleId = 3,
                             JobTitleName = "Business Analyst",
                             LastUpdatedBy = "perry",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 50, DateTimeKind.Local).AddTicks(4998)
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 848, DateTimeKind.Local).AddTicks(3218)
                         });
                 });
 
@@ -448,13 +455,13 @@ namespace COMP4911WebAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<double>("HourlyWage");
+
                     b.Property<string>("LabourGradeCode");
 
                     b.Property<string>("LastUpdatedBy");
 
                     b.Property<DateTime>("LastUpdatedTime");
-
-                    b.Property<double>("Multiplier");
 
                     b.HasKey("LabourGradeId");
 
@@ -464,26 +471,26 @@ namespace COMP4911WebAPI.Migrations
                         new
                         {
                             LabourGradeId = 1,
+                            HourlyWage = 22.0,
                             LabourGradeCode = "code1",
                             LastUpdatedBy = "seeded",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 51, DateTimeKind.Local).AddTicks(248),
-                            Multiplier = 22.0
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 848, DateTimeKind.Local).AddTicks(7721)
                         },
                         new
                         {
                             LabourGradeId = 2,
+                            HourlyWage = 23.0,
                             LabourGradeCode = "code2",
                             LastUpdatedBy = "seeded",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 51, DateTimeKind.Local).AddTicks(1148),
-                            Multiplier = 23.0
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 848, DateTimeKind.Local).AddTicks(8631)
                         },
                         new
                         {
                             LabourGradeId = 3,
+                            HourlyWage = 10.0,
                             LabourGradeCode = "code3",
                             LastUpdatedBy = "seeded",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 51, DateTimeKind.Local).AddTicks(1162),
-                            Multiplier = 10.0
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 848, DateTimeKind.Local).AddTicks(8645)
                         });
                 });
 
@@ -501,11 +508,13 @@ namespace COMP4911WebAPI.Migrations
 
                     b.Property<DateTime>("LastUpdatedTime");
 
-                    b.Property<string>("ProjectDescription");
+                    b.Property<string>("ProjectDescription")
+                        .IsRequired();
 
                     b.Property<int>("ProjectManagerId");
 
-                    b.Property<string>("ProjectName");
+                    b.Property<string>("ProjectName")
+                        .IsRequired();
 
                     b.Property<DateTime>("StartDate");
 
@@ -517,14 +526,14 @@ namespace COMP4911WebAPI.Migrations
                         new
                         {
                             ProjectId = 1,
-                            EndDate = new DateTime(2020, 2, 28, 12, 20, 57, 52, DateTimeKind.Local).AddTicks(3165),
+                            EndDate = new DateTime(2020, 3, 2, 14, 12, 50, 850, DateTimeKind.Local).AddTicks(434),
                             IsClosed = false,
                             LastUpdatedBy = "seeded",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 52, DateTimeKind.Local).AddTicks(6752),
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 850, DateTimeKind.Local).AddTicks(4089),
                             ProjectDescription = "NewProjectDescription1",
                             ProjectManagerId = 2,
                             ProjectName = "NewProject1",
-                            StartDate = new DateTime(2020, 2, 28, 12, 20, 57, 52, DateTimeKind.Local).AddTicks(3161)
+                            StartDate = new DateTime(2020, 3, 2, 14, 12, 50, 850, DateTimeKind.Local).AddTicks(430)
                         },
                         new
                         {
@@ -532,7 +541,7 @@ namespace COMP4911WebAPI.Migrations
                             EndDate = new DateTime(2020, 2, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsClosed = false,
                             LastUpdatedBy = "seeded",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 53, DateTimeKind.Local).AddTicks(584),
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 850, DateTimeKind.Local).AddTicks(7938),
                             ProjectDescription = "ProjectDescription3",
                             ProjectManagerId = 2,
                             ProjectName = "ProjectName2",
@@ -544,7 +553,7 @@ namespace COMP4911WebAPI.Migrations
                             EndDate = new DateTime(2020, 3, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsClosed = false,
                             LastUpdatedBy = "seeded",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 53, DateTimeKind.Local).AddTicks(614),
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 850, DateTimeKind.Local).AddTicks(7967),
                             ProjectDescription = "ProjectDescription3",
                             ProjectManagerId = 3,
                             ProjectName = "ProjectName3",
@@ -583,10 +592,76 @@ namespace COMP4911WebAPI.Migrations
                             VersionNumber = 1,
                             EmployeeId = 2,
                             LastUpdatedBy = "Seeded",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 56, DateTimeKind.Local).AddTicks(4320),
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 854, DateTimeKind.Local).AddTicks(1401),
                             Status = 2,
                             WeekEndingIn = new DateTime(2020, 5, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             WeekNumber = 10
+                        },
+                        new
+                        {
+                            TimesheetId = 2,
+                            VersionNumber = 1,
+                            EmployeeId = 3,
+                            LastUpdatedBy = "Seeded",
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 854, DateTimeKind.Local).AddTicks(2304),
+                            Status = 2,
+                            WeekEndingIn = new DateTime(2020, 5, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            WeekNumber = 10
+                        },
+                        new
+                        {
+                            TimesheetId = 2,
+                            VersionNumber = 2,
+                            EmployeeId = 3,
+                            LastUpdatedBy = "Seeded",
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 854, DateTimeKind.Local).AddTicks(2323),
+                            Status = 2,
+                            WeekEndingIn = new DateTime(2020, 5, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            WeekNumber = 10
+                        },
+                        new
+                        {
+                            TimesheetId = 3,
+                            VersionNumber = 1,
+                            EmployeeId = 3,
+                            LastUpdatedBy = "Seeded",
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 854, DateTimeKind.Local).AddTicks(2330),
+                            Status = 2,
+                            WeekEndingIn = new DateTime(2020, 5, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            WeekNumber = 11
+                        },
+                        new
+                        {
+                            TimesheetId = 4,
+                            VersionNumber = 1,
+                            EmployeeId = 2,
+                            LastUpdatedBy = "Seeded",
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 854, DateTimeKind.Local).AddTicks(2338),
+                            Status = 1,
+                            WeekEndingIn = new DateTime(2020, 5, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            WeekNumber = 11
+                        },
+                        new
+                        {
+                            TimesheetId = 5,
+                            VersionNumber = 1,
+                            EmployeeId = 5,
+                            LastUpdatedBy = "Seeded",
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 854, DateTimeKind.Local).AddTicks(2345),
+                            Status = 2,
+                            WeekEndingIn = new DateTime(2020, 5, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            WeekNumber = 11
+                        },
+                        new
+                        {
+                            TimesheetId = 6,
+                            VersionNumber = 1,
+                            EmployeeId = 3,
+                            LastUpdatedBy = "Seeded",
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 854, DateTimeKind.Local).AddTicks(2352),
+                            Status = 2,
+                            WeekEndingIn = new DateTime(2020, 5, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            WeekNumber = 9
                         });
                 });
 
@@ -636,7 +711,7 @@ namespace COMP4911WebAPI.Migrations
                             TimesheetRowId = 1,
                             Friday = 7.0,
                             LastUpdatedBy = "Seeded",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 57, DateTimeKind.Local).AddTicks(1502),
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 854, DateTimeKind.Local).AddTicks(8639),
                             Monday = 3.0,
                             Notes = "dota is best",
                             Saturday = 8.0,
@@ -653,7 +728,7 @@ namespace COMP4911WebAPI.Migrations
                             TimesheetRowId = 2,
                             Friday = 3.0,
                             LastUpdatedBy = "Seeded",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 57, DateTimeKind.Local).AddTicks(2363),
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 854, DateTimeKind.Local).AddTicks(9498),
                             Monday = 3.0,
                             Notes = "PIG GOD!!!",
                             Saturday = 3.0,
@@ -664,6 +739,57 @@ namespace COMP4911WebAPI.Migrations
                             Tuesday = 3.0,
                             Wednesday = 3.0,
                             WorkPackageId = 3
+                        },
+                        new
+                        {
+                            TimesheetRowId = 3,
+                            Friday = 3.0,
+                            LastUpdatedBy = "Seeded",
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 854, DateTimeKind.Local).AddTicks(9513),
+                            Monday = 3.0,
+                            Notes = "NEZUKO",
+                            Saturday = 3.0,
+                            Sunday = 3.0,
+                            Thursday = 3.0,
+                            TimesheetId = 2,
+                            TimesheetVersionNumber = 1,
+                            Tuesday = 3.0,
+                            Wednesday = 3.0,
+                            WorkPackageId = 5
+                        },
+                        new
+                        {
+                            TimesheetRowId = 4,
+                            Friday = 3.0,
+                            LastUpdatedBy = "Seeded",
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 854, DateTimeKind.Local).AddTicks(9517),
+                            Monday = 3.0,
+                            Notes = "clannad",
+                            Saturday = 3.0,
+                            Sunday = 3.0,
+                            Thursday = 3.0,
+                            TimesheetId = 2,
+                            TimesheetVersionNumber = 2,
+                            Tuesday = 3.0,
+                            Wednesday = 3.0,
+                            WorkPackageId = 3
+                        },
+                        new
+                        {
+                            TimesheetRowId = 5,
+                            Friday = 3.0,
+                            LastUpdatedBy = "Seeded",
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 854, DateTimeKind.Local).AddTicks(9520),
+                            Monday = 3.0,
+                            Notes = "emp3note",
+                            Saturday = 3.0,
+                            Sunday = 3.0,
+                            Thursday = 8.0,
+                            TimesheetId = 3,
+                            TimesheetVersionNumber = 1,
+                            Tuesday = 3.0,
+                            Wednesday = 8.0,
+                            WorkPackageId = 7
                         });
                 });
 
@@ -675,7 +801,8 @@ namespace COMP4911WebAPI.Migrations
 
                     b.Property<double?>("BudgetHours");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .IsRequired();
 
                     b.Property<bool>("IsClosed");
 
@@ -685,7 +812,8 @@ namespace COMP4911WebAPI.Migrations
 
                     b.Property<DateTime>("LastUpdatedTime");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.Property<int?>("ParentWorkPackageId");
 
@@ -695,7 +823,8 @@ namespace COMP4911WebAPI.Migrations
 
                     b.Property<int>("ResponsibleEngineerId");
 
-                    b.Property<string>("WorkPackageCode");
+                    b.Property<string>("WorkPackageCode")
+                        .IsRequired();
 
                     b.HasKey("WorkPackageId");
 
@@ -713,7 +842,7 @@ namespace COMP4911WebAPI.Migrations
                             IsClosed = false,
                             IssueDate = new DateTime(2020, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastUpdatedBy = "Seeded",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 54, DateTimeKind.Local).AddTicks(6811),
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 852, DateTimeKind.Local).AddTicks(4132),
                             Name = "WpName1Root",
                             ProjectId = 1,
                             ResponsibleEngineerId = 2,
@@ -727,7 +856,7 @@ namespace COMP4911WebAPI.Migrations
                             IsClosed = false,
                             IssueDate = new DateTime(2020, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastUpdatedBy = "Seeded",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 54, DateTimeKind.Local).AddTicks(7738),
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 852, DateTimeKind.Local).AddTicks(5050),
                             Name = "WpName1Child1",
                             ParentWorkPackageId = 1,
                             ProjectId = 1,
@@ -742,7 +871,7 @@ namespace COMP4911WebAPI.Migrations
                             IsClosed = false,
                             IssueDate = new DateTime(2020, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastUpdatedBy = "Seeded",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 54, DateTimeKind.Local).AddTicks(7759),
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 852, DateTimeKind.Local).AddTicks(5071),
                             Name = "WpName2Root",
                             ProjectId = 2,
                             ResponsibleEngineerId = 3,
@@ -755,7 +884,7 @@ namespace COMP4911WebAPI.Migrations
                             IsClosed = false,
                             IssueDate = new DateTime(2020, 2, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastUpdatedBy = "Seeded",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 54, DateTimeKind.Local).AddTicks(7768),
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 852, DateTimeKind.Local).AddTicks(5080),
                             Name = "WpName2Child1",
                             ParentWorkPackageId = 3,
                             ProjectId = 2,
@@ -770,7 +899,7 @@ namespace COMP4911WebAPI.Migrations
                             IsClosed = false,
                             IssueDate = new DateTime(2020, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastUpdatedBy = "Seeded",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 54, DateTimeKind.Local).AddTicks(7776),
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 852, DateTimeKind.Local).AddTicks(5088),
                             Name = "WpName2ChildChild1",
                             ParentWorkPackageId = 4,
                             ProjectId = 2,
@@ -786,7 +915,7 @@ namespace COMP4911WebAPI.Migrations
                             IsClosed = false,
                             IssueDate = new DateTime(2020, 2, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastUpdatedBy = "Seeded",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 54, DateTimeKind.Local).AddTicks(7784),
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 852, DateTimeKind.Local).AddTicks(5096),
                             Name = "WpName2Child2",
                             ParentWorkPackageId = 3,
                             ProjectId = 2,
@@ -801,7 +930,7 @@ namespace COMP4911WebAPI.Migrations
                             IsClosed = false,
                             IssueDate = new DateTime(2020, 2, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastUpdatedBy = "Seeded",
-                            LastUpdatedTime = new DateTime(2020, 2, 28, 12, 20, 57, 54, DateTimeKind.Local).AddTicks(7792),
+                            LastUpdatedTime = new DateTime(2020, 3, 2, 14, 12, 50, 852, DateTimeKind.Local).AddTicks(5104),
                             Name = "WpName3Root",
                             ProjectId = 3,
                             ResponsibleEngineerId = 4,
@@ -825,9 +954,13 @@ namespace COMP4911WebAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("COMP4911WebAPI.Models.LabourGrade", "LabourGrade")
-                        .WithMany("Employee")
+                        .WithMany()
                         .HasForeignKey("LabourGradeId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("COMP4911WebAPI.Models.LabourGrade")
+                        .WithMany("Employee")
+                        .HasForeignKey("LabourGradeId1");
 
                     b.HasOne("COMP4911WebAPI.Models.Employee", "Supervisor")
                         .WithMany()

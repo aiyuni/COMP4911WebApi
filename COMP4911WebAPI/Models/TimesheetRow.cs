@@ -13,25 +13,43 @@ namespace COMP4911WebAPI.Models
         [Key]
         public int TimesheetRowId { get; set; }
 
+        [Required]
         public int TimesheetId { get; set; }
+
+        [Required]
         public int TimesheetVersionNumber { get; set; }
 
+        [Required]
         public int WorkPackageId { get; set; }  //FK
 
+        [Required]
         public double Monday { get; set; }
-        public double Tuesday { get; set; }
-        public double Wednesday { get; set; }
-        public double Thursday { get; set; }
-        public double Friday { get; set; }
-        public double Saturday { get; set; }
-        public double Sunday { get; set; }
-        public string Notes { get; set; }
 
-        public Timesheet Timesheet { get; set; }
-        public WorkPackage WorkPackage { get; set; }
+        [Required]
+        public double Tuesday { get; set; }
+
+        [Required]
+        public double Wednesday { get; set; }
+
+        [Required]
+        public double Thursday { get; set; }
+
+        [Required]
+        public double Friday { get; set; }
+
+        [Required]
+        public double Saturday { get; set; }
+
+        [Required]
+        public double Sunday { get; set; }
+
+        public string Notes { get; set; }
 
         public string LastUpdatedBy { get; set; }
         public DateTime LastUpdatedTime { get; set; }
+
+        public Timesheet Timesheet { get; set; }
+        public WorkPackage WorkPackage { get; set; }
 
         public TimesheetRow()
         {
