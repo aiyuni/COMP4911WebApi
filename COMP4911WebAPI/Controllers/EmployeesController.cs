@@ -27,7 +27,7 @@ namespace COMP4911WebAPI.Controllers
             IDataRepository<LabourGrade> labourGradeRepository)
         {
             this._employeeRepository = (EmployeeRepository)employeeRepository;
-            this._credentialRepository = (CredentialRepository) credentialRepository;
+            this._credentialRepository = (CredentialRepository)credentialRepository;
             this._employeeProjectAssignmentRepository = employeeProjectAssignmentRepository;
             this._labourGradeRepository = labourGradeRepository;
         }
@@ -38,11 +38,38 @@ namespace COMP4911WebAPI.Controllers
         {
             List<Employee> employeeList = new List<Employee>();
 
+            //generate list of employees
             foreach (Employee item in await _employeeRepository.GetAll())
             {
-                employeeList.Add(await this.GetFullEmployeeDetails(item));  
+                employeeList.Add(await this.GetFullEmployeeDetails(item));
             }
-            return Ok(employeeList);
+
+            List<EmployeeDetailsViewModel> employeeDetailsList = new List<EmployeeDetailsViewModel>();
+
+            //generating list of employee details
+            foreach (Employee emp in employeeList)
+            {
+
+
+                Credential empCred = (await _credentialRepository.GetAll()).FirstOrDefault(c => c.EmployeeId == emp.EmployeeId);
+                LabourGrade labourGrade = await _labourGradeRepository.Get(emp.LabourGradeId);
+                Employee empTimesheetApprover = null;
+                Employee empSupervisor = null;
+                if (emp.TimesheetApproverId != null)
+                {
+                    empTimesheetApprover = await _employeeRepository.Get((int)emp.TimesheetApproverId); //cast nullable to int
+                }
+
+                if (emp.SupervisorId != null)
+                {
+                    empSupervisor = await _employeeRepository.Get((int)emp.SupervisorId);
+                }
+                EmployeeDetailsViewModel thisEmployee = new EmployeeDetailsViewModel(emp, empCred, new LabourGradeViewModel(labourGrade),
+                    new EmployeeNameViewModel(empTimesheetApprover), new EmployeeNameViewModel(empSupervisor));
+                    employeeDetailsList.Add(thisEmployee);
+            }
+
+            return Ok(employeeDetailsList);
         }
 
         //GET: api/Employees/5
@@ -61,9 +88,9 @@ namespace COMP4911WebAPI.Controllers
 
             if (emp.SupervisorId != null)
             {
-                empSupervisor = await _employeeRepository.Get((int) emp.SupervisorId);
+                empSupervisor = await _employeeRepository.Get((int)emp.SupervisorId);
             }
-            EmployeeDetailsViewModel thisEmployee = new EmployeeDetailsViewModel(emp, empCred, new LabourGradeViewModel(labourGrade), 
+            EmployeeDetailsViewModel thisEmployee = new EmployeeDetailsViewModel(emp, empCred, new LabourGradeViewModel(labourGrade),
                 new EmployeeNameViewModel(empTimesheetApprover), new EmployeeNameViewModel(empSupervisor));
 
             return Ok(thisEmployee);
@@ -98,7 +125,7 @@ namespace COMP4911WebAPI.Controllers
                 Debug.WriteLine("error");
                 return new OkObjectResult(402);
             }
-       
+
         }
 
         // PUT: api/Employees
@@ -118,7 +145,7 @@ namespace COMP4911WebAPI.Controllers
             {
                 if (item.EmployeeId == emp.EmployeeId)
                 {
-                  //  item.Project = null;
+                    //  item.Project = null;
                     item.Employee = null;
                     emp.EmployeeProjectAssignments.Add(item);
                 }
