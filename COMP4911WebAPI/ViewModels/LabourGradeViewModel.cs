@@ -10,11 +10,13 @@ namespace COMP4911WebAPI.ViewModels
     {
         public int LabourGradeId { get; set; }
         public string LabourGradeName { get; set; }
+        public double HourlyWage { get; set; }
 
         public LabourGradeViewModel(LabourGrade lg)
         {
             this.LabourGradeId = lg.LabourGradeId;
             this.LabourGradeName = lg.LabourGradeCode;
+            this.HourlyWage = lg.HourlyWage; //check convention
         }
     }
 }

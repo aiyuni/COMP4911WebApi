@@ -15,7 +15,7 @@ namespace COMP4911WebAPI.Models
         public int LabourGradeId { get; set; }
 
         public string LabourGradeCode { get; set; }
-        public double Multiplier { get; set; }
+        public double HourlyWage { get; set; }
 
         public IList<Employee> Employee { get; set; }
 
@@ -28,11 +28,11 @@ namespace COMP4911WebAPI.Models
         }
 
         //For seeding
-        public LabourGrade(int id, string code, double multiplier)
+        public LabourGrade(int id, string code, double hourlyWage)
         {
             this.LabourGradeId = id;
             this.LabourGradeCode = code;
-            this.Multiplier = multiplier;
+            this.HourlyWage = hourlyWage;
             this.LastUpdatedTime = DateTime.Now;
             this.LastUpdatedBy = "seeded";
         }

@@ -49,8 +49,6 @@ namespace COMP4911WebAPI.Controllers
             //generating list of employee details
             foreach (Employee emp in employeeList)
             {
-
-
                 Credential empCred = (await _credentialRepository.GetAll()).FirstOrDefault(c => c.EmployeeId == emp.EmployeeId);
                 LabourGrade labourGrade = await _labourGradeRepository.Get(emp.LabourGradeId);
                 Employee empTimesheetApprover = null;

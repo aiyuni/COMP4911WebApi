@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using COMP4911WebAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace COMP4911WebAPI.Repository
 {
@@ -35,9 +36,9 @@ namespace COMP4911WebAPI.Repository
             return await _labourGradeContext.LabourGrades.FindAsync(id);
         }
 
-        public Task<IEnumerable<LabourGrade>> GetAll()
+        public async Task<IEnumerable<LabourGrade>> GetAll()
         {
-            throw new NotImplementedException();
+            return await _labourGradeContext.LabourGrades.ToListAsync();
         }
 
         public Task<LabourGrade> GetLastId()
