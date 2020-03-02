@@ -104,6 +104,13 @@ namespace COMP4911WebAPI.Controllers
             return Ok(!value);
         }
 
+        //For internal use only.
+        [HttpGet("GetAllEmployeesByLabourGrade/{id}")]
+        public async Task<IEnumerable<Employee>> GetAllEmployeesByLabourGrade(int id)
+        {
+            return (await _employeeRepository.GetAll()).Where(e => e.LabourGradeId == id);
+        }
+
         // POST: api/Employees
         [HttpPost]
         public async Task<ActionResult<Employee>> PostEmployee(EmployeeViewModel newEmployeeViewModel)

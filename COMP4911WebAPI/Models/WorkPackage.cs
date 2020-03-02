@@ -21,7 +21,7 @@ namespace COMP4911WebAPI.Models
         public int ResponsibleEngineerId { get; set; }  // not a relation
 
         [Required]
-        public string WorkPackageCode { get; set; } //this is the frontend id 
+        public string WorkPackageCode { get; set; } //this is the frontend id, must be unique 
 
         [Required]
         public string Name { get; set; }
