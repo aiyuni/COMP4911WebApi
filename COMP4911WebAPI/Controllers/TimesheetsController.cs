@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -67,7 +68,7 @@ namespace COMP4911WebAPI.Controllers
         [HttpGet("GetTimesheetsByEmpId/{id}")]
         public async Task<IActionResult> GetTimesheetsByEmployeeId(int id)
         {
-            var timesheetList = (await _timesheetRepository.GetAll()).Where(x => x.EmployeeId == id);
+            var timesheetList = await GetTimesheetByEmpIdHelper(id);
 
             List<TimesheetViewModel> timesheetListParam = new List<TimesheetViewModel>();
 
@@ -83,7 +84,12 @@ namespace COMP4911WebAPI.Controllers
             
             return Ok(new EmployeeTimesheetListViewModel(id, empCode, timesheetListParam));
             */
+        }
 
+        [NonAction]
+        public async Task<IEnumerable<Timesheet>> GetTimesheetByEmpIdHelper(int id)
+        {
+            return (await _timesheetRepository.GetAll()).Where(x => x.EmployeeId == id);
         }
 
         //Get the next available timesheet id
@@ -146,8 +152,8 @@ namespace COMP4911WebAPI.Controllers
             return true;
         }
 
-
-        private async Task<Timesheet> GetFullTimesheetDetails(Timesheet ts)
+        [NonAction]
+        public async Task<Timesheet> GetFullTimesheetDetails(Timesheet ts)
         {
 
             Employee emp = await _employeeRepository.Get(ts.EmployeeId);
