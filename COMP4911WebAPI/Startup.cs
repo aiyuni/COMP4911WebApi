@@ -38,14 +38,20 @@ namespace COMP4911WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddCors();
-
             services.AddMvc()
                 .AddControllersAsServices() //allows calling controller actions from other controllers
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(
                     options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                 );
+
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            }));
+
 
             // configure strongly typed settings objects
             var appSettingsSection = Configuration.GetSection("AppSettings");
@@ -135,11 +141,7 @@ namespace COMP4911WebAPI
             });
 
             // global cors policy
-            app.UseCors(x => x
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader());
-
+            app.UseCors("MyPolicy");
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseMvc();  //this always after useAuthentication!
