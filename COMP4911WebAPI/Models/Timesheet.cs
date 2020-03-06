@@ -35,6 +35,8 @@ namespace COMP4911WebAPI.Models
         [DataType(DataType.DateTime)]
         public DateTime WeekEndingIn { get; set; }
 
+        public string Comment { get; set; }
+
         public string LastUpdatedBy { get; set; }
         public DateTime LastUpdatedTime { get; set; }
 
@@ -61,6 +63,8 @@ namespace COMP4911WebAPI.Models
            // this.TimesheetRows = ts.TimesheetRows;
             this.LastUpdatedTime = DateTime.Now;
             this.LastUpdatedBy = Environment.UserName.ToString();
+
+            this.Comment = ts.Comment;
         }
 
         //For seeding
@@ -74,6 +78,8 @@ namespace COMP4911WebAPI.Models
             this.Status = status;
             this.LastUpdatedTime = DateTime.Now;
             this.LastUpdatedBy = "Seeded";
+
+            this.Comment = "seeded comment";
         }
     }
 

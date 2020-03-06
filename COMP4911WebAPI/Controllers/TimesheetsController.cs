@@ -21,13 +21,18 @@ namespace COMP4911WebAPI.Controllers
         private readonly TimesheetRepository _timesheetRepository;
         private readonly IDataRepository<Employee> _employeeRepository;
         private readonly TimesheetRowRepository _timesheetRowRepository;
+        private readonly WorkPackageRepository _workPackageRepository; //Perry: investigate if we can move this elsewhere?
+        private readonly ProjectRepository _projectRepository; //likewise
 
         public TimesheetsController(IDataRepository<Timesheet> timesheetRepository, IDataRepository<Employee> employeeRepository,
-            IDataRepository<TimesheetRow> timesheetRowRepository)
+            IDataRepository<TimesheetRow> timesheetRowRepository, IDataRepository<WorkPackage> workPackageRepository,
+            IDataRepository<Project> projectRepository)
         {
             this._timesheetRepository = (TimesheetRepository) timesheetRepository;
             this._employeeRepository = employeeRepository;
             this._timesheetRowRepository = (TimesheetRowRepository)timesheetRowRepository;
+            this._workPackageRepository = (WorkPackageRepository)workPackageRepository;
+            this._projectRepository = (ProjectRepository) projectRepository;
         }
 
         // GET: api/Timesheets
@@ -43,17 +48,19 @@ namespace COMP4911WebAPI.Controllers
             return Ok(tsList);
         }
 
-        // Not Used for now.
+        // We are using this one. Automatically goes to latest version.
         // GET: api/Timesheets/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Timesheet>> GetTimesheet(int id)
+        public async Task<ActionResult<TimesheetViewModel>> GetTimesheet(int id)
         {
             Debug.WriteLine("inside single param get..." );
-            Timesheet ts = await(GetFullTimesheetDetails(await _timesheetRepository.Get(id)));
-            return Ok(new TimesheetViewModel(ts));
+            //Timesheet ts = await(GetFullTimesheetDetails(await _timesheetRepository.Get(id)));
+            TimesheetViewModel tsViewModel =
+                await (GetFullTimesheetViewModelDetails(new TimesheetViewModel(await _timesheetRepository.Get(id))));
+            return Ok(tsViewModel);
         }
 
-        //Gets a specific version of a timesheet 
+        //NOT USED ANYMORE. Gets a specific version of a timesheet.
         // GET: api/Timesheets/5/2
         [HttpGet("{id}/{versionId}")]
         public async Task<ActionResult<TimesheetViewModel>> GetTimesheet(int id, int versionId)
@@ -122,9 +129,9 @@ namespace COMP4911WebAPI.Controllers
             {
                 await _timesheetRowRepository.Delete(item);
             }
-            foreach (TimesheetRow item in timesheetViewModel.TimesheetRows)
+            foreach (TimesheetRowViewModel item in timesheetViewModel.TimesheetRows)
             {
-                await _timesheetRowRepository.Add(item);
+                await _timesheetRowRepository.Add(new TimesheetRow(item));
             }
 
             return Ok(timesheetViewModel);
@@ -139,9 +146,9 @@ namespace COMP4911WebAPI.Controllers
             {
                 return Ok("Error on adding timesheet...duplicate entry.");
             }
-            foreach (TimesheetRow item in timesheetViewModel.TimesheetRows)
+            foreach (TimesheetRowViewModel item in timesheetViewModel.TimesheetRows)
             {
-                await _timesheetRowRepository.Add(item);
+                await _timesheetRowRepository.Add(new TimesheetRow(item));
             }
             return Ok(timesheetViewModel);
         }
@@ -155,7 +162,6 @@ namespace COMP4911WebAPI.Controllers
         [NonAction]
         public async Task<Timesheet> GetFullTimesheetDetails(Timesheet ts)
         {
-
             Employee emp = await _employeeRepository.Get(ts.EmployeeId);
             emp.Timesheets = null;
             ts.Employee = emp;
@@ -168,10 +174,52 @@ namespace COMP4911WebAPI.Controllers
                 foreach (var tsTimesheetRow in ts.TimesheetRows)
                 {
                     tsTimesheetRow.Timesheet = null;
+                    WorkPackage wp = await _workPackageRepository.Get(tsTimesheetRow.WorkPackageId);
+                    Project proj = await _projectRepository.Get(wp.ProjectId);
+                    TimesheetRowViewModel tsRowViewModel = new TimesheetRowViewModel(tsTimesheetRow, proj, wp.WorkPackageCode);
                 }
             }
 
+            TimesheetViewModel tsViewModel = new TimesheetViewModel(ts);
             ts.TimesheetRows = timesheetRows.ToList();
+
+            return ts;
+        }
+
+        [NonAction]
+        public async Task<TimesheetViewModel> GetFullTimesheetViewModelDetails(TimesheetViewModel ts)
+        {
+            Employee emp = await _employeeRepository.Get(ts.EmployeeId);
+            emp.Timesheets = null;
+
+            var timesheetRows = (await _timesheetRowRepository.GetAll())
+                .Where(t => t.TimesheetId == ts.TimesheetId && t.TimesheetVersionNumber == ts.VersionNumber);
+
+            List<TimesheetRowViewModel> tsRowViewModelList = new List<TimesheetRowViewModel>();
+
+            foreach (var tsTimesheetRow in timesheetRows)
+            {
+                // tsTimesheetRow.Timesheet = null;
+                WorkPackage wp = await _workPackageRepository.Get(tsTimesheetRow.WorkPackageId);
+                Project proj = await _projectRepository.Get(wp.ProjectId);
+                TimesheetRowViewModel tsRowViewModel = new TimesheetRowViewModel(tsTimesheetRow, proj, wp.WorkPackageCode);
+                tsRowViewModelList.Add(tsRowViewModel);
+            }
+
+            //if (ts.TimesheetRows != null)
+            //{
+            //    foreach (var tsTimesheetRow in ts.TimesheetRows)
+            //    {
+            //       // tsTimesheetRow.Timesheet = null;
+            //        WorkPackage wp = await _workPackageRepository.Get(tsTimesheetRow.WorkPackageId);
+            //        Project proj = await _projectRepository.Get(wp.ProjectId); 
+            //        TimesheetRowViewModel tsRowViewModel = new TimesheetRowViewModel(new TimesheetRow(tsTimesheetRow), proj, wp.WorkPackageCode);
+            //        tsRowViewModelList.Add(tsRowViewModel);
+            //    }
+            //}
+
+            //TimesheetViewModel tsViewModel = new TimesheetViewModel(ts);
+            ts.TimesheetRows = tsRowViewModelList;
 
             return ts;
         }
