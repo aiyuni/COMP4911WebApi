@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace COMP4911WebAPI.Helpers
 {
-    public static class SeedData 
+    public static class SeedData
     {
         public static void Seed(this ModelBuilder modelBuilder)
         {
@@ -31,17 +31,17 @@ namespace COMP4911WebAPI.Helpers
                 new LabourGrade(2, "code2", 23),
                 new LabourGrade(3, "code3", 10));
             modelBuilder.Entity<Employee>().HasData(
-                new Employee(1, 1, "AdminFirstName", "AdminLastName", null, null, 
+                new Employee(1, 1, "AdminFirstName", "AdminLastName", null, null,
                     true, true, true, true, 888, 1),
                 new Employee(2, 2, "Perry", "Li", 1, 1,
                 true, true, false, false, 778, 2),
-                new Employee(3,3, "Bruce", "Link", 2, 1,
+                new Employee(3, 3, "Bruce", "Link", 2, 1,
                     true, true, false, false, 111, 3),
                 new Employee(4, 2, "Employee4FirstName", "Employee4LastName", 3, 3,
                     true, false, false, false, 123, 2),
                 new Employee(5, 3, "Employee5FirstName", "Employee5LastName", 3, 3,
                     true, true, false, false, 222, 3));
-            
+
             modelBuilder.Entity<Credential>().HasData(
                 new Credential("A100001", hashedPass1, 1, salt1),
                 new Credential("A100002", hashedPass2, 2, salt2),
@@ -50,12 +50,16 @@ namespace COMP4911WebAPI.Helpers
                 new Credential("Nier", hashedPass5, 5, salt5));
 
             modelBuilder.Entity<Project>().HasData(
-                new Project(1, "NewProject1", "NewProjectDescription1", 2, 
+                new Project(1, "NewProject1", "NewProjectDescription1", 2,
                     DateTime.Now, DateTime.Now, false),
-                new Project(2, "ProjectName2", "ProjectDescription3", 2, 
+                new Project(2, "ProjectName2", "ProjectDescription3", 2,
                     DateTime.Parse("2020-2-2"), DateTime.Parse("2020-2-18"), false),
-                new Project(3, "ProjectName3", "ProjectDescription3", 3, 
-                    DateTime.Parse("2020-3-3"), DateTime.Parse("2020-3-28"), false));
+                new Project(3, "ProjectName3", "ProjectDescription3", 3,
+                    DateTime.Parse("2020-3-3"), DateTime.Parse("2020-3-28"), false),
+                new Project(4, "Sick", "Sick Description", 1,
+                    DateTime.Parse("1900-3-3"), DateTime.Parse("2100-3-28"), false),
+                new Project(5, "Vacation", "Vacation Description", 1,
+                    DateTime.Parse("1900-3-3"), DateTime.Parse("2100-3-28"), false));
 
             modelBuilder.Entity<EmployeeProjectAssignment>().HasData(
                 new EmployeeProjectAssignment(2, 1, true),
@@ -80,6 +84,10 @@ namespace COMP4911WebAPI.Helpers
                 new WorkPackage(6, 2, 5, "BB", "WpName2Child2", "WpDescription2Child2",
                     DateTime.Parse("2020-2-14"), false, 5, 8, 3),
                 new WorkPackage(7, 3, 4, "C", "WpName3Root", "WpDescription3Root",
+                    DateTime.Parse("2020-2-27"), false, null, null, null),
+                new WorkPackage(8, 4, 1, "Sick", "Sick", "SickDescription",
+                    DateTime.Parse("2020-2-27"), false, null, null, null),
+                new WorkPackage(9, 5, 1, "Vacation", "Vacation", "VacationPackage",
                     DateTime.Parse("2020-2-27"), false, null, null, null));
 
             modelBuilder.Entity<EmployeeWorkPackageAssignment>().HasData(
@@ -110,6 +118,18 @@ namespace COMP4911WebAPI.Helpers
                 new TimesheetRow(3, 2, 1, 5, 3, 3, 3, 3, 3, 3, 3, "NEZUKO"),
                 new TimesheetRow(4, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, "clannad"),
                 new TimesheetRow(5, 3, 1, 7, 3, 3, 8, 8, 3, 3, 3, "emp3note"));
+
+            modelBuilder.Entity<WorkPackageReport>().HasData(
+                new WorkPackageReport(1, 2, DateTime.Parse("2020-3-01"), DateTime.Parse("2020-2-25"),DateTime.Parse("2020-2-27"),
+                    "seeded comment", "seeded stuff", "seeded planned",
+                    "seeded problems", "seeded anticipated"),
+                new WorkPackageReport(2, 5, DateTime.Parse("2020-3-02"), DateTime.Parse("2020-2-20"), DateTime.Parse("2020-2-27"), 
+                    "seeded comment 2", "seeded workaccomplished 2", "seeded workplanned2",
+                    "seeded problems2", "seeded anticipated 2"));
+
+            modelBuilder.Entity<WorkPackageReportDetails>().HasData(
+                new WorkPackageReportDetails(1, 1, 3, "labourgrade3name", 20.5, 21.5, 8, 50, 30, 90),
+                new WorkPackageReportDetails(2,1, 4, "labourgrade4name", 19, 42, 42, 19.5,50,50 ));
         }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using COMP4911WebAPI.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using COMP4911WebAPI.Controllers;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace COMP4911WebAPI.ViewModels
 {
@@ -16,9 +18,10 @@ namespace COMP4911WebAPI.ViewModels
         public int WeekNumber { get; set; }
         public DateTime WeekEndingIn { get; set; }
         public string Status { get; set; }
+        public string Comment { get; set; }
         public string Signature { get; set; }  //not part of model for now
 
-        public List<TimesheetRow> TimesheetRows { get; set; }
+        public List<TimesheetRowViewModel> TimesheetRows { get; set; }
 
         public TimesheetViewModel()
         {
@@ -34,7 +37,30 @@ namespace COMP4911WebAPI.ViewModels
             this.Status = ts.Status.ToString();
             this.WeekNumber = WeekNumber;
             this.WeekEndingIn = WeekEndingIn;
-            this.TimesheetRows = ts.TimesheetRows.ToList();
+
+            List<TimesheetRowViewModel> tsRowModelList = new List<TimesheetRowViewModel>();
+
+            try
+            {
+                foreach (TimesheetRow tsRow in ts.TimesheetRows)
+                {
+                    tsRowModelList.Add(new TimesheetRowViewModel(tsRow));
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("catching and resuming...");
+            }
+
+            //doesnt work now...
+            //foreach (TimesheetRow tsRow in ts.TimesheetRows)
+            //{
+            //    tsRowModelList.Add(new TimesheetRowViewModel(tsRow));
+            //}
+
+            this.TimesheetRows = tsRowModelList;  //rename timesheetRows to timesheetRowViewModels
+
+            this.Comment = ts.Comment;
         }
 
         public TimesheetViewModel(int timesheetId, int versionNumber, int employeeId, string status)
