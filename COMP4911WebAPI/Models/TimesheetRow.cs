@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using COMP4911WebAPI.ViewModels;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace COMP4911WebAPI.Models
@@ -11,6 +12,7 @@ namespace COMP4911WebAPI.Models
     public class TimesheetRow
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int TimesheetRowId { get; set; }
 
         [Required]
@@ -53,6 +55,23 @@ namespace COMP4911WebAPI.Models
 
         public TimesheetRow()
         {
+            this.LastUpdatedTime = DateTime.Now;
+            this.LastUpdatedBy = Environment.UserName.ToString();
+        }
+
+        public TimesheetRow(TimesheetRowViewModel viewModel)
+        {
+            this.Monday = viewModel.Monday;
+            this.Tuesday = viewModel.Tuesday;
+            this.Wednesday = viewModel.Wednesday;
+            this.Thursday = viewModel.Thursday;
+            this.Friday = viewModel.Friday;
+            this.Saturday = viewModel.Saturday;
+            this.Sunday = viewModel.Sunday;
+            this.Notes = viewModel.Notes;
+            this.WorkPackageId = viewModel.WorkPackageId;
+            this.TimesheetId = viewModel.TimesheetId;
+            this.TimesheetVersionNumber = viewModel.TimesheetVersionNumber;
             this.LastUpdatedTime = DateTime.Now;
             this.LastUpdatedBy = Environment.UserName.ToString();
         }

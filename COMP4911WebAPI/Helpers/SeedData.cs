@@ -110,6 +110,18 @@ namespace COMP4911WebAPI.Helpers
                 new TimesheetRow(3, 2, 1, 5, 3, 3, 3, 3, 3, 3, 3, "NEZUKO"),
                 new TimesheetRow(4, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, "clannad"),
                 new TimesheetRow(5, 3, 1, 7, 3, 3, 8, 8, 3, 3, 3, "emp3note"));
+
+            modelBuilder.Entity<WorkPackageReport>().HasData(
+                new WorkPackageReport(1, 2, DateTime.Parse("2020-3-01"), DateTime.Parse("2020-2-25"),DateTime.Parse("2020-2-27"),
+                    "seeded comment", "seeded stuff", "seeded planned",
+                    "seeded problems", "seeded anticipated"),
+                new WorkPackageReport(2, 5, DateTime.Parse("2020-3-02"), DateTime.Parse("2020-2-20"), DateTime.Parse("2020-2-27"), 
+                    "seeded comment 2", "seeded workaccomplished 2", "seeded workplanned2",
+                    "seeded problems2", "seeded anticipated 2"));
+
+            modelBuilder.Entity<WorkPackageReportDetails>().HasData(
+                new WorkPackageReportDetails(1, 1, 3, "labourgrade3name", 20.5, 21.5, 8, 50, 30, 90),
+                new WorkPackageReportDetails(2,1, 4, "labourgrade4name", 19, 42, 42, 19.5,50,50 ));
         }
     }
 }

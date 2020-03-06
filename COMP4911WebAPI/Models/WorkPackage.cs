@@ -51,6 +51,7 @@ namespace COMP4911WebAPI.Models
         public Project Project { get; set; }
         public IList<TimesheetRow> TimesheetRows { get; set; }
         public IList<EmployeeWorkPackageAssignment> EmployeeWorkPackageAssignments { get; set; }
+        public IList<WorkPackageReport> WorkPackageReports { get; set; }
 
         public WorkPackage()
         {
