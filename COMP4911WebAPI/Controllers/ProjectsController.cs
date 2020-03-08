@@ -74,6 +74,32 @@ namespace COMP4911WebAPI.Controllers
 
             return Ok(new EmployeeProjectListViewModel(id, empCode, projList));
         }
+        // GET: api/Projects/GetAllProjectsAndLowerWpForEmp/5
+        [HttpGet("GetAllProjectsAndLowerWpForEmp/{id}")]
+        public async Task<IActionResult> GetAllProjectsAndLowerWpForEmp(int id)
+        {
+            var empProjectAssignmentList = (await _employeeProjectAssignmentRepository.GetAll()).Where(x => x.EmployeeId == id);
+            List<ProjectViewModel> projViewModels = new List<ProjectViewModel>();
+
+            foreach(EmployeeProjectAssignment item in empProjectAssignmentList)
+            {
+                List<WorkPackageViewModel> workPackageViewModels = new List<WorkPackageViewModel>();
+
+                Project projFull = await this.GetFullProjectDetails(await _projectRepository.Get(item.ProjectId));
+                foreach(WorkPackage element in projFull.WorkPackages)
+                {
+                    if(element.ChildrenWorkPackages == null)
+                    {
+                        WorkPackageViewModel wpViewModel = new WorkPackageViewModel(element.WorkPackageId, element.WorkPackageCode, element.Name);
+                        workPackageViewModels.Add(wpViewModel);
+                    }
+                    
+                }
+                projViewModels.Add(new ProjectViewModel(projFull.ProjectId, projFull.ProjectName, workPackageViewModels));
+            }
+            return Ok(projViewModels);
+            
+        }
 
         // PUT: api/Projects/
         [HttpPut]
@@ -133,7 +159,7 @@ namespace COMP4911WebAPI.Controllers
                 {
                     WorkPackage wpResult = new WorkPackage();
                     wpResult = wp;
-                    wpResult.ChildrenWorkPackages = null;
+                    //wpResult.ChildrenWorkPackages = null;
                     workPackages.Add(wpResult);
                 }
             }
