@@ -16,7 +16,7 @@ namespace COMP4911WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [EnableCors]
+    [EnableCors("MyPolicy")]
     public class EmployeesController : ControllerBase
     {
         private readonly EmployeeRepository _employeeRepository;
