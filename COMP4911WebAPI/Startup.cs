@@ -143,7 +143,7 @@ namespace COMP4911WebAPI
 
             // global cors policy
             app.UseHttpsRedirection();
-            app.UseCors("MyPolicy");
+            app.UseCors();
             app.UseAuthentication();
             app.UseMvc();  //this always after useAuthentication!
 
