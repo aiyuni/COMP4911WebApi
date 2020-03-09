@@ -10,11 +10,13 @@ using COMP4911WebAPI.Models;
 using COMP4911WebAPI.Repository;
 using COMP4911WebAPI.ViewModels;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Cors;
 
 namespace COMP4911WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors]
     public class EmployeesController : ControllerBase
     {
         private readonly EmployeeRepository _employeeRepository;
