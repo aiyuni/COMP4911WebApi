@@ -143,6 +143,7 @@ namespace COMP4911WebAPI.Controllers
             return (await _timesheetRepository.GetAll()).Where(x => x.EmployeeId == id);
         }
 
+        //Helper method to get employee details based on timesheet approver id
         [NonAction]
         public async Task<IEnumerable<Employee>> GetEmployeeByApproverIdHelper(int id)
         {
