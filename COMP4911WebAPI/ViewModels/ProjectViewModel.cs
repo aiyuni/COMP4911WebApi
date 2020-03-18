@@ -11,6 +11,7 @@ namespace COMP4911WebAPI.ViewModels
        
         public int ProjectId { get; set; }
         public string ProjectName { get; set; }
+        public string ProjectCode { get; set; }
         public IList<WorkPackageViewModel> WorkPackageViewModels { get; set; }
 
 
