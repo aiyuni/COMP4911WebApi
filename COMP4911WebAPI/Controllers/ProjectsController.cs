@@ -74,6 +74,7 @@ namespace COMP4911WebAPI.Controllers
 
             return Ok(new EmployeeProjectListViewModel(id, empCode, projList));
         }
+
         // GET: api/Projects/GetAllProjectsAndLowerWpForEmp/5
         [HttpGet("GetAllProjectsAndLowerWpForEmp/{id}")]
         public async Task<IActionResult> GetAllProjectsAndLowerWpForEmp(int id)
@@ -159,7 +160,7 @@ namespace COMP4911WebAPI.Controllers
                 {
                     WorkPackage wpResult = new WorkPackage();
                     wpResult = wp;
-                    //wpResult.ChildrenWorkPackages = null;
+                    wpResult.ChildrenWorkPackages = null;
                     workPackages.Add(wpResult);
                 }
             }
