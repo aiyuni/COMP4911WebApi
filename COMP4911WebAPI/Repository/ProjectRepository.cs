@@ -51,6 +51,18 @@ namespace COMP4911WebAPI.Repository
             return await _projectContext.Projects.ToListAsync();
         }
 
+        public int GetIdByCode(int code)
+        {
+            try
+            {
+                return _projectContext.Projects.First(p => p.ProjectCode == code).ProjectId;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("The code: " + code + " cannot be converted to ID: " + e.ToString());
+            }
+        }
+
         public Task<Project> GetLastId()
         {
             throw new NotImplementedException();

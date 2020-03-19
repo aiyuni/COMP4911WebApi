@@ -104,6 +104,7 @@ namespace COMP4911WebAPI
             services.AddScoped<IDataRepository<LabourGrade>, LabourGradeRepository>();
             services.AddScoped<IDataRepository<WorkPackageReport>, WorkPackageReportRepository>();
             services.AddScoped<IDataRepository<WorkPackageReportDetails>, WorkPackageReportDetailsRepository>();
+            services.AddScoped<IDataRepository<WorkPackageLabourGradeAssignment>, WorkPackageLabourGradeAssignmentRepository>();
 
             services.AddSwaggerGen(c =>
             {
