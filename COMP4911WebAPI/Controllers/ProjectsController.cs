@@ -75,6 +75,33 @@ namespace COMP4911WebAPI.Controllers
             return Ok(new EmployeeProjectListViewModel(id, empCode, projList));
         }
 
+        // GET: api/Projects/GetAllProjectsAndLowerWpForEmp/5
+        [HttpGet("GetAllProjectsAndLowerWpForEmp/{id}")]
+        public async Task<IActionResult> GetAllProjectsAndLowerWpForEmp(int id)
+        {
+            var empProjectAssignmentList = (await _employeeProjectAssignmentRepository.GetAll()).Where(x => x.EmployeeId == id);
+            List<ProjectViewModel> projViewModels = new List<ProjectViewModel>();
+
+            foreach(EmployeeProjectAssignment item in empProjectAssignmentList)
+            {
+                List<WorkPackageSimpleViewModel> workPackageViewModels = new List<WorkPackageSimpleViewModel>();
+
+                Project projFull = await this.GetFullProjectDetails(await _projectRepository.Get(item.ProjectId));
+                foreach(WorkPackage element in projFull.WorkPackages)
+                {
+                    if(element.ChildrenWorkPackages == null)
+                    {
+                        WorkPackageSimpleViewModel wpSimpleViewModel = new WorkPackageSimpleViewModel(element.WorkPackageId, element.WorkPackageCode, element.Name);
+                        workPackageViewModels.Add(wpSimpleViewModel);
+                    }
+                    
+                }
+                projViewModels.Add(new ProjectViewModel(projFull.ProjectId, projFull.ProjectName, workPackageViewModels));
+            }
+            return Ok(projViewModels);
+            
+        }
+
         // PUT: api/Projects/
         [HttpPut]
         public async Task<IActionResult> PutProject(Project project)
@@ -106,7 +133,7 @@ namespace COMP4911WebAPI.Controllers
 
         private async Task<bool> ProjectExists(int id)
         {
-            return await _projectRepository.CheckIfExists(new Project(id, null, null, 1, DateTime.Now, DateTime.Now, false));
+            return await _projectRepository.CheckIfExists(new Project(id, 0, null, null, 1, DateTime.Now, DateTime.Now, false));
         }
 
         private async Task<Project> GetFullProjectDetails(Project project)

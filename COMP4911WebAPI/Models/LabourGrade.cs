@@ -18,6 +18,7 @@ namespace COMP4911WebAPI.Models
         public double HourlyWage { get; set; }
 
         public IList<Employee> Employee { get; set; }
+        public IList<WorkPackageLabourGradeAssignment> WorkPackageLabourGradeAssignments { get; set; }
 
         public string LastUpdatedBy { get; set; }
         public DateTime LastUpdatedTime { get; set; }

@@ -50,15 +50,15 @@ namespace COMP4911WebAPI.Helpers
                 new Credential("Nier", hashedPass5, 5, salt5));
 
             modelBuilder.Entity<Project>().HasData(
-                new Project(1, "NewProject1", "NewProjectDescription1", 2,
+                new Project(1, 111,"NewProject1", "NewProjectDescription1", 2,
                     DateTime.Now, DateTime.Now, false),
-                new Project(2, "ProjectName2", "ProjectDescription3", 2,
+                new Project(2, 222,"ProjectName2", "ProjectDescription3", 2,
                     DateTime.Parse("2020-2-2"), DateTime.Parse("2020-2-18"), false),
-                new Project(3, "ProjectName3", "ProjectDescription3", 3,
+                new Project(3, 333, "ProjectName3", "ProjectDescription3", 3,
                     DateTime.Parse("2020-3-3"), DateTime.Parse("2020-3-28"), false),
-                new Project(4, "Sick", "Sick Description", 1,
+                new Project(4, 123, "Sick", "Sick Description", 1,
                     DateTime.Parse("1900-3-3"), DateTime.Parse("2100-3-28"), false),
-                new Project(5, "Vacation", "Vacation Description", 1,
+                new Project(5, 555,"Vacation", "Vacation Description", 1,
                     DateTime.Parse("1900-3-3"), DateTime.Parse("2100-3-28"), false));
 
             modelBuilder.Entity<EmployeeProjectAssignment>().HasData(
@@ -103,6 +103,12 @@ namespace COMP4911WebAPI.Helpers
                 new EmployeeWorkPackageAssignment(5, 6), //RE
                 new EmployeeWorkPackageAssignment(3, 7),
                 new EmployeeWorkPackageAssignment(4, 7)); //RE
+
+            //seed more 
+            modelBuilder.Entity<WorkPackageLabourGradeAssignment>().HasData(
+                new WorkPackageLabourGradeAssignment(1, 1, 10, 8),
+                new WorkPackageLabourGradeAssignment(2, 1, 30, 80),
+                new WorkPackageLabourGradeAssignment(2, 2, 55.5, 66.6));
 
             modelBuilder.Entity<Timesheet>().HasData(
                 new Timesheet(1, 1, 2, 10, DateTime.Parse("2020-5-20"), TimesheetStatus.Approved),

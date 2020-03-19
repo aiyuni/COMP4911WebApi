@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using COMP4911WebAPI.Models;
@@ -58,14 +59,30 @@ namespace COMP4911WebAPI.Repository
             return await _workPackageContext.WorkPackages.ToListAsync();
         }
 
+        public int GetIdByCode(string code)
+        {
+            try
+            {
+                return _workPackageContext.WorkPackages.First(wp => wp.WorkPackageCode.Equals(code))
+                    .WorkPackageId;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("The code: " + code + " cannot be converted to ID: " + e.ToString());
+            }
+        }
+
         public Task<WorkPackage> GetLastId()
         {
             throw new NotImplementedException();
         }
 
-        public Task Update(WorkPackage entity)
+        public async Task Update(WorkPackage entity)
         {
-            throw new NotImplementedException();
+            WorkPackage dbEntity = await _workPackageContext.WorkPackages.FindAsync(entity.WorkPackageId);
+            _workPackageContext.Entry(dbEntity).CurrentValues.SetValues(entity);
+            await _workPackageContext.SaveChangesAsync();
+            Debug.WriteLine("Updated Work Package...");
         }
     }
 }

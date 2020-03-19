@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -21,18 +21,25 @@ namespace COMP4911WebAPI.Controllers
         private readonly TimesheetRepository _timesheetRepository;
         private readonly IDataRepository<Employee> _employeeRepository;
         private readonly TimesheetRowRepository _timesheetRowRepository;
+
+        private readonly CredentialRepository _credentialRepository;
+
+        private readonly LabourGradeRepository _labourGradeRepository;
         private readonly WorkPackageRepository _workPackageRepository; //Perry: investigate if we can move this elsewhere?
         private readonly ProjectRepository _projectRepository; //likewise
 
         public TimesheetsController(IDataRepository<Timesheet> timesheetRepository, IDataRepository<Employee> employeeRepository,
-            IDataRepository<TimesheetRow> timesheetRowRepository, IDataRepository<WorkPackage> workPackageRepository,
+            IDataRepository<TimesheetRow> timesheetRowRepository, IDataRepository<Credential> credentialRepository, IDataRepository<LabourGrade> labourGradeRepository, IDataRepository<WorkPackage> workPackageRepository,
             IDataRepository<Project> projectRepository)
         {
-            this._timesheetRepository = (TimesheetRepository) timesheetRepository;
+            this._timesheetRepository = (TimesheetRepository)timesheetRepository;
             this._employeeRepository = employeeRepository;
             this._timesheetRowRepository = (TimesheetRowRepository)timesheetRowRepository;
+            this._credentialRepository = (CredentialRepository)credentialRepository;
+            this._labourGradeRepository = (LabourGradeRepository)labourGradeRepository;
             this._workPackageRepository = (WorkPackageRepository)workPackageRepository;
-            this._projectRepository = (ProjectRepository) projectRepository;
+            this._projectRepository = (ProjectRepository)projectRepository;
+            
         }
 
         // GET: api/Timesheets
@@ -53,7 +60,7 @@ namespace COMP4911WebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<TimesheetViewModel>> GetTimesheet(int id)
         {
-            Debug.WriteLine("inside single param get..." );
+            Debug.WriteLine("inside single param get...");
             //Timesheet ts = await(GetFullTimesheetDetails(await _timesheetRepository.Get(id)));
             TimesheetViewModel tsViewModel =
                 await (GetFullTimesheetViewModelDetails(new TimesheetViewModel(await _timesheetRepository.Get(id))));
@@ -93,11 +100,62 @@ namespace COMP4911WebAPI.Controllers
             */
         }
 
+        //Gets all timesheets based on the approver
+        // GET: api/Timesheets/GetTimesheetsByApproverId/2
+        [HttpGet("GetTimesheetsByApproverId/{id}")]
+        public async Task<IActionResult> GetTimesheetsByApproverId(int id)
+        {   //Finds employee by EmployeeID
+            var approver = await GetEmployeeByIdHelper(id);
+            //Finds employees by ApproverID
+            var employees = await GetEmployeeByApproverIdHelper(id);
+
+            List<TimesheetApproverViewModel> timesheetApproverViews = new List<TimesheetApproverViewModel>();
+
+            foreach (Employee item in employees)
+            {
+                //Null coalesce
+                //https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/null-coalescing-operator
+                var supervisor = await GetEmployeeByIdHelper((item.SupervisorId ?? 0));
+                var timesheets = await GetTimesheetByEmpIdHelper(item.EmployeeId);
+
+                Credential empCred = (await _credentialRepository.GetAll()).FirstOrDefault(c => c.EmployeeId == item.EmployeeId);
+                LabourGrade labourGrade = await _labourGradeRepository.Get(item.LabourGradeId);
+                EmployeeDetailsViewModel thisEmployee = new EmployeeDetailsViewModel(item, empCred, new LabourGradeViewModel(labourGrade),
+                    new EmployeeNameViewModel(approver.First()), new EmployeeNameViewModel(supervisor.First()));
+
+                foreach (Timesheet timesheet in timesheets)
+                {
+                    TimesheetApproverViewModel timesheetApproverView = new TimesheetApproverViewModel(timesheet, thisEmployee);
+                    timesheetApproverViews.Add(timesheetApproverView);
+                }
+
+            }
+
+            return Ok(timesheetApproverViews);
+
+        }
+
+
+
         [NonAction]
         public async Task<IEnumerable<Timesheet>> GetTimesheetByEmpIdHelper(int id)
         {
             return (await _timesheetRepository.GetAll()).Where(x => x.EmployeeId == id);
         }
+
+        //Helper method to get employee details based on timesheet approver id
+        [NonAction]
+        public async Task<IEnumerable<Employee>> GetEmployeeByApproverIdHelper(int id)
+        {
+            return (await _employeeRepository.GetAll()).Where(x => x.TimesheetApproverId == id);
+        }
+
+        [NonAction]
+        public async Task<IEnumerable<Employee>> GetEmployeeByIdHelper(int id)
+        {
+            return (await _employeeRepository.GetAll()).Where(x => x.EmployeeId == id);
+        }
+
 
         //Get the next available timesheet id
         [HttpGet("availableTimesheetId")]
@@ -140,7 +198,7 @@ namespace COMP4911WebAPI.Controllers
         // POST: api/Timesheets
         [HttpPost]
         public async Task<ActionResult<Timesheet>> PostTimesheet(TimesheetViewModel timesheetViewModel)
-        { 
+        {
             bool success = await _timesheetRepository.Add(new Timesheet(timesheetViewModel));
             if (!success)
             {
@@ -153,7 +211,7 @@ namespace COMP4911WebAPI.Controllers
             return Ok(timesheetViewModel);
         }
 
-        
+
         private bool TimesheetExists(int id)
         {
             return true;
