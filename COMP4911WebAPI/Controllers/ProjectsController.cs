@@ -18,7 +18,7 @@ namespace COMP4911WebAPI.Controllers
     [ApiController]
     public class ProjectsController : ControllerBase
     {
-        private readonly IDataRepository<Project> _projectRepository;
+        private readonly ProjectRepository _projectRepository;
         private readonly IDataRepository<EmployeeProjectAssignment> _employeeProjectAssignmentRepository;
         private readonly IDataRepository<Employee> _employeeRepository;
         private readonly IDataRepository<WorkPackage> _workPackageRepository;
@@ -28,7 +28,7 @@ namespace COMP4911WebAPI.Controllers
             IDataRepository<Employee> employeeRepository,
             IDataRepository<WorkPackage> workPackageRepository)
         {
-            this._projectRepository = projectRepository;
+            this._projectRepository = (ProjectRepository) projectRepository;
             this._employeeProjectAssignmentRepository = employeeProjectAssignmentRepository;
             this._employeeRepository = employeeRepository;
             this._workPackageRepository = workPackageRepository;
@@ -102,6 +102,13 @@ namespace COMP4911WebAPI.Controllers
             
         }
 
+        [HttpGet("CheckProjectCodeAvailability/{id}")]
+        public async Task<IActionResult> CheckProjectCodeAvailability(int id)
+        {
+            bool value = await _projectRepository.CheckIfProjectCodeExists(id);
+            return Ok(!value);
+        }
+
         // PUT: api/Projects/
         [HttpPut]
         public async Task<IActionResult> PutProject(Project project)
@@ -150,9 +157,6 @@ namespace COMP4911WebAPI.Controllers
             }
 
             List<WorkPackage> workPackages = new List<WorkPackage>();
-
-            
-
 
             foreach (WorkPackage wp in await _workPackageRepository.GetAll())
             {
