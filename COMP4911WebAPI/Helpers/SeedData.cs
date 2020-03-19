@@ -104,6 +104,12 @@ namespace COMP4911WebAPI.Helpers
                 new EmployeeWorkPackageAssignment(3, 7),
                 new EmployeeWorkPackageAssignment(4, 7)); //RE
 
+            //seed more 
+            modelBuilder.Entity<WorkPackageLabourGradeAssignment>().HasData(
+                new WorkPackageLabourGradeAssignment(1, 1, 10, 8),
+                new WorkPackageLabourGradeAssignment(2, 1, 30, 80),
+                new WorkPackageLabourGradeAssignment(2, 2, 55.5, 66.6));
+
             modelBuilder.Entity<Timesheet>().HasData(
                 new Timesheet(1, 1, 2, 10, DateTime.Parse("2020-5-20"), TimesheetStatus.Approved),
                 new Timesheet(2, 1, 3, 10, DateTime.Parse("2020-5-20"), TimesheetStatus.Approved),

@@ -83,15 +83,15 @@ namespace COMP4911WebAPI.Controllers
 
             foreach(EmployeeProjectAssignment item in empProjectAssignmentList)
             {
-                List<WorkPackageViewModel> workPackageViewModels = new List<WorkPackageViewModel>();
+                List<WorkPackageSimpleViewModel> workPackageViewModels = new List<WorkPackageSimpleViewModel>();
 
                 Project projFull = await this.GetFullProjectDetails(await _projectRepository.Get(item.ProjectId));
                 foreach(WorkPackage element in projFull.WorkPackages)
                 {
                     if(element.ChildrenWorkPackages == null)
                     {
-                        WorkPackageViewModel wpViewModel = new WorkPackageViewModel(element.WorkPackageId, element.WorkPackageCode, element.Name);
-                        workPackageViewModels.Add(wpViewModel);
+                        WorkPackageSimpleViewModel wpSimpleViewModel = new WorkPackageSimpleViewModel(element.WorkPackageId, element.WorkPackageCode, element.Name);
+                        workPackageViewModels.Add(wpSimpleViewModel);
                     }
                     
                 }

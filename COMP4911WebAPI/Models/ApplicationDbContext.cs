@@ -22,6 +22,7 @@ namespace COMP4911WebAPI.Models
         public DbSet<LabourGrade> LabourGrades { get; set; }
         public DbSet<WorkPackageReport> WorkPackageReports { get; set; }
         public DbSet<WorkPackageReportDetails> WorkPackageReportDetails { get; set; }
+        public DbSet<WorkPackageLabourGradeAssignment> WorkPackageLabourGradeAssignment { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -71,7 +72,6 @@ namespace COMP4911WebAPI.Models
                 .WithMany(e => e.EmployeeWorkPackageAssignments)
                 .OnDelete(DeleteBehavior.Restrict);
 
-
             modelBuilder.Entity<WorkPackage>().HasMany(wp => wp.TimesheetRows)
                 .WithOne(tr => tr.WorkPackage)
                 .HasForeignKey(tr => new { tr.WorkPackageId })
@@ -80,6 +80,17 @@ namespace COMP4911WebAPI.Models
             modelBuilder.Entity<WorkPackage>().HasMany(wp => wp.WorkPackageReports)
                 .WithOne(wpr => wpr.WorkPackage)
                 .HasForeignKey(wpr => wpr.WorkPackageId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<WorkPackageLabourGradeAssignment>()
+                .HasKey(wplga => new {wplga.WorkPackageId, wplga.LabourGradeId});
+
+            modelBuilder.Entity<WorkPackageLabourGradeAssignment>().HasOne(wplga => wplga.WorkPackage)
+                .WithMany(wp => wp.WorkPackageLabourGradeAssignments)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<WorkPackageLabourGradeAssignment>().HasOne(wplga => wplga.LabourGrade)
+                .WithMany(lg => lg.WorkPackageLabourGradeAssignments)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<WorkPackageReport>().HasMany(wpr => wpr.WorkPackageReportDetails)
