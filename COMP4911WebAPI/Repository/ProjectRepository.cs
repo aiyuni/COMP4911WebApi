@@ -38,9 +38,9 @@ namespace COMP4911WebAPI.Repository
             return (await _projectContext.Projects.FindAsync(entity.ProjectId) != null);
         }
 
-        public async Task<Project> GetProjectByName(string name)
+        public async Task<Project> GetProjectByCode(int code)
         {
-            return (await _projectContext.Projects.Where(p => p.ProjectName.Equals(name)).FirstOrDefaultAsync());
+            return (await _projectContext.Projects.Where(p => p.ProjectCode == code).FirstOrDefaultAsync());
         }
         public async Task<Project> Get(int id)
         {
