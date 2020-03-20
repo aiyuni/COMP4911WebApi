@@ -855,7 +855,7 @@ namespace COMP4911WebAPI.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
-                    b.Property<int?>("ParentWorkPackageId");
+                    b.Property<int?>("ParentWorkPackageCode");
 
                     b.Property<int>("ProjectId");
 
@@ -868,7 +868,7 @@ namespace COMP4911WebAPI.Migrations
 
                     b.HasKey("WorkPackageId");
 
-                    b.HasIndex("ParentWorkPackageId");
+                    b.HasIndex("ParentWorkPackageCode");
 
                     b.HasIndex("ProjectId");
 
@@ -1272,7 +1272,7 @@ namespace COMP4911WebAPI.Migrations
                 {
                     b.HasOne("COMP4911WebAPI.Models.WorkPackage", "ParentWorkPackage")
                         .WithMany("ChildrenWorkPackages")
-                        .HasForeignKey("ParentWorkPackageId")
+                        .HasForeignKey("ParentWorkPackageCode")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("COMP4911WebAPI.Models.Project", "Project")

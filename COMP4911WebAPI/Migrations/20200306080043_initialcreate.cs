@@ -383,7 +383,7 @@ namespace COMP4911WebAPI.Migrations
 
             migrationBuilder.InsertData(
                 table: "WorkPackages",
-                columns: new[] { "WorkPackageId", "BudgetHours", "Description", "IsClosed", "IssueDate", "LastUpdatedBy", "LastUpdatedTime", "Name", "ParentWorkPackageId", "ProjectId", "ProposedHours", "ResponsibleEngineerId", "WorkPackageCode" },
+                columns: new[] { "WorkPackageId", "BudgetHours", "Description", "IsClosed", "IssueDate", "LastUpdatedBy", "LastUpdatedTime", "Name", "ParentWorkPackageCode", "ProjectId", "ProposedHours", "ResponsibleEngineerId", "WorkPackageCode" },
                 values: new object[,]
                 {
                     { 1, null, "WpDescription1Root", false, new DateTime(2020, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Seeded", new DateTime(2020, 3, 6, 0, 0, 43, 392, DateTimeKind.Local).AddTicks(7624), "WpName1Root", null, 1, null, 2, "A" },
@@ -403,7 +403,7 @@ namespace COMP4911WebAPI.Migrations
 
             migrationBuilder.InsertData(
                 table: "WorkPackages",
-                columns: new[] { "WorkPackageId", "BudgetHours", "Description", "IsClosed", "IssueDate", "LastUpdatedBy", "LastUpdatedTime", "Name", "ParentWorkPackageId", "ProjectId", "ProposedHours", "ResponsibleEngineerId", "WorkPackageCode" },
+                columns: new[] { "WorkPackageId", "BudgetHours", "Description", "IsClosed", "IssueDate", "LastUpdatedBy", "LastUpdatedTime", "Name", "ParentWorkPackageCode", "ProjectId", "ProposedHours", "ResponsibleEngineerId", "WorkPackageCode" },
                 values: new object[,]
                 {
                     { 2, 15.0, "WpDescription1Child1", false, new DateTime(2020, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "Seeded", new DateTime(2020, 3, 6, 0, 0, 43, 392, DateTimeKind.Local).AddTicks(8608), "WpName1Child1", 1, 1, 10.0, 2, "AB" },
@@ -451,7 +451,7 @@ namespace COMP4911WebAPI.Migrations
 
             migrationBuilder.InsertData(
                 table: "WorkPackages",
-                columns: new[] { "WorkPackageId", "BudgetHours", "Description", "IsClosed", "IssueDate", "LastUpdatedBy", "LastUpdatedTime", "Name", "ParentWorkPackageId", "ProjectId", "ProposedHours", "ResponsibleEngineerId", "WorkPackageCode" },
+                columns: new[] { "WorkPackageId", "BudgetHours", "Description", "IsClosed", "IssueDate", "LastUpdatedBy", "LastUpdatedTime", "Name", "ParentWorkPackageCode", "ProjectId", "ProposedHours", "ResponsibleEngineerId", "WorkPackageCode" },
                 values: new object[] { 5, 25.0, "WpDescription2ChildChild1", false, new DateTime(2020, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "Seeded", new DateTime(2020, 3, 6, 0, 0, 43, 392, DateTimeKind.Local).AddTicks(8648), "WpName2ChildChild1", 4, 2, 20.0, 2, "BAA" });
 
             migrationBuilder.InsertData(
@@ -638,7 +638,7 @@ namespace COMP4911WebAPI.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_WorkPackages_ParentWorkPackageId",
                 table: "WorkPackages",
-                column: "ParentWorkPackageId");
+                column: "ParentWorkPackageCode");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WorkPackages_ProjectId",
