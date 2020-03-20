@@ -451,12 +451,12 @@ namespace COMP4911WebAPI.Migrations
 
             migrationBuilder.InsertData(
                 table: "WorkPackages",
-                columns: new[] { "WorkPackageId", "BudgetHours", "Description", "IsClosed", "IssueDate", "LastUpdatedBy", "LastUpdatedTime", "Name", "ParentWorkPackageId", "ProjectId", "ProposedHours", "ResponsibleEngineerId", "WorkPackageCode" },
+                columns: new[] { "WorkPackageId", "BudgetHours", "Description", "IsClosed", "IssueDate", "LastUpdatedBy", "LastUpdatedTime", "Name", "ParentWorkPackageCode", "ProjectId", "ProposedHours", "ResponsibleEngineerId", "WorkPackageCode" },
                 values: new object[] { 8, null, "SickDescription", false, new DateTime(2020, 2, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), "Seeded", new DateTime(2020, 3, 18, 10, 41, 3, 157, DateTimeKind.Local).AddTicks(2863), "Sick", null, 4, null, 1, "Sick" });
 
             migrationBuilder.InsertData(
                 table: "WorkPackages",
-                columns: new[] { "WorkPackageId", "BudgetHours", "Description", "IsClosed", "IssueDate", "LastUpdatedBy", "LastUpdatedTime", "Name", "ParentWorkPackageId", "ProjectId", "ProposedHours", "ResponsibleEngineerId", "WorkPackageCode" },
+                columns: new[] { "WorkPackageId", "BudgetHours", "Description", "IsClosed", "IssueDate", "LastUpdatedBy", "LastUpdatedTime", "Name", "ParentWorkPackageCode", "ProjectId", "ProposedHours", "ResponsibleEngineerId", "WorkPackageCode" },
                 values: new object[] { 9, null, "VacationPackage", false, new DateTime(2020, 2, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), "Seeded", new DateTime(2020, 3, 18, 10, 41, 3, 157, DateTimeKind.Local).AddTicks(2871), "Vacation", null, 5, null, 1, "Vacation" });
         }
 
