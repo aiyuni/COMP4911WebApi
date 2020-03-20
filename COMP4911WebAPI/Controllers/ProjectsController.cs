@@ -18,7 +18,7 @@ namespace COMP4911WebAPI.Controllers
     [ApiController]
     public class ProjectsController : ControllerBase
     {
-        private readonly IDataRepository<Project> _projectRepository;
+        private readonly ProjectRepository _projectRepository;
         private readonly IDataRepository<EmployeeProjectAssignment> _employeeProjectAssignmentRepository;
         private readonly IDataRepository<Employee> _employeeRepository;
         private readonly IDataRepository<WorkPackage> _workPackageRepository;
@@ -28,7 +28,7 @@ namespace COMP4911WebAPI.Controllers
             IDataRepository<Employee> employeeRepository,
             IDataRepository<WorkPackage> workPackageRepository)
         {
-            this._projectRepository = projectRepository;
+            this._projectRepository = (ProjectRepository) projectRepository;
             this._employeeProjectAssignmentRepository = employeeProjectAssignmentRepository;
             this._employeeRepository = employeeRepository;
             this._workPackageRepository = workPackageRepository;
@@ -80,7 +80,7 @@ namespace COMP4911WebAPI.Controllers
         public async Task<IActionResult> GetAllProjectsAndLowerWpForEmp(int id)
         {
             var empProjectAssignmentList = (await _employeeProjectAssignmentRepository.GetAll()).Where(x => x.EmployeeId == id);
-            List<ProjectViewModel> projViewModels = new List<ProjectViewModel>();
+            List<ProjectDropDownViewModel> projViewModels = new List<ProjectDropDownViewModel>();
 
             foreach(EmployeeProjectAssignment item in empProjectAssignmentList)
             {
@@ -96,32 +96,71 @@ namespace COMP4911WebAPI.Controllers
                     }
                     
                 }
-                projViewModels.Add(new ProjectViewModel(projFull.ProjectId, projFull.ProjectName, workPackageViewModels));
+                projViewModels.Add(new ProjectDropDownViewModel(projFull.ProjectId, projFull.ProjectName, workPackageViewModels));
             }
             return Ok(projViewModels);
             
         }
 
-        // PUT: api/Projects/
-        [HttpPut]
-        public async Task<IActionResult> PutProject(Project project)
+        [HttpGet("CheckProjectCodeAvailability/{id}")]
+        public async Task<IActionResult> CheckProjectCodeAvailability(int id)
         {
-            await _projectRepository.Update(project);
-            return Ok(project);
+            bool value = await _projectRepository.CheckIfProjectCodeExists(id);
+            return Ok(!value);
+        }
+
+        //// PUT: api/Projects/
+        //[HttpPut]
+        //public async Task<IActionResult> PutProject(Project project)
+        //{
+        //    await _projectRepository.Update(project);
+        //    return Ok(project);
+        //}
+
+        // PUT: api/Projects/{id}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutProject(int id, ProjectViewModel projViewModel)
+        {
+            Project proj = new Project(projViewModel);
+            proj.ProjectId = id;
+            await _projectRepository.Update(proj);
+
+            EmployeeProjectAssignment supProjectAssignment = new EmployeeProjectAssignment(projViewModel.ProjectManager.EmployeeId,
+                id, true);
+            await _employeeProjectAssignmentRepository.Update(supProjectAssignment);
+
+            foreach (EmployeeNameViewModel emp in projViewModel.Employees)
+            {
+                EmployeeProjectAssignment empProjectAssignment = new EmployeeProjectAssignment(
+                    projViewModel.ProjectManager.EmployeeId,
+                    id, false);
+                await _employeeProjectAssignmentRepository.Update(empProjectAssignment);
+            }
+
+            return Ok(200);
         }
 
         // POST: api/Projects
         [HttpPost]
-        public async Task<ActionResult<Project>> PostProject(Project project)
+        public async Task<ActionResult<Project>> PostProject(ProjectViewModel projViewModel)
         {
-            await _projectRepository.Add(project);
-            Project thisProj = await ((ProjectRepository)_projectRepository).GetProjectByName(project.ProjectName);
+            Project proj = new Project(projViewModel);
+            await _projectRepository.Add(proj);
+
+            Project thisProj = await (_projectRepository).GetProjectByCode(projViewModel.ProjectCode);
             int projId = thisProj.ProjectId;
 
-            await _employeeProjectAssignmentRepository.Add(
-                new EmployeeProjectAssignment(project.ProjectManagerId, projId, true));
-            
-            return Ok(project);
+            EmployeeProjectAssignment supProjectAssignment = new EmployeeProjectAssignment(projViewModel.ProjectManager.EmployeeId,
+                projId, true);
+            await _employeeProjectAssignmentRepository.Add(supProjectAssignment);
+
+            foreach (EmployeeNameViewModel emp in projViewModel.Employees)
+            {
+                EmployeeProjectAssignment empProjAssignment = new EmployeeProjectAssignment(emp.EmployeeId, projId, false);
+                await _employeeProjectAssignmentRepository.Add(empProjAssignment);
+            }
+
+            return Ok(projViewModel);
         }
 
         // DELETE: api/Projects/5
@@ -150,9 +189,6 @@ namespace COMP4911WebAPI.Controllers
             }
 
             List<WorkPackage> workPackages = new List<WorkPackage>();
-
-            
-
 
             foreach (WorkPackage wp in await _workPackageRepository.GetAll())
             {

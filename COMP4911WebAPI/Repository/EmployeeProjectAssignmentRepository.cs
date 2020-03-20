@@ -62,8 +62,12 @@ namespace COMP4911WebAPI.Repository
 
         public async Task Update(EmployeeProjectAssignment entity)
         {
-            // _employeeProjectAssignmentContext.Entry(dbEntity).CurrentValues.SetValues(entity);
             Debug.WriteLine("updating employeeProjectAssignment");
+            EmployeeProjectAssignment dbEntity = await _employeeProjectAssignmentContext.EmployeeProjectAssignments
+                .FindAsync(entity.EmployeeId, entity.ProjectId);
+            _employeeProjectAssignmentContext.Entry(dbEntity).CurrentValues.SetValues(entity);
+            await _employeeProjectAssignmentContext.SaveChangesAsync();
+            Debug.WriteLine("Updated EmployeeProjectAssignments...");
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using COMP4911WebAPI.ViewModels;
 
 namespace COMP4911WebAPI.Models
 {
@@ -19,6 +20,9 @@ namespace COMP4911WebAPI.Models
 
         [Required]
         public string ProjectDescription { get; set; }
+
+        [Required]
+        public double Budget { get; set; }
 
         [Required]
         public int ProjectManagerId { get; set; }
@@ -46,6 +50,21 @@ namespace COMP4911WebAPI.Models
             this.LastUpdatedBy = Environment.UserName.ToString();
         }
 
+        //For POST, PUT
+        public Project(ProjectViewModel projViewModel)
+        {
+            this.Budget = projViewModel.Budget;
+            this.ProjectName = projViewModel.ProjectName;
+            this.ProjectCode = projViewModel.ProjectCode;
+            this.StartDate = projViewModel.StartDate;
+            this.EndDate = projViewModel.EndDate;
+            this.ProjectDescription = projViewModel.Description;
+            this.IsClosed = projViewModel.IsClosed;
+
+            this.LastUpdatedTime = DateTime.Now;
+            this.LastUpdatedBy = Environment.UserName.ToString();
+        }
+
         //For seeding
         public Project(int id, int code, string name, string description, int projectManagerId, DateTime startDate, DateTime endDate, bool isClosed)
         {
@@ -59,6 +78,7 @@ namespace COMP4911WebAPI.Models
             this.LastUpdatedTime = DateTime.Now;
             this.LastUpdatedBy = "seeded";
             this.IsClosed = isClosed;
+            this.Budget = 1337;
         }
 
         public Project(int code, string name, string description, int projectManagerId, DateTime startDate, DateTime endDate)

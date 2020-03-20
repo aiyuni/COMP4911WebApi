@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using COMP4911WebAPI.Models;
@@ -46,9 +47,14 @@ namespace COMP4911WebAPI.Repository
             throw new NotImplementedException();
         }
 
-        public Task Update(EmployeeWorkPackageAssignment entity)
+        public async Task Update(EmployeeWorkPackageAssignment entity)
         {
-            throw new NotImplementedException();
+            EmployeeWorkPackageAssignment dbEntity = await _employeeWorkPackageAssignmentContext
+                .EmployeeWorkPackageAssignments
+                .FindAsync(entity.EmployeeId, entity.WorkPackageId);
+            _employeeWorkPackageAssignmentContext.Entry(dbEntity).CurrentValues.SetValues(entity);
+            await _employeeWorkPackageAssignmentContext.SaveChangesAsync();
+            Debug.WriteLine("Updated EmployeeWorkPackageAssignments...");
         }
 
         public Task<bool> CheckIfExists(EmployeeWorkPackageAssignment entity)

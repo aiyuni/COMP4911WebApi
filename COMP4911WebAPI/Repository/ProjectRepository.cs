@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using COMP4911WebAPI.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace COMP4911WebAPI.Repository
@@ -37,9 +38,9 @@ namespace COMP4911WebAPI.Repository
             return (await _projectContext.Projects.FindAsync(entity.ProjectId) != null);
         }
 
-        public async Task<Project> GetProjectByName(string name)
+        public async Task<Project> GetProjectByCode(int code)
         {
-            return (await _projectContext.Projects.Where(p => p.ProjectName.Equals(name)).FirstOrDefaultAsync());
+            return (await _projectContext.Projects.Where(p => p.ProjectCode == code).FirstOrDefaultAsync());
         }
         public async Task<Project> Get(int id)
         {
@@ -79,6 +80,12 @@ namespace COMP4911WebAPI.Repository
             _projectContext.Entry(dbEntity).CurrentValues.SetValues(entity);
             await _projectContext.SaveChangesAsync();
             Debug.WriteLine("updated projects...");
+        }
+
+        public async Task<bool> CheckIfProjectCodeExists(int id)
+        {
+            bool exists = await _projectContext.Projects.AnyAsync(p => p.ProjectCode == id);
+            return exists;
         }
     }
 }
