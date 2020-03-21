@@ -154,6 +154,48 @@ namespace COMP4911WebAPI.Controllers
             return Ok(wpViewModels);
         }
 
+        [HttpGet("GetallWorkPackagesByEmpId/{empId}")]
+        public async Task<ActionResult> GetAllWorkPackageByEmpId(int empId)
+        {
+            IList<WorkPackageViewModel> wpViewModels = new List<WorkPackageViewModel>();
+
+            //IEnumerable<WorkPackage> wpList = await _workPackageRepository.GetAll();
+
+            IEnumerable<EmployeeWorkPackageAssignment> empWpList = await _empWorkPackageAssignmentRepository.GetAll();
+            empWpList = empWpList.Where(x => x.EmployeeId == empId);
+
+            IList<WorkPackage> wpList = new List<WorkPackage>();
+
+            foreach (EmployeeWorkPackageAssignment item in empWpList)
+            {
+                WorkPackage wp = await _workPackageRepository.Get(item.WorkPackageId);
+                wpList.Add(wp);
+            }
+
+            foreach (WorkPackage wp in wpList)
+            {
+                //Get ParentWPCode
+                int? parentWpId = wp.ParentWorkPackageId;
+                string parentWpCode = null;
+                WorkPackage parentWp;
+                if (parentWpId != null)
+                {
+                    parentWp = await _workPackageRepository.Get((int)parentWpId);
+                    parentWpCode = parentWp.WorkPackageCode;
+                }
+
+                //GetProject
+                Project proj = await _projectRepository.Get(wp.ProjectId);
+
+                //GetResponsibleEngineer
+                Employee re = await _employeeRepository.Get(wp.ResponsibleEngineerId);
+                
+                wpViewModels.Add(new WorkPackageViewModel(wp, parentWpCode, proj, new EmployeeNameViewModel(re)));
+            }
+
+            return Ok(wpViewModels);
+        }
+
         // GET: api/WorkPackages/GetTotalHoursByWpIdRange/B/2020-2-10/2020-2-20/2
         //This is for WP Report
         [HttpGet("GetTotalHoursByWpIdRange/{wpId}/{startDate}/{endDate}/{labourGradeId}")]

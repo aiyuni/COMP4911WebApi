@@ -117,6 +117,7 @@ namespace COMP4911WebAPI.Controllers
                 //https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/null-coalescing-operator
                 var supervisor = await GetEmployeeByIdHelper((item.SupervisorId ?? 0));
                 var timesheets = await GetTimesheetByEmpIdHelper(item.EmployeeId);
+                timesheets = timesheets.Where(t => t.Status == TimesheetStatus.Pending);
 
                 Credential empCred = (await _credentialRepository.GetAll()).FirstOrDefault(c => c.EmployeeId == item.EmployeeId);
                 LabourGrade labourGrade = await _labourGradeRepository.Get(item.LabourGradeId);
@@ -134,8 +135,6 @@ namespace COMP4911WebAPI.Controllers
             return Ok(timesheetApproverViews);
 
         }
-
-
 
         [NonAction]
         public async Task<IEnumerable<Timesheet>> GetTimesheetByEmpIdHelper(int id)
