@@ -60,6 +60,21 @@ namespace COMP4911WebAPI.ViewModels
             this.IsClosed = wp.IsClosed;
             this.ParentWorkPackageCode = parentWpCode;
         }
+
+        //Used for getAllWpByEmpId
+        public WorkPackageViewModel(WorkPackage wp, string parentWpCode, Project proj, EmployeeNameViewModel re)
+        {
+            this.WorkPackageId = wp.WorkPackageId;
+            this.ProjectCode = proj.ProjectCode;
+            this.ProjectName = proj.ProjectName;
+            this.WorkPackageCode = wp.WorkPackageCode;
+            this.WorkPackageTitle = wp.Name;
+            this.Contractor = wp.Contractor;
+            this.IssueDate = wp.IssueDate;
+            this.IsClosed = wp.IsClosed;
+            this.ParentWorkPackageCode = parentWpCode;
+            this.ResponsibleEngineer = re;
+        }
     }
 
     public class PmPlanningViewModel
