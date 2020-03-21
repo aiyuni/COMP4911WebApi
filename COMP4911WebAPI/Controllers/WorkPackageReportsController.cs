@@ -140,8 +140,21 @@ namespace COMP4911WebAPI.Controllers
                 await _workPackageReportRepository.Add(new WorkPackageReport(workPackageReportViewModel, wpId));
                 foreach (WorkPackageReportDetailsViewModel details in workPackageReportViewModel.Details)
                 {
-                    await _workPackageReportDetailsRepository.Add(
-                        new WorkPackageReportDetails(details, wpId));
+                    WorkPackageReportDetails wpReportDetails = new WorkPackageReportDetails();
+                    wpReportDetails.LabourGradeId = details.LabourGradeId;
+                    wpReportDetails.WorkPackageReportId = wpId;
+                    wpReportDetails.LabourGradeName = details.LabourGradeName;
+                    wpReportDetails.ResponsibleEngineerBudgetInDays = details.ReBudgetDay;
+                    wpReportDetails.TotalDays = details.TotalDays;
+                    wpReportDetails.ReEstimateAtCompletion = details.ReEAC;
+                    wpReportDetails.ReEstimateToCompletion = details.ReETC;
+                    wpReportDetails.VariancePercent = details.Variance;
+                    wpReportDetails.CompletionPercent = details.Complete;
+                    wpReportDetails.LastUpdatedBy = Environment.UserName;
+                    wpReportDetails.LastUpdatedTime = DateTime.Now;
+
+                    await _workPackageReportDetailsRepository.Add(wpReportDetails);
+                    //await _workPackageReportDetailsRepository.Add(new WorkPackageReportDetails(details, wpId));
                 }
 
                 return Ok(200);

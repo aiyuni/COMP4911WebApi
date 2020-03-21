@@ -33,6 +33,11 @@ namespace COMP4911WebAPI.ViewModels
         public double Variance { get; set; }
         public double Complete { get; set; }
 
+        public WorkPackageReportDetailsViewModel()
+        {
+
+        }
+
         public WorkPackageReportDetailsViewModel(WorkPackageReportDetails _workPackageReportDetails)
         {
             this.LabourGradeId = _workPackageReportDetails.LabourGradeId;
