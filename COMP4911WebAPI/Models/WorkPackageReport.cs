@@ -10,7 +10,7 @@ namespace COMP4911WebAPI.Models
 {
     public class WorkPackageReport
     {
-       // [Key]
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int WorkPackageReportId { get; set; } //internal use.  
 

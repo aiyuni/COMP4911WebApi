@@ -20,14 +20,24 @@ namespace COMP4911WebAPI.Controllers
         private readonly IDataRepository<WorkPackageReport> _workPackageReportRepository;
         private readonly IDataRepository<WorkPackageReportDetails> _workPackageReportDetailsRepository;
         private readonly IDataRepository<WorkPackage> _workPackageRepository;
+        private readonly IDataRepository<Project> _projectRepository;
+        private readonly IDataRepository<Employee> _employeeRepository;
+        private readonly IDataRepository<LabourGrade> _labourGradeRepository;
+        private readonly IDataRepository<EmployeeWorkPackageAssignment> _employeeWorkPackageAssignmentRepository;
 
         public WorkPackageReportsController(IDataRepository<WorkPackageReport> workPackageReportRepository, 
             IDataRepository<WorkPackageReportDetails> workPackageReportDetailsRepository,
-            IDataRepository<WorkPackage> workPackageRepository)
+            IDataRepository<WorkPackage> workPackageRepository, IDataRepository<Project> projectRepository,
+            IDataRepository<Employee> employeeRepository, IDataRepository<LabourGrade> labourGradeRepository,
+            IDataRepository<EmployeeWorkPackageAssignment> employeeWorkPackageAssignmentRepository)
         {
             this._workPackageReportRepository = workPackageReportRepository;
             this._workPackageReportDetailsRepository = workPackageReportDetailsRepository;
             this._workPackageRepository = workPackageRepository;
+            this._projectRepository = projectRepository;
+            this._employeeRepository = employeeRepository;
+            this._labourGradeRepository = labourGradeRepository;
+            this._employeeWorkPackageAssignmentRepository = employeeWorkPackageAssignmentRepository;
         }
 
         // GET: api/WorkPackageReports
@@ -40,10 +50,12 @@ namespace COMP4911WebAPI.Controllers
         // GET: api/WorkPackageReports/5
         //INPROGRESS - need to create a new viewmodel for get as its different from post. Or look into reusing current model?
         [HttpGet("{id}")]
-        public async Task<ActionResult<WorkPackageReport>> GetWorkPackageReport(string id)
+        public async Task<ActionResult<WorkPackageReportGetViewModel>> GetWorkPackageReport(string id)
         {
             try
             {
+                var workPackage = (await _workPackageRepository.GetAll()).FirstOrDefault(w => w.WorkPackageCode.Equals(id));
+                var project = await _projectRepository.Get(workPackage.ProjectId);
                 int wpId = (await _workPackageRepository.GetAll()).FirstOrDefault(w => w.WorkPackageCode.Equals(id))
                     .WorkPackageId;
                 var workPackageReport = await _workPackageReportRepository.Get(wpId);
@@ -53,12 +65,44 @@ namespace COMP4911WebAPI.Controllers
                     return NotFound();
                 }
 
-                return workPackageReport;
+
+                var projectManager = await _employeeRepository.Get(project.ProjectManagerId);
+                projectManager.LabourGrade = await _labourGradeRepository.Get(projectManager.LabourGradeId);
+                var responsibleEngineer = await _employeeRepository.Get(workPackage.ResponsibleEngineerId);
+                responsibleEngineer.LabourGrade = await _labourGradeRepository.Get(responsibleEngineer.LabourGradeId);
+
+
+                List<EmployeeReportViewModel> engineers = new List<EmployeeReportViewModel>();
+
+                foreach(EmployeeWorkPackageAssignment item in await _employeeWorkPackageAssignmentRepository.GetAll())
+                {
+                    if (item.WorkPackageId == wpId)
+                    {
+                        var engineer = await _employeeRepository.Get(item.EmployeeId);
+                        engineer.LabourGrade = await _labourGradeRepository.Get(engineer.LabourGradeId);
+                        engineers.Add(new EmployeeReportViewModel(engineer));
+                    }
+                }
+
+                List<WorkPackageReportDetailsViewModel> details = new List<WorkPackageReportDetailsViewModel>();
+
+                foreach (WorkPackageReportDetails item in await _workPackageReportDetailsRepository.GetAll())
+                {
+                    if (item.WorkPackageReportId == workPackageReport.WorkPackageReportId)
+                    {
+                        details.Add(new WorkPackageReportDetailsViewModel(item));
+                    }
+                }
+
+                WorkPackageReportGetViewModel workPackageReportGetViewModel = new WorkPackageReportGetViewModel(workPackageReport, workPackage, project, projectManager, responsibleEngineer, engineers, details);
+
+                return workPackageReportGetViewModel;
             }
             catch (NullReferenceException e)
             {
                 return Ok(new Exception("Null pointer: WorkPackageview's wp code might not exist in database. " +
-                                        "Cannot get ID for wp code."));
+                                        "Cannot get ID for wp code." +
+                                        " Error msg: " + e.ToString()));
             }
             catch (Exception e)
             {
@@ -96,8 +140,21 @@ namespace COMP4911WebAPI.Controllers
                 await _workPackageReportRepository.Add(new WorkPackageReport(workPackageReportViewModel, wpId));
                 foreach (WorkPackageReportDetailsViewModel details in workPackageReportViewModel.Details)
                 {
-                    await _workPackageReportDetailsRepository.Add(
-                        new WorkPackageReportDetails(details, wpId));
+                    WorkPackageReportDetails wpReportDetails = new WorkPackageReportDetails();
+                    wpReportDetails.LabourGradeId = details.LabourGradeId;
+                    wpReportDetails.WorkPackageReportId = wpId;
+                    wpReportDetails.LabourGradeName = details.LabourGradeName;
+                    wpReportDetails.ResponsibleEngineerBudgetInDays = details.ReBudgetDay;
+                    wpReportDetails.TotalDays = details.TotalDays;
+                    wpReportDetails.ReEstimateAtCompletion = details.ReEAC;
+                    wpReportDetails.ReEstimateToCompletion = details.ReETC;
+                    wpReportDetails.VariancePercent = details.Variance;
+                    wpReportDetails.CompletionPercent = details.Complete;
+                    wpReportDetails.LastUpdatedBy = Environment.UserName;
+                    wpReportDetails.LastUpdatedTime = DateTime.Now;
+
+                    await _workPackageReportDetailsRepository.Add(wpReportDetails);
+                    //await _workPackageReportDetailsRepository.Add(new WorkPackageReportDetails(details, wpId));
                 }
 
                 return Ok(200);
