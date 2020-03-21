@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using COMP4911WebAPI.ViewModels;
 
 namespace COMP4911WebAPI.Models
 {
@@ -29,9 +30,11 @@ namespace COMP4911WebAPI.Models
         [Required]
         public string Description { get; set; }
 
-        public double? ProposedHours { get; set; }
+       // public double? ProposedHours { get; set; }
 
-        public double? BudgetHours { get; set; }
+       // public double? BudgetHours { get; set; }
+
+        public string Contractor { get; set; }
 
         [Required]
         [DataType(DataType.DateTime)]
@@ -51,11 +54,29 @@ namespace COMP4911WebAPI.Models
         public Project Project { get; set; }
         public IList<TimesheetRow> TimesheetRows { get; set; }
         public IList<EmployeeWorkPackageAssignment> EmployeeWorkPackageAssignments { get; set; }
+        public IList<WorkPackageLabourGradeAssignment> WorkPackageLabourGradeAssignments { get; set; }
         public IList<WorkPackageReport> WorkPackageReports { get; set; }
 
         public WorkPackage()
         {
 
+        }
+
+        //For Post. Id is auto generated.
+        public WorkPackage(WorkPackageViewModel workPackageViewModel, int parentWpId, int projectId)  //stopped here.  Add constructor, then go back to WorkPackageController.
+        //Break down into new WorkPackageLabourGradeAssignment, etc 
+        {
+            this.WorkPackageCode = workPackageViewModel.WorkPackageCode;
+            this.Name = workPackageViewModel.WorkPackageTitle;
+            this.ResponsibleEngineerId = workPackageViewModel.ResponsibleEngineer.EmployeeId;
+            this.ParentWorkPackageId = parentWpId;
+            this.ProjectId = projectId;
+            this.Contractor = workPackageViewModel.Contractor;
+            this.Description = "No description in new format";
+            this.IssueDate = workPackageViewModel.IssueDate;
+            this.IsClosed = workPackageViewModel.IsClosed;
+            this.LastUpdatedTime = DateTime.Now;
+            this.LastUpdatedBy = Environment.UserName;
         }
 
         //For seeding
@@ -70,8 +91,8 @@ namespace COMP4911WebAPI.Models
             this.Description = description;
             this.IssueDate = issueDate;
             this.IsClosed = isClosed;
-            this.ProposedHours = proposedHours;
-            this.BudgetHours = budgetHours;
+           // this.ProposedHours = proposedHours;
+            //this.BudgetHours = budgetHours;
             this.ParentWorkPackageId = parentWorkPackageId;
 
             this.LastUpdatedTime = DateTime.Now;

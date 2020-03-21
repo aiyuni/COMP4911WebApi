@@ -23,17 +23,24 @@ namespace COMP4911WebAPI.Controllers
         private readonly ProjectRepository _projectRepository;
         private readonly TimesheetRepository _timesheetRepository;
         private readonly EmployeeRepository _employeeRepository;
+        private readonly WorkPackageLabourGradeAssignmentRepository _workPackageLabourGradeRepository;
+        private readonly EmployeeWorkPackageAssignmentRepository _empWorkPackageAssignmentRepository;
         private readonly EmployeesController _empController;
         private readonly TimesheetsController _tsController;
 
         public WorkPackagesController(IDataRepository<WorkPackage> wpRepository, IDataRepository<Project> projRepository,
-            IDataRepository<Timesheet> timesheetRepository, IDataRepository<Employee> employeeRepository, 
+            IDataRepository<Timesheet> timesheetRepository, IDataRepository<Employee> employeeRepository,
+            IDataRepository<WorkPackageLabourGradeAssignment> workPackageLabourGradeAssignment,
+            IDataRepository<EmployeeWorkPackageAssignment> empWorkPackageAssignment,
             EmployeesController empController, TimesheetsController tsController)
         {
             this._workPackageRepository = (WorkPackageRepository) wpRepository;
             this._projectRepository = (ProjectRepository) projRepository;
             this._timesheetRepository = (TimesheetRepository) timesheetRepository;
             this._employeeRepository = (EmployeeRepository) employeeRepository;
+            this._workPackageLabourGradeRepository = (WorkPackageLabourGradeAssignmentRepository) workPackageLabourGradeAssignment;
+            this._empWorkPackageAssignmentRepository =
+                (EmployeeWorkPackageAssignmentRepository) empWorkPackageAssignment;
             this._empController = empController;
             this._tsController = tsController;
         }
@@ -55,13 +62,142 @@ namespace COMP4911WebAPI.Controllers
         }
 
         // GET: api/WorkPackages/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<WorkPackage>> GetWorkPackage(int id)
+        [HttpGet("{code}")]
+        public async Task<ActionResult<WorkPackage>> GetWorkPackage(string code)
         {
-            return Ok(await _workPackageRepository.Get(id));
+            //Get WpId from param that is WpCode
+            int id = _workPackageRepository.GetIdByCode(code);
+
+            //Get WP
+            WorkPackage wp = await _workPackageRepository.Get(id);
+
+            //Get ParentWPCode
+            int? parentWpId = wp.ParentWorkPackageId;
+            string parentWpCode = null;
+            WorkPackage parentWp;
+            if (parentWpId != null)
+            {
+                parentWp = await _workPackageRepository.Get((int)parentWpId);
+                parentWpCode = parentWp.WorkPackageCode;
+            }
+
+            //GetProject
+            Project proj = await _projectRepository.Get(wp.ProjectId);
+
+            //Filter EmployeeWokPackageAssignments
+            IEnumerable<EmployeeWorkPackageAssignment> empWpAssignments = await _empWorkPackageAssignmentRepository.GetAll();
+            empWpAssignments = empWpAssignments.Where(x => x.WorkPackageId == id);  
+
+            //Get employees list and Responsible Engineer
+            IList<EmployeeNameViewModel> employees = new List<EmployeeNameViewModel>();
+            EmployeeNameViewModel responsibleEngineer = null;
+
+            foreach (EmployeeWorkPackageAssignment empWpAssignment in empWpAssignments)
+            {
+                Employee emp = await _employeeRepository.Get(empWpAssignment.EmployeeId);
+                if (wp.ResponsibleEngineerId != empWpAssignment.EmployeeId)
+                {
+                    employees.Add(new EmployeeNameViewModel(emp));
+                }
+                else
+                {
+                    responsibleEngineer = new EmployeeNameViewModel(emp);
+                }
+            }
+
+            //Filter WorkPackageLabourGradeAssignments
+            IEnumerable<WorkPackageLabourGradeAssignment> wpLabourGradeAssignments =
+                await _workPackageLabourGradeRepository.GetAll();
+            wpLabourGradeAssignments = wpLabourGradeAssignments.Where(x => x.WorkPackageId == id);
+
+            //Get PmPlannings
+            IList<PmPlanningViewModel> pmPlannings = new List<PmPlanningViewModel>();
+            foreach (WorkPackageLabourGradeAssignment item in wpLabourGradeAssignments)
+            {
+                pmPlannings.Add(new PmPlanningViewModel(item));
+            }
+
+            //Create the viewmodel
+            WorkPackageViewModel wpViewModel = new WorkPackageViewModel(wp, parentWpCode, proj, responsibleEngineer, employees, pmPlannings);
+
+           // return Ok(await _workPackageRepository.Get(id));  //this is just plain database table object
+           return Ok(wpViewModel);
+        }
+
+        //GET: api/WorkPackages/GetAllWorkPackagesByProjectId/2
+        [HttpGet("GetAllWorkPackagesByProjectId/{projId}")]
+        public async Task<ActionResult> GetAllWorkPackagesByProjectId(int projId)
+        {
+            IList<WorkPackageViewModel> wpViewModels = new List<WorkPackageViewModel>();
+
+            IEnumerable<WorkPackage> wpList = await _workPackageRepository.GetAll();
+            wpList = wpList.Where(wp => wp.ProjectId == projId);
+
+            foreach (WorkPackage wp in wpList)
+            {
+                //Get ParentWPCode
+                int? parentWpId = wp.ParentWorkPackageId;
+                string parentWpCode = null;
+                WorkPackage parentWp;
+                if (parentWpId != null)
+                {
+                    parentWp = await _workPackageRepository.Get((int)parentWpId);
+                    parentWpCode = parentWp.WorkPackageCode;
+                }
+
+                //GetProject
+                Project proj = await _projectRepository.Get(wp.ProjectId);
+
+                wpViewModels.Add(new WorkPackageViewModel(wp, parentWpCode, proj));
+            }
+
+            return Ok(wpViewModels);
+        }
+
+        [HttpGet("GetallWorkPackagesByEmpId/{empId}")]
+        public async Task<ActionResult> GetAllWorkPackageByEmpId(int empId)
+        {
+            IList<WorkPackageViewModel> wpViewModels = new List<WorkPackageViewModel>();
+
+            //IEnumerable<WorkPackage> wpList = await _workPackageRepository.GetAll();
+
+            IEnumerable<EmployeeWorkPackageAssignment> empWpList = await _empWorkPackageAssignmentRepository.GetAll();
+            empWpList = empWpList.Where(x => x.EmployeeId == empId);
+
+            IList<WorkPackage> wpList = new List<WorkPackage>();
+
+            foreach (EmployeeWorkPackageAssignment item in empWpList)
+            {
+                WorkPackage wp = await _workPackageRepository.Get(item.WorkPackageId);
+                wpList.Add(wp);
+            }
+
+            foreach (WorkPackage wp in wpList)
+            {
+                //Get ParentWPCode
+                int? parentWpId = wp.ParentWorkPackageId;
+                string parentWpCode = null;
+                WorkPackage parentWp;
+                if (parentWpId != null)
+                {
+                    parentWp = await _workPackageRepository.Get((int)parentWpId);
+                    parentWpCode = parentWp.WorkPackageCode;
+                }
+
+                //GetProject
+                Project proj = await _projectRepository.Get(wp.ProjectId);
+
+                //GetResponsibleEngineer
+                Employee re = await _employeeRepository.Get(wp.ResponsibleEngineerId);
+                
+                wpViewModels.Add(new WorkPackageViewModel(wp, parentWpCode, proj, new EmployeeNameViewModel(re)));
+            }
+
+            return Ok(wpViewModels);
         }
 
         // GET: api/WorkPackages/GetTotalHoursByWpIdRange/B/2020-2-10/2020-2-20/2
+        //This is for WP Report
         [HttpGet("GetTotalHoursByWpIdRange/{wpId}/{startDate}/{endDate}/{labourGradeId}")]
         public async Task<ActionResult> GetActualDaysByWpIdRange(string wpId, DateTime startDate, DateTime endDate,
             int labourGradeId)
@@ -102,21 +238,58 @@ namespace COMP4911WebAPI.Controllers
             return Ok(new TotalDaysViewModel(totalHours/8));
         }
 
-        // PUT: api/WorkPackages/5
+        //// PUT: api/WorkPackages/5
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> PutWorkPackage(int id, WorkPackage workPackage)
+        //{
+        //    await _workPackageRepository.Update(workPackage);
+        //    return NoContent();
+        //}
+
+        // New PUT: api/WorkPackages/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutWorkPackage(int id, WorkPackage workPackage)
+        public async Task<IActionResult> PutWorkPackage(int id, WorkPackageViewModel wpViewModel)
         {
-            await _workPackageRepository.Update(workPackage);
-            return NoContent();
+            //Get Project and ParentWpIds
+            int parentWpId = _workPackageRepository.GetIdByCode(wpViewModel.ParentWorkPackageCode);
+            int projectId = _projectRepository.GetIdByCode(wpViewModel.ProjectCode);
+            int wpId = wpViewModel.WorkPackageId;
+
+            WorkPackage wp = new WorkPackage(wpViewModel, parentWpId, projectId);
+            wp.WorkPackageId = wpId; //id is needed for PUT
+
+            await _workPackageRepository.Update(wp);
+
+            foreach (PmPlanningViewModel pmViewModel in wpViewModel.PmPlannings)
+            {
+                WorkPackageLabourGradeAssignment wplga = new WorkPackageLabourGradeAssignment(wpId, pmViewModel);
+                await _workPackageLabourGradeRepository.Update(wplga);
+            }
+
+            return Ok(200);
         }
 
-        // POST: api/WorkPackages
+        //New Post: api/WorkPackages
         [HttpPost]
-        public async Task<ActionResult<WorkPackage>> PostWorkPackage(WorkPackage workPackage)
+        public async Task<ActionResult<WorkPackageViewModel>> PostWorkPackage(WorkPackageViewModel wpViewModel)
         {
-            Debug.WriteLine("posting work package...");
-            await _workPackageRepository.Add(workPackage);
-            return Ok(200);
+            //Get Project and ParentWpIds
+            int parentWpId = _workPackageRepository.GetIdByCode(wpViewModel.ParentWorkPackageCode);
+            int projectId = _projectRepository.GetIdByCode(wpViewModel.ProjectCode);
+
+            WorkPackage wp = new WorkPackage(wpViewModel, parentWpId, projectId);
+            await _workPackageRepository.Add(wp);
+
+            //Get id of the wp just added
+            int wpId = _workPackageRepository.GetIdByCode(wpViewModel.WorkPackageCode);
+
+            foreach (PmPlanningViewModel pmViewModel in wpViewModel.PmPlannings)
+            {
+                WorkPackageLabourGradeAssignment wplga = new WorkPackageLabourGradeAssignment(wpId, pmViewModel);
+                await _workPackageLabourGradeRepository.Add(wplga);
+            }
+
+            return Ok(wpViewModel);
         }
 
         private bool WorkPackageExists(int id)

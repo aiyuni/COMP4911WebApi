@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using COMP4911WebAPI.ViewModels;
 
 namespace COMP4911WebAPI.Models
 {
@@ -12,10 +13,16 @@ namespace COMP4911WebAPI.Models
         public int ProjectId { get; set; }
 
         [Required]
+        public int ProjectCode { get; set; }
+
+        [Required]
         public string ProjectName { get; set; }
 
         [Required]
         public string ProjectDescription { get; set; }
+
+        [Required]
+        public double Budget { get; set; }
 
         [Required]
         public int ProjectManagerId { get; set; }
@@ -43,10 +50,26 @@ namespace COMP4911WebAPI.Models
             this.LastUpdatedBy = Environment.UserName.ToString();
         }
 
+        //For POST, PUT
+        public Project(ProjectViewModel projViewModel)
+        {
+            this.Budget = projViewModel.Budget;
+            this.ProjectName = projViewModel.ProjectName;
+            this.ProjectCode = projViewModel.ProjectCode;
+            this.StartDate = projViewModel.StartDate;
+            this.EndDate = projViewModel.EndDate;
+            this.ProjectDescription = projViewModel.Description;
+            this.IsClosed = projViewModel.IsClosed;
+
+            this.LastUpdatedTime = DateTime.Now;
+            this.LastUpdatedBy = Environment.UserName.ToString();
+        }
+
         //For seeding
-        public Project(int id, string name, string description, int projectManagerId, DateTime startDate, DateTime endDate, bool isClosed)
+        public Project(int id, int code, string name, string description, int projectManagerId, DateTime startDate, DateTime endDate, bool isClosed)
         {
             this.ProjectId = id;
+            this.ProjectCode = code;
             this.ProjectName = name;
             this.ProjectDescription = description;
             this.ProjectManagerId = projectManagerId;
@@ -55,10 +78,12 @@ namespace COMP4911WebAPI.Models
             this.LastUpdatedTime = DateTime.Now;
             this.LastUpdatedBy = "seeded";
             this.IsClosed = isClosed;
+            this.Budget = 1337;
         }
 
-        public Project(string name, string description, int projectManagerId, DateTime startDate, DateTime endDate)
+        public Project(int code, string name, string description, int projectManagerId, DateTime startDate, DateTime endDate)
         {
+            this.ProjectCode = code;
             this.ProjectName = name;
             this.ProjectDescription = description;
             this.ProjectManagerId = projectManagerId;

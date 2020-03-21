@@ -7,7 +7,7 @@ using COMP4911WebAPI.Models;
 namespace COMP4911WebAPI.ViewModels
 {
     /**Simplified Employee view model with just the names */
-    public class EmployeeNameViewModel
+    public class EmployeeNameViewModel  //rename to EmployeeSimpleViewModel later
     {
         public int EmployeeId { get; set; }
         public string EmpFirstName { get; set; }
