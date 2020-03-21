@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using COMP4911WebAPI.Models;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 namespace COMP4911WebAPI.ViewModels
@@ -31,5 +32,17 @@ namespace COMP4911WebAPI.ViewModels
         public double ReEAC { get; set; }
         public double Variance { get; set; }
         public double Complete { get; set; }
+
+        public WorkPackageReportDetailsViewModel(WorkPackageReportDetails _workPackageReportDetails)
+        {
+            this.LabourGradeId = _workPackageReportDetails.LabourGradeId;
+            this.LabourGradeName = _workPackageReportDetails.LabourGradeName;
+            this.ReBudgetDay = _workPackageReportDetails.ResponsibleEngineerBudgetInDays;
+            this.TotalDays = _workPackageReportDetails.TotalDays;
+            this.ReETC = _workPackageReportDetails.ReEstimateToCompletion;
+            this.ReEAC = _workPackageReportDetails.ReEstimateAtCompletion;
+            this.Variance = _workPackageReportDetails.VariancePercent;
+            this.Complete = _workPackageReportDetails.CompletionPercent;
+        }
     }
 }
