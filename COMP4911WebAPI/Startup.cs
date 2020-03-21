@@ -98,6 +98,7 @@ namespace COMP4911WebAPI
             services.AddScoped<IDataRepository<Credential>, CredentialRepository>();
             services.AddScoped<IDataRepository<Project>, ProjectRepository>();
             services.AddScoped<IDataRepository<EmployeeProjectAssignment>, EmployeeProjectAssignmentRepository>();
+            services.AddScoped<IDataRepository<EmployeeWorkPackageAssignment>, EmployeeWorkPackageAssignmentRepository>();
             services.AddScoped<IDataRepository<Timesheet>, TimesheetRepository>();
             services.AddScoped<IDataRepository<TimesheetRow>, TimesheetRowRepository>();
             services.AddScoped<IDataRepository<WorkPackage>, WorkPackageRepository>();
