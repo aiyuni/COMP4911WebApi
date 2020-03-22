@@ -18,8 +18,24 @@ namespace COMP4911WebAPI.ViewModels
         public DateTime EndDate { get; set; }
 
         public EmployeeNameViewModel ProjectManager { get; set; }
-        public IList<EmployeeNameViewModel> Employees { get; set; }
+        public List<EmployeeNameViewModel> Employees { get; set; }
         
+        public ProjectViewModel(int projectId, string projectName, int projectCode, double budget, string description,
+            bool isClosed, DateTime startDate, DateTime endDate, EmployeeNameViewModel projectManager,
+            List<EmployeeNameViewModel> employees)
+        {
+            ProjectId = projectId;
+            ProjectName = projectName;
+            ProjectCode = projectCode;
+            Budget = budget;
+            Description = description;
+            IsClosed = isClosed;
+            StartDate = startDate;
+            EndDate = endDate;
+            ProjectManager = projectManager;
+            Employees = employees;
+            
 
+        }
     }
 }
