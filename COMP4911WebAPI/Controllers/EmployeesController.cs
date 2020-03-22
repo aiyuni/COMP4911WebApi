@@ -159,5 +159,38 @@ namespace COMP4911WebAPI.Controllers
             }
             return emp;
         }
+        
+        //GET: api/Employees/getChildren/2   
+         [HttpGet("getChildren/{id}")]
+        public async Task<IActionResult> GetAllChildrenEmployee(int id)
+        {
+            List<Employee> employeeListWithFilteredSupervisorId = new List<Employee>();
+
+            //generate list of employees
+            foreach (Employee item in await _employeeRepository.GetAll())
+            {   
+                if(item.SupervisorId == id)
+                    employeeListWithFilteredSupervisorId.Add(await this.GetFullEmployeeDetails(item));
+            }
+
+            List<EmployeeChildrenListViewModel> employeeDetailsList = new List<EmployeeChildrenListViewModel>();
+
+            //generating list of employee details
+            foreach (Employee emp in employeeListWithFilteredSupervisorId)
+            {
+                Employee empTimesheetApprover = null;
+                if (emp.TimesheetApproverId != null)
+                {
+                    empTimesheetApprover = await _employeeRepository.Get((int)emp.TimesheetApproverId); //cast nullable to int
+                }
+
+                
+                EmployeeChildrenListViewModel thisEmployee = new EmployeeChildrenListViewModel(emp, new EmployeeNameViewModel(empTimesheetApprover));
+                employeeDetailsList.Add(thisEmployee);
+            }
+
+            return Ok(employeeDetailsList);
+        }
+
     }
 }
