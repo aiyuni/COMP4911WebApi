@@ -20,6 +20,8 @@ namespace COMP4911WebAPI.ViewModels
         public string Status { get; set; }
         public string Comment { get; set; }
         public string Signature { get; set; }  //not part of model for now
+        public double OverTime { get; set; }
+        public double FlexTime { get; set; }
 
         public List<TimesheetRowViewModel> TimesheetRows { get; set; }
 
@@ -37,6 +39,8 @@ namespace COMP4911WebAPI.ViewModels
             this.Status = ts.Status.ToString();
             this.WeekNumber = WeekNumber;
             this.WeekEndingIn = WeekEndingIn;
+            this.OverTime = ts.OverTime;
+            this.FlexTime = ts.FlexTime;
 
             List<TimesheetRowViewModel> tsRowModelList = new List<TimesheetRowViewModel>();
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using COMP4911WebAPI.ViewModels;
 
 namespace COMP4911WebAPI.Models
@@ -35,6 +36,10 @@ namespace COMP4911WebAPI.Models
         [DataType(DataType.DateTime)]
         public DateTime WeekEndingIn { get; set; }
 
+        public double FlexTime { get; set; }
+
+        public double OverTime { get; set; }
+
         public string Comment { get; set; }
 
         public string LastUpdatedBy { get; set; }
@@ -65,6 +70,8 @@ namespace COMP4911WebAPI.Models
             this.LastUpdatedBy = Environment.UserName.ToString();
 
             this.Comment = ts.Comment;
+            this.FlexTime = ts.FlexTime;
+            this.OverTime = ts.OverTime;
         }
 
         //For seeding
@@ -78,8 +85,9 @@ namespace COMP4911WebAPI.Models
             this.Status = status;
             this.LastUpdatedTime = DateTime.Now;
             this.LastUpdatedBy = "Seeded";
-
             this.Comment = "seeded comment";
+            this.OverTime = 1;
+            this.FlexTime = 2;
         }
     }
 
