@@ -169,5 +169,20 @@ namespace COMP4911WebAPI.Controllers
                 return Ok(new Exception("Failed to add, something went wrong: " + e.ToString()));
             }
         }
+    
+
+        // GET: api/WorkPackageReports/getAllWorkPackageReport/wpcode
+        [HttpGet("getAllWorkPackageReport/{id}")]
+        public async Task<ActionResult<IEnumerable<WorkPackageReportGetAllViewModel>>> GetAllWorkPackageReports(int id)
+        {
+            List<WorkPackageReportGetAllViewModel> list = new List<WorkPackageReportGetAllViewModel>();
+
+            foreach(WorkPackageReport item in await _workPackageReportRepository.GetAll()) {
+                if(item.WorkPackageId == id) 
+                    list.Add(new WorkPackageReportGetAllViewModel(item));
+            }
+
+            return Ok(list);
+        }
     }
 }
