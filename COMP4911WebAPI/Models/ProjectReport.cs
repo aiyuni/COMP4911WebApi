@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -12,11 +13,21 @@ namespace COMP4911WebAPI.Models
         public int ProjectId { get; set; }
 
         [Required]
-        public string ProjectCode { get; set; } 
+        public int ProjectCode { get; set; }
 
         [Required]
         public string ProjectName { get; set; }
 
-        
+        [Required]
+        [DataType(DataType.DateTime)]
+        public DateTime ReportDate { get; set; }
+
+        [Required]
+        [DataType(DataType.DateTime)]
+        public DateTime StartDate { get; set; }
+
+
+        [DataType(DataType.DateTime)]
+        public DateTime EndDate { get; set; }
     }
 }
