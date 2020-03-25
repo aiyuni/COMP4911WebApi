@@ -54,7 +54,25 @@ namespace COMP4911WebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Project>> GetProject(int id)
         {
-            return Ok(await this.GetFullProjectDetails(await _projectRepository.Get(id)));
+            Project proj = await this.GetFullProjectDetails(await _projectRepository.Get(id));
+            List<EmployeeNameViewModel> employeeNameViewModels = new List<EmployeeNameViewModel>();
+
+            foreach(EmployeeProjectAssignment item in proj.EmployeeProjectAssignments)
+            {
+                Employee emp = await _employeeRepository.Get(item.EmployeeId);
+                EmployeeNameViewModel empNameViewModel = new EmployeeNameViewModel(emp);
+                
+                employeeNameViewModels.Add(empNameViewModel);
+            }
+
+
+            EmployeeNameViewModel projManagerNameViewModel = new EmployeeNameViewModel(await _employeeRepository.Get(proj.ProjectManagerId));
+
+            ProjectViewModel projViewModel = new ProjectViewModel(proj.ProjectId, proj.ProjectName,
+                proj.ProjectCode, proj.Budget, proj.ProjectDescription, proj.IsClosed, proj.StartDate,
+                proj.EndDate, projManagerNameViewModel, employeeNameViewModels);
+
+            return Ok(projViewModel);
         }
 
         // GET: api/Projects/GetProjectsByEmpId/5
