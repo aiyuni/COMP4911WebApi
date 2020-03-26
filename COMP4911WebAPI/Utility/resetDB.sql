@@ -28,3 +28,4 @@ DROP TABLE IF EXISTS dbo.WorkPackageReports
 DROP TABLE IF EXISTS dbo.WorkPackageReportDetails
 DROP TABLE IF EXISTS dbo.WorkPackageLabourGradeAssignment
 DROP TABLE IF EXISTS dbo.ProjectReport
+DROP TABLE IF EXISTS dbo.WorkPackageReportSnapshot
