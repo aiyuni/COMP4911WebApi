@@ -6,30 +6,22 @@ namespace COMP4911WebAPI.ViewModels
 {
     public class ProjectReportViewModel
     {
+        //Data members for ProjectReportViewModel
         public int ProjectReportId { get; set; }
-
         public int ProjectId { get; set; }
         public int ProjectCode { get; set; }
-
         public string ProjectName { get; set; }
         public DateTime ReportDate { get; set; }
-
         public DateTime StartDate { get; set; }
-
         public DateTime EndDate { get; set; }
-
         public EmployeeNameViewModel ProjectManager { get; set; } //employees
-
         public List<EmployeeNameViewModel> Engineers { get; set; } //employees
-
         public List<LowWorkPackage> LowWpStatus { get; set; } //workpackagesnapshots
-
         public List<HighWorkPackage> HighWpStatus { get; set; } //workpackagesnapshots
+        public const double HoursInDay = 8.0;
 
-        public const double HoursInDay =8.0;
 
-
-        //takes in a projectreport record, 2x lists of employees, 2x lists of workpackagesnapshots, inner class totals
+        //Constructor for ProjectReportViewModel
         public ProjectReportViewModel(ProjectReport projectReport, EmployeeNameViewModel projectManager,
         List<EmployeeNameViewModel> engineers, List<WorkPackageReportSnapshot> lowWpStatus, List<WorkPackageReportSnapshot> highWpStatus)
         {
@@ -53,13 +45,16 @@ namespace COMP4911WebAPI.ViewModels
             {
                 HighWpStatus.Add(new HighWorkPackage(wp));
             }
+
+            //Inner class totals
             Totals totals = new Totals(LowWpStatus);
 
         }
 
+        //Inner class LowWorkPackage
         public class LowWorkPackage
         {
-
+            //Data members for LowWorkPackage
             public string workPackageCode { get; set; }
             public string workPackageName { get; set; } //workPackageTitle
             public double wpReBudget { get; set; } //workPackageResponsibleEngineerBudget
@@ -73,7 +68,12 @@ namespace COMP4911WebAPI.ViewModels
             public bool isClosed { get; set; }
             public string engineerInitials { get; set; }
 
-            public double LabourGradeWage { get; set; } //extra field not needed for front end but needed for calculating dervived values
+            //below data members not needed for frontend but needed for calculating dervived values
+            public double LabourGradeWage { get; set; }
+            public double TotalWpHours { get; set; }
+
+
+            //Constructor for LowWorkPackage
             public LowWorkPackage(WorkPackageReportSnapshot workPackage)
             {
                 //all workpackage fields in format we need them
@@ -83,18 +83,22 @@ namespace COMP4911WebAPI.ViewModels
             }
         }
 
+        //Inner class HighWorkPackage
         public class HighWorkPackage
         {
+            //Data members for HighWorkPackage
             public string workPackageCode { get; set; }
             public string workPackageName { get; set; } //workPackageTitle
             public double wpReBudget { get; set; } //workPackageResponsibleEngineerBudget
             public double wpActualSpends { get; set; } //WorkPackageActualSpends
             public double wpPmEAC { get; set; } //WorkPackageProjectManagerEstimateAtCompletion
-
             public double wpPmVariance { get; set; }
             public double wpPmCompletion { get; set; }
             public bool isClosed { get; set; }
             public string engineerInitials { get; set; }
+
+
+            //Constructor for HighWorkPackage
             public HighWorkPackage(WorkPackageReportSnapshot workPackage)
             {
 
@@ -104,6 +108,7 @@ namespace COMP4911WebAPI.ViewModels
         //inner class Totals to hold the totals
         public class Totals
         {
+            //Data members for Totals
             public double wpReBudget { get; set; } //workPackageResponsibleEngineerBudget
             public double wpActualSpends { get; set; } //WorkPackageActualSpends
 
@@ -113,9 +118,18 @@ namespace COMP4911WebAPI.ViewModels
             public double wpPmVariance { get; set; } //workPackageProjectManagerVariance
             public double wpReCompletion { get; set; } //workPackageResponsibleEngineerCompletion
             public double wpPmCompletion { get; set; } //workPackageProjectManagerCompletion
+
+            //Constructor for Totals
             public Totals(List<LowWorkPackage> lowWorkPackages)
             {
                 this.wpReBudget = CalculateWpReBudget(lowWorkPackages);
+                this.wpActualSpends = CalculateWpActualSpends(lowWorkPackages);
+                this.wpReEAC = CalculateWpResponsibleEngineerEstimateAtCompletion(lowWorkPackages);
+                this.wpPmEAC = CalculateWpProductManagerEstimateAtCompletion(lowWorkPackages);
+                this.wpReVariance = CalculateReVariance(lowWorkPackages);
+                this.wpPmVariance = CalculatePmVariance(lowWorkPackages);
+                this.wpReCompletion = CalculateReCompletion(lowWorkPackages);
+                this.wpPmCompletion = CalculatePmCompletion(lowWorkPackages);
             }
 
             //CalculateWpReBudget
@@ -126,41 +140,87 @@ namespace COMP4911WebAPI.ViewModels
             public double CalculateWpReBudget(List<LowWorkPackage> lowWorkPackages)
             {
                 double totalReBudget = 0.0;
-                foreach(LowWorkPackage lwp in lowWorkPackages){
+                foreach (LowWorkPackage lwp in lowWorkPackages)
+                {
 
-                    totalReBudget += lwp.wpReBudget * lwp.LabourGradeWage * HoursInDay; 
+                    totalReBudget += lwp.wpReBudget * lwp.LabourGradeWage * HoursInDay;
                 }
                 return totalReBudget;
             }
 
+            //CalculateWpActualSpends
+            //summation of all the hours of each day in each timesheet, converted to $$$. 
+            //The formula is hours * labour grade wage *. 
+            public double CalculateWpActualSpends(List<LowWorkPackage> lowWorkPackages)
+            {
+                double actualSpends = 0.0;
+                foreach (LowWorkPackage lwp in lowWorkPackages)
+                {
+                    actualSpends = lwp.TotalWpHours * lwp.LabourGradeWage * HoursInDay;
+                }
 
-            // public double CalculateWpActualSpends(List<LowWorkPackage> lowWorkPackages){
+                return actualSpends;
+            }
 
-            // }
+            //CalculateWpResponsibleEngineerEstimateAtCompletion
+            //wpReEAC: summation of all the ReEAC (again, in days) values for each labour grade in the workpackage.  
+            //Formula is days * labour grade wage * 8
+            public double CalculateWpResponsibleEngineerEstimateAtCompletion(List<LowWorkPackage> lowWorkPackages)
+            {
+                double total = 0.0;
+                foreach (LowWorkPackage lwp in lowWorkPackages)
+                {
+                    total = lwp.wpReEAC * lwp.LabourGradeWage * HoursInDay;
+                }
+                return total;
+            }
 
-            // public double CalculateWpReEAC(List<LowWorkPackage> lowWorkPackages){
+            //CalculateWpProductManagerEstimateAtCompletion
+            //wpReEAC: summation of all the PmEAC (again, in days) values for each labour grade in the workpackage.  
+            //Formula is days * labour grade wage * 8
+            public double CalculateWpProductManagerEstimateAtCompletion(List<LowWorkPackage> lowWorkPackages)
+            {
 
-            // }
+                double total = 0.0;
+                foreach (LowWorkPackage lwp in lowWorkPackages)
+                {
+                    total = lwp.wpPmEAC * lwp.LabourGradeWage * HoursInDay;
+                }
+                return total;
+            }
 
-            // public double CalculateWpPmEAC(List<LowWorkPackage> lowWorkPackages){
+            //CalculateReVariance
+            //wpReVariance: a derived column using the above derived fields, the formula is (wpReEAC - wpReBudget) / wpReBudget
+            public double CalculateReVariance(List<LowWorkPackage> lowWorkPackages)
+            {
+                double reVariance = (wpReEAC - wpReBudget) / wpReBudget;
+                return reVariance;
+            }
 
-            // }
+            //CalculatePmVariance
+            //wpPmVariance: a derived column using the above derived fields, the formula is (wpPmEAC - wpPmBudget) / wpPmBudget
+            public double CalculatePmVariance(List<LowWorkPackage> lowWorkPackages)
+            {
+                double pmVariance = (wpPmEAC - wpReBudget) / wpReBudget;
+                return pmVariance;
+            }
 
-            // public double CalculateReVariance(List<LowWorkPackage> lowWorkPackages){
-                
-            // }
+            //CalculateReCompletion
+            //wpReCompletion: a derived column using the above derived fields, the formula is wpActualSpends/reEAC
+            public double CalculateReCompletion(List<LowWorkPackage> lowWorkPackages)
+            {
+                double reCompletion = wpActualSpends / wpReEAC;
+                return reCompletion;
+            }
 
-            // public double CalculatePmVariance(List<LowWorkPackage> lowWorkPackages){
-                
-            // }
 
-            // public double CalculateReCompletion(List<LowWorkPackage> lowWorkPackages){
-                
-            // }
-
-            // public double CalculatePmCompletion(List<LowWorkPackage> lowWorkPackages){
-                
-            // }
+            //CalculatePmCompletion
+            //wpPmCompletion: a derived column using the above derived fields, the formula is wpActualSpends/pmEAC
+            public double CalculatePmCompletion(List<LowWorkPackage> lowWorkPackages)
+            {
+                double pmCompletion = wpActualSpends / wpPmEAC;
+                return pmCompletion;
+            }
 
 
         }

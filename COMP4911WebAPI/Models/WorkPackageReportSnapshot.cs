@@ -11,7 +11,7 @@ namespace COMP4911WebAPI.Models
         //the purpose is to allow historical reports to be run again even if details on work
         //packages change later 
 
-        //note: this is a composite key of workpackageid and projectreportid
+        //composite key of workpackageid and projectreportid
         [Key]
         public int WorkPackageId { get; set; }
         [Key]
@@ -24,8 +24,14 @@ namespace COMP4911WebAPI.Models
         public double WorkPackageProjectManagerEstimateAtCompletion { get; set; }
         public double LabourGradeWage { get; set; }
         public bool IsHighWorkPackage { get; set; } //whether or not the work package is high or low
-
         public DateTime WorkPackageReportSnapshotDate { get; set; }
+        public double TotalWpHours { get; set; }
+
+        //Constructor for WorkPackageReportSnapshot
+        public WorkPackageReportSnapshot(){
+
+            WorkPackageReportSnapshotDate = DateTime.Now;
+        }
         
     }
 }
