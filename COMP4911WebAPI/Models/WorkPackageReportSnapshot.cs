@@ -23,6 +23,9 @@ namespace COMP4911WebAPI.Models
         public double WorkPackageResponsibleEngineerEstimateAtCompletion { get; set; }
         public double WorkPackageProjectManagerEstimateAtCompletion { get; set; }
         public double LabourGradeWage { get; set; }
-        public WorkPackage HighWorkPackage { get; set; }
-        public WorkPackage LowWorkPackage { get; set; }
+        public bool IsHighWorkPackage { get; set; } //whether or not the work package is high or low
+
+        public DateTime WorkPackageReportSnapshotDate { get; set; }
+        
     }
+}
