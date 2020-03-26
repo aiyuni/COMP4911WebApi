@@ -140,11 +140,13 @@ namespace COMP4911WebAPI.ViewModels
             public double CalculateWpReBudget(List<LowWorkPackage> lowWorkPackages)
             {
                 double totalReBudget = 0.0;
+
                 foreach (LowWorkPackage lwp in lowWorkPackages)
                 {
 
                     totalReBudget += lwp.wpReBudget * lwp.LabourGradeWage * HoursInDay;
                 }
+
                 return totalReBudget;
             }
 
@@ -154,9 +156,10 @@ namespace COMP4911WebAPI.ViewModels
             public double CalculateWpActualSpends(List<LowWorkPackage> lowWorkPackages)
             {
                 double actualSpends = 0.0;
+
                 foreach (LowWorkPackage lwp in lowWorkPackages)
                 {
-                    actualSpends = lwp.TotalWpHours * lwp.LabourGradeWage * HoursInDay;
+                    actualSpends += lwp.TotalWpHours * lwp.LabourGradeWage;
                 }
 
                 return actualSpends;
@@ -168,10 +171,12 @@ namespace COMP4911WebAPI.ViewModels
             public double CalculateWpResponsibleEngineerEstimateAtCompletion(List<LowWorkPackage> lowWorkPackages)
             {
                 double total = 0.0;
+
                 foreach (LowWorkPackage lwp in lowWorkPackages)
                 {
-                    total = lwp.wpReEAC * lwp.LabourGradeWage * HoursInDay;
+                    total += lwp.wpReEAC * lwp.LabourGradeWage * HoursInDay;
                 }
+
                 return total;
             }
 
@@ -182,32 +187,37 @@ namespace COMP4911WebAPI.ViewModels
             {
 
                 double total = 0.0;
+
                 foreach (LowWorkPackage lwp in lowWorkPackages)
                 {
                     total = lwp.wpPmEAC * lwp.LabourGradeWage * HoursInDay;
                 }
+
                 return total;
             }
 
             //CalculateReVariance
             //wpReVariance: a derived column using the above derived fields, the formula is (wpReEAC - wpReBudget) / wpReBudget
-            public double CalculateReVariance(List<LowWorkPackage> lowWorkPackages)
+            public double CalculateReVariance()
             {
-                double reVariance = (wpReEAC - wpReBudget) / wpReBudget;
+                double reVariance = 0.0;
+
+                reVariance = (wpReEAC - wpReBudget) / wpReBudget;
+
                 return reVariance;
             }
 
             //CalculatePmVariance
             //wpPmVariance: a derived column using the above derived fields, the formula is (wpPmEAC - wpPmBudget) / wpPmBudget
-            public double CalculatePmVariance(List<LowWorkPackage> lowWorkPackages)
+            public double CalculatePmVariance()
             {
-                double pmVariance = (wpPmEAC - wpReBudget) / wpReBudget;
+                double pmVariance = (wpPmEAC - wpPmBudget) / wpPmBudget;
                 return pmVariance;
             }
 
             //CalculateReCompletion
             //wpReCompletion: a derived column using the above derived fields, the formula is wpActualSpends/reEAC
-            public double CalculateReCompletion(List<LowWorkPackage> lowWorkPackages)
+            public double CalculateReCompletion()
             {
                 double reCompletion = wpActualSpends / wpReEAC;
                 return reCompletion;
@@ -216,7 +226,7 @@ namespace COMP4911WebAPI.ViewModels
 
             //CalculatePmCompletion
             //wpPmCompletion: a derived column using the above derived fields, the formula is wpActualSpends/pmEAC
-            public double CalculatePmCompletion(List<LowWorkPackage> lowWorkPackages)
+            public double CalculatePmCompletion()
             {
                 double pmCompletion = wpActualSpends / wpPmEAC;
                 return pmCompletion;
