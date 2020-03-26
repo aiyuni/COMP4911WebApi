@@ -211,7 +211,7 @@ namespace COMP4911WebAPI.ViewModels
             //wpPmVariance: a derived column using the above derived fields, the formula is (wpPmEAC - wpPmBudget) / wpPmBudget
             public double CalculatePmVariance()
             {
-                double pmVariance = (wpPmEAC - wpPmBudget) / wpPmBudget;
+                double pmVariance = (wpPmEAC - wpReBudget) / wpReBudget;
                 return pmVariance;
             }
 
