@@ -6,6 +6,7 @@ namespace COMP4911WebAPI.Models
 {
     public class ProjectReport
     {
+        //Data members
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ProjectReportId { get; set; }
 
@@ -29,5 +30,21 @@ namespace COMP4911WebAPI.Models
 
         [DataType(DataType.DateTime)]
         public DateTime EndDate { get; set; }
+
+        //Zero Argument constructor
+        public ProjectReport(){
+
+        }   
+
+        //Constructor
+        public ProjectReport(Project project){
+
+            ProjectId = project.ProjectId;
+            ProjectCode = project.ProjectCode;
+            ProjectName = project.ProjectName;
+            ReportDate = DateTime.Now;
+            StartDate = project.StartDate;
+            EndDate = project.EndDate;
+        }
     }
 }

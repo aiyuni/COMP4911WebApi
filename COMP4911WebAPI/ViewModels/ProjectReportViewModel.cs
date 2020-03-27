@@ -126,10 +126,10 @@ namespace COMP4911WebAPI.ViewModels
                 this.wpActualSpends = CalculateWpActualSpends(lowWorkPackages);
                 this.wpReEAC = CalculateWpResponsibleEngineerEstimateAtCompletion(lowWorkPackages);
                 this.wpPmEAC = CalculateWpProductManagerEstimateAtCompletion(lowWorkPackages);
-                this.wpReVariance = CalculateReVariance(lowWorkPackages);
-                this.wpPmVariance = CalculatePmVariance(lowWorkPackages);
-                this.wpReCompletion = CalculateReCompletion(lowWorkPackages);
-                this.wpPmCompletion = CalculatePmCompletion(lowWorkPackages);
+                this.wpReVariance = CalculateReVariance();
+                this.wpPmVariance = CalculatePmVariance();
+                this.wpReCompletion = CalculateReCompletion();
+                this.wpPmCompletion = CalculatePmCompletion();
             }
 
             //CalculateWpReBudget
