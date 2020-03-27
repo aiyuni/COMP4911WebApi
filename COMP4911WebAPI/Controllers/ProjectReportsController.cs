@@ -20,6 +20,8 @@ namespace COMP4911WebAPI.Controllers
         private readonly WorkPackageReportDetailsRepository _workPackageReportDetailsRepository;
         private readonly TimesheetRowRepository _timesheetRowRepository;
 
+        private readonly LabourGradeRepository _labourGradeRepository;
+
 
         //Constructor
         public ProjectReportsController(IDataRepository<Project> projectRepository,
@@ -27,15 +29,17 @@ namespace COMP4911WebAPI.Controllers
             IDataRepository<WorkPackage> workPackageRepository,
             IDataRepository<ProjectReport> projectReportRepository,
             IDataRepository<WorkPackageReportDetails> workPackageReportDetailsRepository,
-            IDataRepository<TimesheetRow> timesheetRowRepository
+            IDataRepository<TimesheetRow> timesheetRowRepository,
+            IDataRepository<LabourGrade> labourGradeRepository
             )
         {
             this._projectRepository = (ProjectRepository)projectRepository;
-            this._employeeProjectAssignmentRepository = (EmployeeProjectAssignmentRepository) employeeProjectAssignmentRepository;
-            this._workPackageRepository = (WorkPackageRepository) workPackageRepository;
-            this._projectReportRepository =(ProjectReportRepository) projectReportRepository;
-            this._workPackageReportDetailsRepository = (WorkPackageReportDetailsRepository) workPackageReportDetailsRepository;
-            this._timesheetRowRepository = (TimesheetRowRepository) timesheetRowRepository;
+            this._employeeProjectAssignmentRepository = (EmployeeProjectAssignmentRepository)employeeProjectAssignmentRepository;
+            this._workPackageRepository = (WorkPackageRepository)workPackageRepository;
+            this._projectReportRepository = (ProjectReportRepository)projectReportRepository;
+            this._workPackageReportDetailsRepository = (WorkPackageReportDetailsRepository)workPackageReportDetailsRepository;
+            this._timesheetRowRepository = (TimesheetRowRepository)timesheetRowRepository;
+            this._labourGradeRepository = (LabourGradeRepository)labourGradeRepository;
         }
 
         [HttpPut]
@@ -46,13 +50,10 @@ namespace COMP4911WebAPI.Controllers
             IEnumerable<WorkPackage> workPackageList = await _workPackageRepository.GetAll();
             IEnumerable<WorkPackageReportDetails> workPackageReportDetailsList = await _workPackageReportDetailsRepository.GetAll();
             IEnumerable<TimesheetRow> timesheetRowList = await _timesheetRowRepository.GetAll();
+            IEnumerable<Project> allProjectList = await _projectRepository.GetAll(); //get all projects
+            IEnumerable<Project> projectList = allProjectList.Where(p => p.IsClosed == false); //only open projects
+            IEnumerable<LabourGrade> labourGradeList = await _labourGradeRepository.GetAll();
 
-            //Get all projects using GetAll() from projectRepo
-            foreach (Project project in await _projectRepository.GetAll())
-            {
-                await this.GetFullProjectDetails(project);
-                projectsList.Add(project);
-            }
 
             //for each project create a new project report record
             //retrieve all work packages for project
@@ -90,19 +91,25 @@ namespace COMP4911WebAPI.Controllers
 
                     }
 
+                    double labourGradeWage = labourGradeList.Where(lg => lg.LabourGradeId ==  )
+
+
                     WorkPackageReportSnapshot wprs = new WorkPackageReportSnapshot();
 
                     wprs.WorkPackageId = wp.WorkPackageId;
                     wprs.ProjectReportId = projectReportId; //missing code above
                     wprs.WorkPackageCode = wp.WorkPackageCode;
                     wprs.WorkPackageTitle = wp.Name;
+                    wprs.LabourGradeWage =  ;//pull labors grade for that workpackage 
+                    wprs.IsHighWorkPackage = (wp.ParentWorkPackageId == null) ? true:false;
                     wprs.WorkPackageResponsibleEngineerBudget = wpDetails.ResponsibleEngineerBudgetInDays;
-                    wprs.WorkPackageActualSpends =
-                    wprs.WorkPackageResponsibleEngineerEstimateAtCompletion =
-                    wprs.LabourGradeWage = //pull labors grade for that workpackage 
-                    wprs.IsHighWorkPackage =
+                    wprs.TotalWpHours = ;
+                    wprs.WorkPackageActualSpends = ;
+                    wprs.WorkPackageResponsibleEngineerEstimateAtCompletion = ;
+
                     wprs.WorkPackageReportSnapshotDate =
-                    wprs.TotalWpHours =
+
+
 
                 }
 
