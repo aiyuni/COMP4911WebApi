@@ -11,10 +11,9 @@ namespace COMP4911WebAPI.Models
         //the purpose is to allow historical reports to be run again even if details on work
         //packages change later 
 
-        //composite key of workpackageid and projectreportid
         [Key]
+        public int WorkPackageReportSnapshotId { get; set; }
         public int WorkPackageId { get; set; }
-        [Key]
         public int ProjectReportId { get; set; }
         public string WorkPackageCode { get; set; }
         public string WorkPackageTitle { get; set; }
