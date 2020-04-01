@@ -16,7 +16,6 @@ namespace COMP4911WebAPI.ViewModels
         [Required]
         public string EmpUsername { get; set; }
 
-        [Required]
         public string EmpPassword { get; set; }
 
         [Required]
