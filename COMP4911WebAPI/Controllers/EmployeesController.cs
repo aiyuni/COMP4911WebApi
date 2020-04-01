@@ -135,9 +135,9 @@ namespace COMP4911WebAPI.Controllers
 
         }
 
-        // PUT: api/Employees
-        [HttpPut]
-        public async Task<IActionResult> PutEmployee(EmployeeViewModel emp)
+        // PUT: api/Employee/id
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutEmployee(int id, EmployeeViewModel emp)
         {
             await _employeeRepository.Update(new Employee(emp));
             if (emp.EmpPassword != null)
