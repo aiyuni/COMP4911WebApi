@@ -72,7 +72,7 @@ namespace COMP4911WebAPI.Models
         public Employee(EmployeeViewModel emp)
         {
             this.EmployeeId = emp.EmployeeId;
-            this.JobTitleId = emp.JobTitleId;
+            this.JobTitleId = 1;
             this.EmployeeFirstName = emp.EmpFirstName;
             this.EmployeeLastName = emp.EmpLastName;
             this.SupervisorId = emp.SupervisorId;

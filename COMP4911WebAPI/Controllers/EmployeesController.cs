@@ -135,7 +135,7 @@ namespace COMP4911WebAPI.Controllers
 
         }
 
-        // PUT: api/Employee/id
+        // PUT: api/Employees/id
         [HttpPut("{id}")]
         public async Task<IActionResult> PutEmployee(int id, EmployeeViewModel emp)
         {
