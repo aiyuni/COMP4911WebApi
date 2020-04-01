@@ -140,9 +140,13 @@ namespace COMP4911WebAPI.Controllers
         public async Task<IActionResult> PutEmployee(EmployeeViewModel emp)
         {
             await _employeeRepository.Update(new Employee(emp));
-            await _credentialRepository.Delete(
-                (await _credentialRepository.GetAll()).SingleOrDefault(c => c.EmployeeId == emp.EmployeeId));
-            await _credentialRepository.Add(new Credential(emp.EmpUsername, emp.EmpPassword, emp.EmployeeId));
+            if (emp.EmpPassword != null)
+            {
+                await _credentialRepository.Delete(
+                    (await _credentialRepository.GetAll()).SingleOrDefault(c => c.EmployeeId == emp.EmployeeId));
+                await _credentialRepository.Add(new Credential(emp.EmpUsername, emp.EmpPassword, emp.EmployeeId));
+            }
+
             return Ok(emp);
         }
 
