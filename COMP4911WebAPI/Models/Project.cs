@@ -60,6 +60,7 @@ namespace COMP4911WebAPI.Models
             this.EndDate = projViewModel.EndDate;
             this.ProjectDescription = projViewModel.Description;
             this.IsClosed = projViewModel.IsClosed;
+            this.ProjectManagerId = projViewModel.ProjectManager.EmployeeId;
 
             this.LastUpdatedTime = DateTime.Now;
             this.LastUpdatedBy = Environment.UserName.ToString();
