@@ -41,7 +41,7 @@ namespace COMP4911WebAPI.Controllers
             this._timesheetRowRepository = (TimesheetRowRepository)timesheetRowRepository;
             this._labourGradeRepository = (LabourGradeRepository)labourGradeRepository;
         }
-
+/*
         [HttpPut]
         public async Task<IActionResult> PutProjectReport()
         {
@@ -170,6 +170,7 @@ namespace COMP4911WebAPI.Controllers
             project.EmployeeProjectAssignments = employeeProjectAssignments;
             project.WorkPackages = workPackages;
             return project;
-        }
+        }*/
     }
+    
 }
