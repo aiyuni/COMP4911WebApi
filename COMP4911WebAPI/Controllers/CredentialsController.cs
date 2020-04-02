@@ -44,6 +44,8 @@ namespace COMP4911WebAPI.Controllers
             return Ok(new AuthenticateReturn(user, emp));
         }
 
+
+
         [AllowAnonymous]
         [HttpGet("AvailableUsername")]
         public async Task<IActionResult> GetAvailableUserName()
