@@ -12,6 +12,7 @@ using COMP4911WebAPI.Models;
 using COMP4911WebAPI.Repository;
 using COMP4911WebAPI.ViewModels;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 namespace COMP4911WebAPI.Controllers
 {
@@ -274,7 +275,11 @@ namespace COMP4911WebAPI.Controllers
         public async Task<ActionResult<WorkPackageViewModel>> PostWorkPackage(WorkPackageViewModel wpViewModel)
         {
             //Get Project and ParentWpIds
-            int parentWpId = _workPackageRepository.GetIdByCode(wpViewModel.ParentWorkPackageCode);
+            int? parentWpId = null;
+            if (wpViewModel.ParentWorkPackageCode != null)
+            {
+                parentWpId = _workPackageRepository.GetIdByCode(wpViewModel.ParentWorkPackageCode);
+            }
             int projectId = _projectRepository.GetIdByCode(wpViewModel.ProjectCode);
 
             WorkPackage wp = new WorkPackage(wpViewModel, parentWpId, projectId);
@@ -288,6 +293,16 @@ namespace COMP4911WebAPI.Controllers
                 WorkPackageLabourGradeAssignment wplga = new WorkPackageLabourGradeAssignment(wpId, pmViewModel);
                 await _workPackageLabourGradeRepository.Add(wplga);
             }
+
+            foreach (EmployeeNameViewModel emp in wpViewModel.Employees)
+            {
+                EmployeeWorkPackageAssignment empWpAss = new EmployeeWorkPackageAssignment(emp.EmployeeId, wpId);
+                await _empWorkPackageAssignmentRepository.Add(empWpAss);
+            }
+
+            //add RE to db
+            EmployeeWorkPackageAssignment re = new EmployeeWorkPackageAssignment(wpViewModel.ResponsibleEngineer.EmployeeId, wpId);
+            await _empWorkPackageAssignmentRepository.Add(re);
 
             return Ok(wpViewModel);
         }

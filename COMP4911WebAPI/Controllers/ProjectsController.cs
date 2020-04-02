@@ -50,11 +50,68 @@ namespace COMP4911WebAPI.Controllers
             //return Ok(await _projectRepository.GetAll());  //somehow this also works cuz it saves the state??
         }
 
+        // GET: api/GetOpenProjects
+        [HttpGet("GetAllOpenProjects")]
+        public async Task<ActionResult<IEnumerable<Project>>> GetOpenProjects()
+        {
+            
+            List<Project> projList = new List<Project>();
+
+            foreach (Project item in await _projectRepository.GetAll())
+            {
+                await this.GetFullProjectDetails(item);
+                projList.Add(item);
+            }
+
+            List<EmployeeProjectViewModel> empProjViewModels = new List<EmployeeProjectViewModel>();
+            foreach (Project item in projList)
+            {
+                if(item.IsClosed == false)
+                {
+                    int projId = item.ProjectId;
+                    string projName = item.ProjectName;
+                    int manId = item.ProjectManagerId;
+                    DateTime sDate = item.StartDate;
+                    DateTime eDate = item.EndDate;
+                    bool isClosed = item.IsClosed;
+
+                    EmployeeNameViewModel empNameViewModel = new EmployeeNameViewModel(await _employeeRepository.Get(manId));
+
+                    EmployeeProjectViewModel empProjViewModel = new EmployeeProjectViewModel(projId,
+                        projName, empNameViewModel, sDate, eDate, isClosed);
+
+                    empProjViewModels.Add(empProjViewModel);
+                }
+                
+            }
+
+
+            return Ok(empProjViewModels);
+        }
+
         // GET: api/Projects/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Project>> GetProject(int id)
         {
-            return Ok(await this.GetFullProjectDetails(await _projectRepository.Get(id)));
+            Project proj = await this.GetFullProjectDetails(await _projectRepository.Get(id));
+            List<EmployeeNameViewModel> employeeNameViewModels = new List<EmployeeNameViewModel>();
+
+            foreach(EmployeeProjectAssignment item in proj.EmployeeProjectAssignments)
+            {
+                Employee emp = await _employeeRepository.Get(item.EmployeeId);
+                EmployeeNameViewModel empNameViewModel = new EmployeeNameViewModel(emp);
+                
+                employeeNameViewModels.Add(empNameViewModel);
+            }
+
+
+            EmployeeNameViewModel projManagerNameViewModel = new EmployeeNameViewModel(await _employeeRepository.Get(proj.ProjectManagerId));
+
+            ProjectViewModel projViewModel = new ProjectViewModel(proj.ProjectId, proj.ProjectName,
+                proj.ProjectCode, proj.Budget, proj.ProjectDescription, proj.IsClosed, proj.StartDate,
+                proj.EndDate, projManagerNameViewModel, employeeNameViewModels);
+
+            return Ok(projViewModel);
         }
 
         // GET: api/Projects/GetProjectsByEmpId/5
@@ -63,16 +120,35 @@ namespace COMP4911WebAPI.Controllers
         {
             var empProjectAssignmentList = (await _employeeProjectAssignmentRepository.GetAll()).Where(x => x.EmployeeId == id);
             List<Project> projList = new List<Project>();
-            int empCode = (await _employeeRepository.Get(id)).EmployeeCode;
+            //int empCode = (await _employeeRepository.Get(id)).EmployeeCode;
             foreach (EmployeeProjectAssignment item in empProjectAssignmentList)
             {
 
                 Project projFull = await this.GetFullProjectDetails(await _projectRepository.Get(item.ProjectId));
                 projList.Add(projFull);
             }
+
+            List<EmployeeProjectViewModel> empProjViewModels = new List<EmployeeProjectViewModel>();
+            foreach (Project item in projList)
+            {
+                int projId = item.ProjectId;
+                string projName = item.ProjectName;
+                int manId = item.ProjectManagerId;
+                DateTime sDate = item.StartDate;
+                DateTime eDate = item.EndDate;
+                bool isClosed = item.IsClosed;
+
+                EmployeeNameViewModel empNameViewModel = new EmployeeNameViewModel(await _employeeRepository.Get(manId));
+
+                EmployeeProjectViewModel empProjViewModel = new EmployeeProjectViewModel(projId,
+                    projName, empNameViewModel, sDate, eDate, isClosed);
+
+                empProjViewModels.Add(empProjViewModel);
+            }
             
 
-            return Ok(new EmployeeProjectListViewModel(id, empCode, projList));
+            return Ok(empProjViewModels);
+
         }
 
         // GET: api/Projects/GetAllProjectsAndLowerWpForEmp/5

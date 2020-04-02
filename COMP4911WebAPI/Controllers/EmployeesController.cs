@@ -135,14 +135,18 @@ namespace COMP4911WebAPI.Controllers
 
         }
 
-        // PUT: api/Employees
-        [HttpPut]
-        public async Task<IActionResult> PutEmployee(EmployeeViewModel emp)
+        // PUT: api/Employees/id
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutEmployee(int id, EmployeeViewModel emp)
         {
             await _employeeRepository.Update(new Employee(emp));
-            await _credentialRepository.Delete(
-                (await _credentialRepository.GetAll()).SingleOrDefault(c => c.EmployeeId == emp.EmployeeId));
-            await _credentialRepository.Add(new Credential(emp.EmpUsername, emp.EmpPassword, emp.EmployeeId));
+            if (emp.EmpPassword != null)
+            {
+                await _credentialRepository.Delete(
+                    (await _credentialRepository.GetAll()).SingleOrDefault(c => c.EmployeeId == emp.EmployeeId));
+                await _credentialRepository.Add(new Credential(emp.EmpUsername, emp.EmpPassword, emp.EmployeeId));
+            }
+
             return Ok(emp);
         }
 
@@ -159,5 +163,38 @@ namespace COMP4911WebAPI.Controllers
             }
             return emp;
         }
+        
+        //GET: api/Employees/getChildren/2   
+         [HttpGet("getChildren/{id}")]
+        public async Task<IActionResult> GetAllChildrenEmployee(int id)
+        {
+            List<Employee> employeeListWithFilteredSupervisorId = new List<Employee>();
+
+            //generate list of employees
+            foreach (Employee item in await _employeeRepository.GetAll())
+            {   
+                if(item.SupervisorId == id)
+                    employeeListWithFilteredSupervisorId.Add(await this.GetFullEmployeeDetails(item));
+            }
+
+            List<EmployeeChildrenListViewModel> employeeDetailsList = new List<EmployeeChildrenListViewModel>();
+
+            //generating list of employee details
+            foreach (Employee emp in employeeListWithFilteredSupervisorId)
+            {
+                Employee empTimesheetApprover = null;
+                if (emp.TimesheetApproverId != null)
+                {
+                    empTimesheetApprover = await _employeeRepository.Get((int)emp.TimesheetApproverId); //cast nullable to int
+                }
+
+                
+                EmployeeChildrenListViewModel thisEmployee = new EmployeeChildrenListViewModel(emp, new EmployeeNameViewModel(empTimesheetApprover));
+                employeeDetailsList.Add(thisEmployee);
+            }
+
+            return Ok(employeeDetailsList);
+        }
+
     }
 }

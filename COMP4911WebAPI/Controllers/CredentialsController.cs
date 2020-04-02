@@ -40,10 +40,16 @@ namespace COMP4911WebAPI.Controllers
             }
 
             Employee emp = await _employeeRepository.Get(user.EmployeeId);
-
+            if(emp.IsActivated == false) {
+                return BadRequest("Account is deactivated, please contact the admin");
+            }
+            
             return Ok(new AuthenticateReturn(user, emp));
         }
 
+
+
+        [AllowAnonymous]
         [HttpGet("AvailableUsername")]
         public async Task<IActionResult> GetAvailableUserName()
         {
