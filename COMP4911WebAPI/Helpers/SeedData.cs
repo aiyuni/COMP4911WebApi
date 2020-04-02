@@ -27,9 +27,12 @@ namespace COMP4911WebAPI.Helpers
                 new JobTitle(2, "Q/A Analyst"),
                 new JobTitle(3, "Business Analyst"));
             modelBuilder.Entity<LabourGrade>().HasData(
-                new LabourGrade(1, "code1", 22),
-                new LabourGrade(2, "code2", 23),
-                new LabourGrade(3, "code3", 10));
+                new LabourGrade(1, "P1", 22),
+                new LabourGrade(2, "P2", 23),
+                new LabourGrade(3, "P3", 10),
+                new LabourGrade(4, "P4", 8),
+                new LabourGrade(5, "SS", 25),
+                new LabourGrade(6, "DD", 35));
             modelBuilder.Entity<Employee>().HasData(
                 new Employee(1, 1, "AdminFirstName", "AdminLastName", null, null,
                     true, true, true, true, 888, 1),
