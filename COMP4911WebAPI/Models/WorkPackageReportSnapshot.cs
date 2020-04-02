@@ -40,20 +40,6 @@ namespace COMP4911WebAPI.Models
             WorkPackageReportSnapshotDate = DateTime.Now;
         }
 
-        // //CalculateWpResponsibleEngineerEstimateAtCompletion
-        // //wpReEAC: summation of all the ReEAC (again, in days) values for each labour grade in the workpackage.  
-        // //Formula is days * labour grade wage * 8
-        // public double CalculateWpResponsibleEngineerEstimateAtCompletion(List<WorkPackage> workPackages)
-        // {
-        //     double total = 0.0;
-
-        //     foreach (WorkPackage lwp in lowWorkPackages)
-        //     {
-        //         total += lwp.wpReEAC * lwp.LabourGradeWage * HoursInDay;
-        //     }
-
-        //     return total;
-        // }
 
     }
 }
