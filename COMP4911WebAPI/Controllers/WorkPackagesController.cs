@@ -274,7 +274,11 @@ namespace COMP4911WebAPI.Controllers
         public async Task<ActionResult<WorkPackageViewModel>> PostWorkPackage(WorkPackageViewModel wpViewModel)
         {
             //Get Project and ParentWpIds
-            int parentWpId = _workPackageRepository.GetIdByCode(wpViewModel.ParentWorkPackageCode);
+            int? parentWpId = null;
+            if (wpViewModel.ParentWorkPackageCode != null)
+            {
+                parentWpId = _workPackageRepository.GetIdByCode(wpViewModel.ParentWorkPackageCode);
+            }
             int projectId = _projectRepository.GetIdByCode(wpViewModel.ProjectCode);
 
             WorkPackage wp = new WorkPackage(wpViewModel, parentWpId, projectId);
