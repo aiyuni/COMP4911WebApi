@@ -88,15 +88,19 @@ namespace COMP4911WebAPI.Helpers
                     DateTime.Parse("2020-2-14"), false, 5, 8, 3),
                 new WorkPackage(7, 3, 4, "C", "WpName3Root", "WpDescription3Root",
                     DateTime.Parse("2020-2-27"), false, null, null, null),
-                new WorkPackage(8, 4, 1, "Sick", "Sick", "SickDescription",
+                new WorkPackage(8, 3, 1, "CA", "RenWorkPackage", "Hi Ren",
+                    DateTime.Parse("2020-2-27"), false, 5, 10, 7),
+                new WorkPackage(9, 4, 1, "Sick", "Sick", "SickDescription",
                     DateTime.Parse("2020-2-27"), false, null, null, null),
-                new WorkPackage(9, 5, 1, "Vacation", "Vacation", "VacationPackage",
+                new WorkPackage(10, 5, 1, "Vacation", "Vacation", "VacationPackage",
                     DateTime.Parse("2020-2-27"), false, null, null, null));
 
             modelBuilder.Entity<EmployeeWorkPackageAssignment>().HasData(
                 new EmployeeWorkPackageAssignment(2, 1),
+                new EmployeeWorkPackageAssignment(1, 1),
                 new EmployeeWorkPackageAssignment(3, 1),  //this is always RE, check what happens if this is removed
                 new EmployeeWorkPackageAssignment(3, 2),
+                new EmployeeWorkPackageAssignment(1, 2),
                 new EmployeeWorkPackageAssignment(2, 2),    //RE
                 new EmployeeWorkPackageAssignment(3, 3),  //RE
                 new EmployeeWorkPackageAssignment(4, 3),
@@ -105,7 +109,10 @@ namespace COMP4911WebAPI.Helpers
                 new EmployeeWorkPackageAssignment(2, 5), //RE
                 new EmployeeWorkPackageAssignment(5, 6), //RE
                 new EmployeeWorkPackageAssignment(3, 7),
-                new EmployeeWorkPackageAssignment(4, 7)); //RE
+                new EmployeeWorkPackageAssignment(4, 7), //RE
+                new EmployeeWorkPackageAssignment(1, 8), //RE
+                new EmployeeWorkPackageAssignment(2, 8),
+                new EmployeeWorkPackageAssignment(3, 8));
 
             //seed more 
             modelBuilder.Entity<WorkPackageLabourGradeAssignment>().HasData(
@@ -120,13 +127,19 @@ namespace COMP4911WebAPI.Helpers
                 new Timesheet(3, 1, 3, 11, DateTime.Parse("2020-5-27"), TimesheetStatus.Approved),
                 new Timesheet(4, 1, 2, 11, DateTime.Parse("2020-5-27"), TimesheetStatus.Pending),
                 new Timesheet(5, 1, 5, 11, DateTime.Parse("2020-5-27"), TimesheetStatus.Approved),
-                new Timesheet(6, 1, 3, 9, DateTime.Parse("2020-5-14"), TimesheetStatus.Approved));
+                new Timesheet(6, 1, 3, 9, DateTime.Parse("2020-5-14"), TimesheetStatus.Approved),
+                new Timesheet(7, 1, 1, 7, DateTime.Parse("2020-4-03"), TimesheetStatus.Approved),
+                new Timesheet(8, 1, 1, 8, DateTime.Parse("2020-4-10"), TimesheetStatus.Rejected),
+                new Timesheet(8, 2, 1, 8, DateTime.Parse("2020-4-10"), TimesheetStatus.Approved));
             modelBuilder.Entity<TimesheetRow>().HasData(
                 new TimesheetRow(1, 1, 1, 2, 3, 4, 5, 6, 7, 8, 9, "dota is best"),
                 new TimesheetRow(2, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, "PIG GOD!!!"),
                 new TimesheetRow(3, 2, 1, 5, 3, 3, 3, 3, 3, 3, 3, "NEZUKO"),
                 new TimesheetRow(4, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, "clannad"),
-                new TimesheetRow(5, 3, 1, 7, 3, 3, 8, 8, 3, 3, 3, "emp3note"));
+                new TimesheetRow(5, 3, 1, 7, 3, 3, 8, 8, 3, 3, 3, "emp3note"),
+                new TimesheetRow(6, 7, 1, 8, 3, 3, 8, 8, 3, 3, 3, "forRen"),
+                new TimesheetRow(7, 7, 1, 1, 5, 7, 8, 8, 1, 3, 3, "forRen"),
+                new TimesheetRow(8, 7, 1, 2, 6, 7, 5, 2, 3, 3, 3, "forRen"));
 
             modelBuilder.Entity<WorkPackageReport>().HasData(
                 new WorkPackageReport(1, 2, DateTime.Parse("2020-3-01"), DateTime.Parse("2020-2-25"),DateTime.Parse("2020-2-27"),

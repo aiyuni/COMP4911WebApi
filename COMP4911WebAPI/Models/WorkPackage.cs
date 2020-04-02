@@ -63,7 +63,7 @@ namespace COMP4911WebAPI.Models
         }
 
         //For Post. Id is auto generated.
-        public WorkPackage(WorkPackageViewModel workPackageViewModel, int parentWpId, int projectId)  //stopped here.  Add constructor, then go back to WorkPackageController.
+        public WorkPackage(WorkPackageViewModel workPackageViewModel, int? parentWpId, int projectId)  //stopped here.  Add constructor, then go back to WorkPackageController.
         //Break down into new WorkPackageLabourGradeAssignment, etc 
         {
             this.WorkPackageCode = workPackageViewModel.WorkPackageCode;
