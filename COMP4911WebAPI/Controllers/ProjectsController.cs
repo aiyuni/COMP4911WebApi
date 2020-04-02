@@ -50,6 +50,22 @@ namespace COMP4911WebAPI.Controllers
             //return Ok(await _projectRepository.GetAll());  //somehow this also works cuz it saves the state??
         }
 
+        // GET: api/GetOpenProjects
+        [HttpGet("GetAllOpenProjects")]
+        public async Task<ActionResult<IEnumerable<Project>>> GetOpenProjects()
+        {
+            List<Project> openProjList = new List<Project>();
+            foreach(Project item in await _projectRepository.GetAll())
+            {
+                await this.GetFullProjectDetails(item);
+                if (item.IsClosed == false)
+                {
+                    openProjList.Add(item);
+                }
+            }
+            return Ok(openProjList);
+        }
+
         // GET: api/Projects/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Project>> GetProject(int id)
