@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,6 +23,8 @@ namespace COMP4911WebAPI.Models
         public DbSet<WorkPackageReport> WorkPackageReports { get; set; }
         public DbSet<WorkPackageReportDetails> WorkPackageReportDetails { get; set; }
         public DbSet<WorkPackageLabourGradeAssignment> WorkPackageLabourGradeAssignment { get; set; }
+        public DbSet<ProjectReport> ProjectReport { get; set; }
+        public DbSet<WorkPackageReportSnapshot> WorkPackageReportSnapshot { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -112,7 +114,7 @@ namespace COMP4911WebAPI.Models
 
             modelBuilder.Entity<WorkPackageReport>().HasKey(wpr => wpr.WorkPackageReportId);
 
-            
+            modelBuilder.Entity<ProjectReport>().HasKey(pr => pr.ProjectReportId);
 
             modelBuilder.Seed();
      

@@ -24,3 +24,8 @@ DROP TABLE IF EXISTS dbo.EmployeeWorkPackageAssignments
 DROP TABLE IF EXISTS dbo.JobTitles
 DROP TABLE IF EXISTS dbo.Projects
 DROP TABLE IF EXISTS dbo.Employees
+DROP TABLE IF EXISTS dbo.WorkPackageReports
+DROP TABLE IF EXISTS dbo.WorkPackageReportDetails
+DROP TABLE IF EXISTS dbo.WorkPackageLabourGradeAssignment
+DROP TABLE IF EXISTS dbo.ProjectReport
+DROP TABLE IF EXISTS dbo.WorkPackageReportSnapshot
