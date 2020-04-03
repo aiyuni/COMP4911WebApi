@@ -249,10 +249,15 @@ namespace COMP4911WebAPI.Controllers
 
         // New PUT: api/WorkPackages/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutWorkPackage(int id, WorkPackageViewModel wpViewModel)
+        public async Task<IActionResult> PutWorkPackage(string id, WorkPackageViewModel wpViewModel)
         {
             //Get Project and ParentWpIds
-            int parentWpId = _workPackageRepository.GetIdByCode(wpViewModel.ParentWorkPackageCode);
+            int? parentWpId = null;
+            if (wpViewModel.ParentWorkPackageCode != null)
+            {
+                parentWpId = _workPackageRepository.GetIdByCode(wpViewModel.ParentWorkPackageCode);
+            }
+        
             int projectId = _projectRepository.GetIdByCode(wpViewModel.ProjectCode);
             int wpId = wpViewModel.WorkPackageId;
 
@@ -261,6 +266,32 @@ namespace COMP4911WebAPI.Controllers
 
             await _workPackageRepository.Update(wp);
 
+            //Get and delete existing assignments
+            IEnumerable<EmployeeWorkPackageAssignment> empWpList = await _empWorkPackageAssignmentRepository.GetAll();
+            foreach (EmployeeNameViewModel emp in wpViewModel.Employees)
+            {
+                var tempList = empWpList.Where(x => x.EmployeeId == emp.EmployeeId);
+                foreach (var empWp in tempList)
+                {
+                    await _empWorkPackageAssignmentRepository.Delete(empWp);
+                }
+            }
+
+            await _empWorkPackageAssignmentRepository.Delete(empWpList.FirstOrDefault(x =>
+                x.EmployeeId == wpViewModel.ResponsibleEngineer.EmployeeId));
+
+            //add updated assignments back
+            foreach (EmployeeNameViewModel emp in wpViewModel.Employees)
+            {
+                EmployeeWorkPackageAssignment empWpAss = new EmployeeWorkPackageAssignment(emp.EmployeeId, wpId);
+                await _empWorkPackageAssignmentRepository.Add(empWpAss);
+            }
+
+            //add updated RE to db
+            EmployeeWorkPackageAssignment re = new EmployeeWorkPackageAssignment(wpViewModel.ResponsibleEngineer.EmployeeId, wpId);
+            await _empWorkPackageAssignmentRepository.Add(re);
+
+            //update pmViewModels
             foreach (PmPlanningViewModel pmViewModel in wpViewModel.PmPlannings)
             {
                 WorkPackageLabourGradeAssignment wplga = new WorkPackageLabourGradeAssignment(wpId, pmViewModel);
@@ -288,6 +319,7 @@ namespace COMP4911WebAPI.Controllers
             //Get id of the wp just added
             int wpId = _workPackageRepository.GetIdByCode(wpViewModel.WorkPackageCode);
 
+            //add pmViewModels
             foreach (PmPlanningViewModel pmViewModel in wpViewModel.PmPlannings)
             {
                 WorkPackageLabourGradeAssignment wplga = new WorkPackageLabourGradeAssignment(wpId, pmViewModel);

@@ -62,9 +62,10 @@ namespace COMP4911WebAPI.Repository
             throw new NotImplementedException();
         }
 
-        public Task Delete(EmployeeWorkPackageAssignment entity)
+        public async Task Delete(EmployeeWorkPackageAssignment entity)
         {
-            throw new NotImplementedException();
+            _employeeWorkPackageAssignmentContext.Remove(entity);
+            await _employeeWorkPackageAssignmentContext.SaveChangesAsync();
         }
     }
 }
