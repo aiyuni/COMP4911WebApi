@@ -19,7 +19,9 @@ namespace COMP4911WebAPI.Controllers
     {
         private readonly IDataRepository<WorkPackageReport> _workPackageReportRepository;
         private readonly IDataRepository<WorkPackageReportDetails> _workPackageReportDetailsRepository;
-        private readonly IDataRepository<WorkPackage> _workPackageRepository;
+        //private readonly IDataRepository<WorkPackage> _workPackageRepository;
+        private readonly WorkPackageRepository _workPackageRepository;
+        private readonly WorkPackageLabourGradeAssignmentRepository _workPackageLabourGradeAssignmentRepository;
         private readonly IDataRepository<Project> _projectRepository;
         private readonly IDataRepository<Employee> _employeeRepository;
         private readonly IDataRepository<LabourGrade> _labourGradeRepository;
@@ -29,15 +31,17 @@ namespace COMP4911WebAPI.Controllers
             IDataRepository<WorkPackageReportDetails> workPackageReportDetailsRepository,
             IDataRepository<WorkPackage> workPackageRepository, IDataRepository<Project> projectRepository,
             IDataRepository<Employee> employeeRepository, IDataRepository<LabourGrade> labourGradeRepository,
-            IDataRepository<EmployeeWorkPackageAssignment> employeeWorkPackageAssignmentRepository)
+            IDataRepository<EmployeeWorkPackageAssignment> employeeWorkPackageAssignmentRepository, 
+            IDataRepository<WorkPackageLabourGradeAssignment> workPackageLabourGradeAssignmentRepository)
         {
             this._workPackageReportRepository = workPackageReportRepository;
             this._workPackageReportDetailsRepository = workPackageReportDetailsRepository;
-            this._workPackageRepository = workPackageRepository;
+            this._workPackageRepository = (WorkPackageRepository)workPackageRepository;
             this._projectRepository = projectRepository;
             this._employeeRepository = employeeRepository;
             this._labourGradeRepository = labourGradeRepository;
             this._employeeWorkPackageAssignmentRepository = employeeWorkPackageAssignmentRepository;
+            this._workPackageLabourGradeAssignmentRepository = (WorkPackageLabourGradeAssignmentRepository)workPackageLabourGradeAssignmentRepository;
         }
 
         // GET: api/WorkPackageReports
@@ -110,6 +114,33 @@ namespace COMP4911WebAPI.Controllers
                                         ". Error msg: " + e.ToString()));
             }
         }
+
+        // GET: api/WorkPackageReports/5/2
+        //This is for getting reBudgetDay column from the WorkPackageLabourGradeAssignment table
+        [HttpGet("{wpCode}/{labourGradeId}")]
+        public async Task<IActionResult> GetReBudgetColumn(string wpCode, int labourGradeId)
+        { 
+            int id = _workPackageRepository.GetIdByCode(wpCode);
+
+            WorkPackageLabourGradeAssignment resultWPLabourGrAssgn = new WorkPackageLabourGradeAssignment();
+            foreach(WorkPackageLabourGradeAssignment item in await _workPackageLabourGradeAssignmentRepository.GetAll())
+            {
+                if(item.WorkPackageId == id && item.LabourGradeId == labourGradeId)
+                {
+                    resultWPLabourGrAssgn = item;
+                }
+            }
+
+            double reBudgetValue = (double)resultWPLabourGrAssgn.reBudget;
+
+            ReBudgetColumnViewModel reBudgetColViewModel = new ReBudgetColumnViewModel(reBudgetValue);
+
+            return Ok(reBudgetColViewModel);
+
+
+
+        }
+
 
         // PUT: api/WorkPackageReports/5
         [HttpPut("{id}")]
