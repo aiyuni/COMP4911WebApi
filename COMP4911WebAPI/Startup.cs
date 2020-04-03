@@ -113,6 +113,8 @@ namespace COMP4911WebAPI
             services.AddScoped<IDataRepository<WorkPackageReportDetails>, WorkPackageReportDetailsRepository>();
             services.AddScoped<IDataRepository<WorkPackageLabourGradeAssignment>, WorkPackageLabourGradeAssignmentRepository>();
             services.AddScoped<IDataRepository<EmployeeWorkPackageAssignment>, EmployeeWorkPackageAssignmentRepository>();
+            services.AddScoped<IDataRepository<ProjectReport>, ProjectReportRepository>();
+            services.AddScoped<IDataRepository<WorkPackageReportSnapshot>, WorkPackageReportSnapshotRepository>();
 
             services.AddSwaggerGen(c =>
             {
@@ -122,6 +124,9 @@ namespace COMP4911WebAPI
                 //var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 //c.IncludeXmlComments(xmlPath);
             });
+
+
+            
 
 
 
@@ -162,29 +167,8 @@ namespace COMP4911WebAPI
 
             //Launch quartz schedule
 
-            NameValueCollection props = new NameValueCollection
-    {
-        { "quartz.serializer.type", "binary" }
-    };
-            StdSchedulerFactory factory = new StdSchedulerFactory(props);
-
-            // get a scheduler
-            IScheduler sched = (Quartz.IScheduler)factory.GetScheduler();
-            sched.Start();
-            IJobDetail reportJob = JobBuilder.Create<ReportJob>()
-            .WithIdentity("GenerateProjectReport", "Group1")
-            .UsingJobData("connectionstring", Configuration.GetConnectionString("ConnString"))
-            .Build();
-
-            ITrigger trigger = TriggerBuilder.Create()
-            .WithIdentity("ReportTrigger", "Group1")
-            .StartNow()
-            .WithSimpleSchedule(x => x
-            .WithIntervalInSeconds(120)
-            .RepeatForever())
-            .Build();
-
-
+           
+    
 
             //app.UseAuthorization();  //only in net 3.1
         }

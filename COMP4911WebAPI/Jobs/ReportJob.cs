@@ -9,7 +9,7 @@ namespace COMP4911WebAPI.Jobs
     public class ReportJob : Quartz.IJob
     {
 
-        public Task Execute(Quartz.IJobExecutionContext context)
+        public async Task Execute(Quartz.IJobExecutionContext context)
         {
 
             try
@@ -25,12 +25,12 @@ namespace COMP4911WebAPI.Jobs
                     conn.Open();
                     Command.ExecuteNonQuery();
                     conn.Close();
-                    return Task.CompletedTask;
+                    await Task.CompletedTask;
                 }
 
             }catch(SqlException e){
                     Debug.WriteLine("SQL execution exception in ReportJob, see stacktrace: \n"+e.StackTrace);
-                    return Task.CompletedTask;
+                    await Task.CompletedTask;
             }
             
 
