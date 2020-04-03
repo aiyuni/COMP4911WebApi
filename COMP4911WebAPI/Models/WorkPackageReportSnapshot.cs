@@ -27,12 +27,12 @@ namespace COMP4911WebAPI.Models
         public double WorkPackageProjectManagerEstimateAtCompletion { get; set; }
         public bool IsHighWorkPackage { get; set; } //whether or not the work package is high or low
         public DateTime WorkPackageReportSnapshotDate { get; set; }
-        public double wpReVariance { get; set; }
-        public double wpPmVariance { get; set; }
-        public double wpReCompletion { get; set; }
-        public double wpPmCompletion { get; set; }
-        public bool isClosed { get; set; }
-        public string engineerInitials { get; set; }
+        public double WpReVariance { get; set; }
+        public double WpPmVariance { get; set; }
+        public double WpReCompletion { get; set; }
+        public double WpPmCompletion { get; set; }
+        public bool IsClosed { get; set; }
+        public string EngineerInitials { get; set; }
         public const double HoursInDay = 8.0;
 
         //Constructor for WorkPackageReportSnapshot

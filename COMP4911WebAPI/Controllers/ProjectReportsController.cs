@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using COMP4911WebAPI.Jobs;
 using COMP4911WebAPI.Models;
 using COMP4911WebAPI.Repository;
+using COMP4911WebAPI.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Quartz;
 using Quartz.Impl;
@@ -19,60 +20,79 @@ namespace COMP4911WebAPI.Controllers
     [ApiController]
     public class ProjectReportsController : ControllerBase
     {
-        //Data members
-        private readonly ProjectRepository _projectRepository;
-        private readonly EmployeeProjectAssignmentRepository _employeeProjectAssignmentRepository;
-        private readonly WorkPackageRepository _workPackageRepository;
+        //Data members        
         private readonly ProjectReportRepository _projectReportRepository;
-        private readonly WorkPackageReportDetailsRepository _workPackageReportDetailsRepository;
-        private readonly TimesheetRowRepository _timesheetRowRepository;
+        private readonly EmployeeRepository _employeeRepository;
+        private readonly EmployeeProjectAssignmentRepository _employeeProjectAssignmentRepository;
 
-        private readonly LabourGradeRepository _labourGradeRepository;
-
+        private readonly WorkPackageReportSnapshotRepository _workPackageReportSnapshotRepository;
 
         //Constructor
-        public ProjectReportsController(IDataRepository<Project> projectRepository,
-            IDataRepository<EmployeeProjectAssignment> employeeProjectAssignmentRepository,
-            IDataRepository<WorkPackage> workPackageRepository,
+        public ProjectReportsController(
             IDataRepository<ProjectReport> projectReportRepository,
-            IDataRepository<WorkPackageReportDetails> workPackageReportDetailsRepository,
-            IDataRepository<TimesheetRow> timesheetRowRepository,
-            IDataRepository<LabourGrade> labourGradeRepository
+            IDataRepository<Employee> employeeRepository,
+            IDataRepository<WorkPackageReportSnapshot> workPackageReportSnapShotRepository,
+            IDataRepository<EmployeeProjectAssignment> employeeProjectAssignmentRepository
             )
         {
-            this._projectRepository = (ProjectRepository)projectRepository;
-            this._employeeProjectAssignmentRepository = (EmployeeProjectAssignmentRepository)employeeProjectAssignmentRepository;
-            this._workPackageRepository = (WorkPackageRepository)workPackageRepository;
             this._projectReportRepository = (ProjectReportRepository)projectReportRepository;
-            this._workPackageReportDetailsRepository = (WorkPackageReportDetailsRepository)workPackageReportDetailsRepository;
-            this._timesheetRowRepository = (TimesheetRowRepository)timesheetRowRepository;
-            this._labourGradeRepository = (LabourGradeRepository)labourGradeRepository;
+            this._employeeRepository = (EmployeeRepository)employeeRepository;
+            this._workPackageReportSnapshotRepository = (WorkPackageReportSnapshotRepository)workPackageReportSnapShotRepository;
+            this._employeeProjectAssignmentRepository = (EmployeeProjectAssignmentRepository)employeeProjectAssignmentRepository;
         }
 
-        //just incase you cant start scheduler automatically, you can start it manually by calling this put
-       /* [HttpPut]
-        public async Task<IActionResult> StartProjectReportSchedule()
-        {
-            StdSchedulerFactory factory = new StdSchedulerFactory();
+        /*
+                //GET: api/ProjectReports/AllProjectReports
+                [HttpGet("AllProjectReports")]
+                public async Task<IActionResult> GetAllProjectReports()
+                {
 
-            // get a scheduler
-            IScheduler sched = factory.GetScheduler();
-            sched.Start();
-            IJobDetail reportJob = JobBuilder.Create<ReportJob>()
-            .WithIdentity("GenerateProjectReport", "Group1")
-            .UsingJobData("connectionstring", AcceptRejectRule)
-            .Build();
-
-            ITrigger trigger = TriggerBuilder.Create()
-            .WithIdentity("ReportTrigger", "Group1")
-            .StartNow()
-            .WithSimpleSchedule(x => x
-            .WithIntervalInSeconds(60)
-            .RepeatForever())
-            .Build();
-            sched.ScheduleJob(reportJob, trigger);
-            return new EmptyResult();
-        }
+                    return Ok(pr);
+                }
         */
+
+        //GET: api/ProjectReports/1
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetProjectReport(int id)
+        {
+            ProjectReport pr = await _projectReportRepository.Get(id);
+
+            IEnumerable<WorkPackageReportSnapshot> allWPRS = await _workPackageReportSnapshotRepository.GetAll();
+
+            IEnumerable<WorkPackageReportSnapshot> lowWPRS = allWPRS.Where(x => x.ProjectReportId == id && !x.IsHighWorkPackage); //lowWorkPackage
+
+            IEnumerable<WorkPackageReportSnapshot> highWPRS = allWPRS.Where(x => x.ProjectReportId == id && x.IsHighWorkPackage); //highWP
+
+            IEnumerable<EmployeeProjectAssignment> allEmpProjectAssignments = await _employeeProjectAssignmentRepository.GetAll();
+
+            IEnumerable<EmployeeProjectAssignment> projectAssignments = allEmpProjectAssignments.Where(x => x.ProjectId == id);
+
+            IEnumerable<Employee> employees = await _employeeRepository.GetAll();
+
+            List<EmployeeNameViewModel> engineers = new List<EmployeeNameViewModel>();
+
+            EmployeeNameViewModel pm = null;
+            foreach (EmployeeProjectAssignment e in projectAssignments)
+            {
+
+                if (e.IsProjectManager)
+                {
+                    pm = new EmployeeNameViewModel(employees.Where(x => x.EmployeeId == e.EmployeeId).FirstOrDefault());
+                }
+                else
+                {
+
+                    engineers.Add(new EmployeeNameViewModel(employees.Where(x => x.EmployeeId == e.EmployeeId).FirstOrDefault()));
+
+                }
+
+            }
+
+            ProjectReportViewModel projectReportView = new ProjectReportViewModel(pr, pm, engineers, lowWPRS.ToList(), highWPRS.ToList());
+
+            return Ok(projectReportView);
+        }
+
+
     }
 }

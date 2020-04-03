@@ -69,16 +69,24 @@ namespace COMP4911WebAPI.ViewModels
             public string engineerInitials { get; set; }
 
             //below data members not needed for frontend but needed for calculating dervived values
-            public double LabourGradeWage { get; set; }
-            public double TotalWpHours { get; set; }
+
 
 
             //Constructor for LowWorkPackage
-            public LowWorkPackage(WorkPackageReportSnapshot workPackage)
+            public LowWorkPackage(WorkPackageReportSnapshot wprs)
             {
                 //all workpackage fields in format we need them
-
-
+                workPackageCode = wprs.WorkPackageCode;
+                workPackageName = wprs.WorkPackageTitle;
+                wpReBudget = wprs.WorkPackageResponsibleEngineerBudget;
+                wpActualSpends = wprs.WorkPackageActualSpends;
+                wpReEAC = wprs.WorkPackageResponsibleEngineerEstimateAtCompletion;
+                wpPmEAC = wprs.WorkPackageProjectManagerEstimateAtCompletion;
+                wpReVariance = wprs.WpReVariance;
+                wpPmVariance = wprs.WpPmVariance;
+                wpReCompletion = wprs.WpReCompletion;
+                wpPmCompletion = wprs.WpPmCompletion;
+                engineerInitials = wprs.EngineerInitials;
 
             }
         }
@@ -99,9 +107,16 @@ namespace COMP4911WebAPI.ViewModels
 
 
             //Constructor for HighWorkPackage
-            public HighWorkPackage(WorkPackageReportSnapshot workPackage)
+            public HighWorkPackage(WorkPackageReportSnapshot wprs)
             {
-
+                workPackageCode = wprs.WorkPackageCode;
+                workPackageName = wprs.WorkPackageTitle;
+                wpReBudget = wprs.WorkPackageResponsibleEngineerBudget;
+                wpActualSpends = wprs.WorkPackageActualSpends;
+                wpPmEAC = wprs.WorkPackageProjectManagerEstimateAtCompletion;
+                wpPmVariance = wprs.WpPmVariance;
+                wpPmCompletion = wprs.WpPmCompletion;
+                engineerInitials = wprs.EngineerInitials;
             }
         }
 
@@ -144,7 +159,7 @@ namespace COMP4911WebAPI.ViewModels
                 foreach (LowWorkPackage lwp in lowWorkPackages)
                 {
 
-                    totalReBudget += lwp.wpReBudget * lwp.LabourGradeWage * HoursInDay;
+                    totalReBudget += lwp.wpReBudget;
                 }
 
                 return totalReBudget;
@@ -159,7 +174,7 @@ namespace COMP4911WebAPI.ViewModels
 
                 foreach (LowWorkPackage lwp in lowWorkPackages)
                 {
-                    actualSpends += lwp.TotalWpHours * lwp.LabourGradeWage;
+                    actualSpends += lwp.wpActualSpends;
                 }
 
                 return actualSpends;
@@ -174,7 +189,7 @@ namespace COMP4911WebAPI.ViewModels
 
                 foreach (LowWorkPackage lwp in lowWorkPackages)
                 {
-                    total += lwp.wpReEAC * lwp.LabourGradeWage * HoursInDay;
+                    total += lwp.wpReEAC;
                 }
 
                 return total;
@@ -190,7 +205,7 @@ namespace COMP4911WebAPI.ViewModels
 
                 foreach (LowWorkPackage lwp in lowWorkPackages)
                 {
-                    total = lwp.wpPmEAC * lwp.LabourGradeWage * HoursInDay;
+                    total = lwp.wpPmEAC;
                 }
 
                 return total;
@@ -201,8 +216,10 @@ namespace COMP4911WebAPI.ViewModels
             public double CalculateReVariance()
             {
                 double reVariance = 0.0;
-
-                reVariance = (wpReEAC - wpReBudget) / wpReBudget;
+                if (wpReBudget != 0)
+                {
+                    reVariance = (wpReEAC - wpReBudget) / wpReBudget;
+                }
 
                 return reVariance;
             }
@@ -211,7 +228,11 @@ namespace COMP4911WebAPI.ViewModels
             //wpPmVariance: a derived column using the above derived fields, the formula is (wpPmEAC - wpPmBudget) / wpPmBudget
             public double CalculatePmVariance()
             {
-                double pmVariance = (wpPmEAC - wpReBudget) / wpReBudget;
+                double pmVariance = 0.0;
+                if (wpReBudget != 0)
+                {
+                    pmVariance = (wpPmEAC - wpReBudget) / wpReBudget;
+                }
                 return pmVariance;
             }
 
@@ -219,7 +240,11 @@ namespace COMP4911WebAPI.ViewModels
             //wpReCompletion: a derived column using the above derived fields, the formula is wpActualSpends/reEAC
             public double CalculateReCompletion()
             {
-                double reCompletion = wpActualSpends / wpReEAC;
+                double reCompletion = 0.0;
+                if (wpReEAC != 0)
+                {
+                    reCompletion = wpActualSpends / wpReEAC;
+                }
                 return reCompletion;
             }
 
@@ -228,7 +253,11 @@ namespace COMP4911WebAPI.ViewModels
             //wpPmCompletion: a derived column using the above derived fields, the formula is wpActualSpends/pmEAC
             public double CalculatePmCompletion()
             {
-                double pmCompletion = wpActualSpends / wpPmEAC;
+                double pmCompletion = 0.0;
+                if (wpPmEAC != 0)
+                {
+                    pmCompletion = wpActualSpends / wpPmEAC;
+                }
                 return pmCompletion;
             }
 

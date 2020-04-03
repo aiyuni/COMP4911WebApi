@@ -1,3 +1,6 @@
+--Test Version
+--Has no conditions on execution time
+
 USE COMP4911WebAPI;
 GO
 SET ANSI_NULLS ON  
@@ -5,10 +8,14 @@ GO
 SET QUOTED_IDENTIFIER ON  
 GO  
 
-DROP PROCEDURE IF EXISTS GenerateProjectReport;
+TRUNCATE Table projectreport;
+TRUNCATE Table workPackageReportSnapshot;
+
+
+DROP PROCEDURE IF EXISTS GenerateProjectReport_TEST;
 GO
 
-CREATE OR ALTER PROCEDURE GenerateProjectReport
+CREATE OR ALTER PROCEDURE GenerateProjectReport_TEST
 AS
 BEGIN
 --Job runs every day
@@ -19,8 +26,10 @@ BEGIN
 --DATEPART(dw,@today) = 6 means friday
 --EOMONTH(Today) returns the last day of the current month
 --DATEPART(d,@today) returns the day of the month
-IF((DATEPART(dw,GETDATE()) = 6 AND EOMONTH(GETDATE()) = GETDATE()) 
+
+/*IF((DATEPART(dw,GETDATE()) = 6 AND EOMONTH(GETDATE()) = GETDATE()) 
 OR (DATEPART(dw,GETDATE()) = 6 AND DATEPART(d,GETDATE()) < 7))
+*/
 BEGIN
 /*
 Create new project report Records
@@ -32,9 +41,9 @@ Create new project report Records
 		   CAST(GETDATE() AS DATE) AS "ReportDate",
 		   p.StartDate,
 		   p.EndDate
-	FROM Projects p
-	WHERE (EndDate > GETDATE() OR EndDate IS NULL)
-    AND   (StartDate < GETDATE() AND StartDate IS NOT NULL);
+	FROM Projects p;
+	/*WHERE (EndDate > GETDATE() OR EndDate IS NULL)
+    AND   (StartDate < GETDATE() AND StartDate IS NOT NULL)*/
 
 
 /*
@@ -181,3 +190,16 @@ ON wp.WorkPackageId = ei.WorkPackageId
 ;
 END
 END
+
+
+
+EXEC GenerateProjectReport_TEST
+
+
+
+
+SELECT *
+FROM WorkPackageReportSnapshot;
+
+SELECT *
+FROM ProjectReport

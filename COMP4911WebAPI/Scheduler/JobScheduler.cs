@@ -27,7 +27,7 @@ namespace COMP4911WebAPI.Scheduler
                 //change how often job runs here (seconds for testing)
                 //change to below in production
                 //.WithIntervalInHours(24)
-                .WithIntervalInSeconds(60) 
+                .WithIntervalInSeconds(3600) 
                 .RepeatForever())
 
                 .StartAt(System.DateTime.UtcNow)
