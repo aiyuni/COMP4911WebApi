@@ -116,12 +116,6 @@ namespace COMP4911WebAPI.Models
 
             modelBuilder.Entity<ProjectReport>().HasKey(pr => pr.ProjectReportId);
 
-            modelBuilder.Entity<WorkPackageReportSnapshot>()
-            .HasKey(c => new {c.WorkPackageId, c.ProjectReportId});
-
-       
-            
-
             modelBuilder.Seed();
      
         }

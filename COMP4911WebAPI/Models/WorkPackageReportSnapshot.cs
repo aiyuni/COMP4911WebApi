@@ -13,7 +13,11 @@ namespace COMP4911WebAPI.Models
 
         [Key]
         public int WorkPackageReportSnapshotId { get; set; }
+
+        [ForeignKey("WorkPackageId")]
         public int WorkPackageId { get; set; }
+
+        [ForeignKey("ProjectReportId")]
         public int ProjectReportId { get; set; }
         public string WorkPackageCode { get; set; }
         public string WorkPackageTitle { get; set; } //workPackageName
@@ -21,10 +25,8 @@ namespace COMP4911WebAPI.Models
         public double WorkPackageActualSpends { get; set; }
         public double WorkPackageResponsibleEngineerEstimateAtCompletion { get; set; }
         public double WorkPackageProjectManagerEstimateAtCompletion { get; set; }
-        public double LabourGradeWage { get; set; }
         public bool IsHighWorkPackage { get; set; } //whether or not the work package is high or low
         public DateTime WorkPackageReportSnapshotDate { get; set; }
-        public double TotalWpHours { get; set; }
         public double wpReVariance { get; set; }
         public double wpPmVariance { get; set; }
         public double wpReCompletion { get; set; }
