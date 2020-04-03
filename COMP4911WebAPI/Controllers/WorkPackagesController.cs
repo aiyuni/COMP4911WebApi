@@ -196,6 +196,8 @@ namespace COMP4911WebAPI.Controllers
 
             return Ok(wpViewModels);
         }
+        
+        
 
         // GET: api/WorkPackages/GetTotalHoursByWpIdRange/B/2020-2-10/2020-2-20/2
         //This is for WP Report
