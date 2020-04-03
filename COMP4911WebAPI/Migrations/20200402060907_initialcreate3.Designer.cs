@@ -4,14 +4,16 @@ using COMP4911WebAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace COMP4911WebAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200402060907_initialcreate3")]
+    partial class initialcreate3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -654,30 +656,6 @@ namespace COMP4911WebAPI.Migrations
                             ProjectName = "Vacation",
                             StartDate = new DateTime(1900, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
-                });
-
-            modelBuilder.Entity("COMP4911WebAPI.Models.ProjectReport", b =>
-                {
-                    b.Property<int>("ProjectReportId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("EndDate");
-
-                    b.Property<int>("ProjectCode");
-
-                    b.Property<int>("ProjectId");
-
-                    b.Property<string>("ProjectName")
-                        .IsRequired();
-
-                    b.Property<DateTime>("ReportDate");
-
-                    b.Property<DateTime>("StartDate");
-
-                    b.HasKey("ProjectReportId");
-
-                    b.ToTable("ProjectReport");
                 });
 
             modelBuilder.Entity("COMP4911WebAPI.Models.Timesheet", b =>
@@ -1391,49 +1369,6 @@ namespace COMP4911WebAPI.Migrations
                             VariancePercent = 50.0,
                             WorkPackageReportId = 1
                         });
-                });
-
-            modelBuilder.Entity("COMP4911WebAPI.Models.WorkPackageReportSnapshot", b =>
-                {
-                    b.Property<int>("WorkPackageReportSnapshotId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("IsHighWorkPackage");
-
-                    b.Property<int>("ProjectReportId");
-
-                    b.Property<double>("WorkPackageActualSpends");
-
-                    b.Property<string>("WorkPackageCode");
-
-                    b.Property<int>("WorkPackageId");
-
-                    b.Property<double>("WorkPackageProjectManagerEstimateAtCompletion");
-
-                    b.Property<DateTime>("WorkPackageReportSnapshotDate");
-
-                    b.Property<double>("WorkPackageResponsibleEngineerBudget");
-
-                    b.Property<double>("WorkPackageResponsibleEngineerEstimateAtCompletion");
-
-                    b.Property<string>("WorkPackageTitle");
-
-                    b.Property<string>("engineerInitials");
-
-                    b.Property<bool>("isClosed");
-
-                    b.Property<double>("wpPmCompletion");
-
-                    b.Property<double>("wpPmVariance");
-
-                    b.Property<double>("wpReCompletion");
-
-                    b.Property<double>("wpReVariance");
-
-                    b.HasKey("WorkPackageReportSnapshotId");
-
-                    b.ToTable("WorkPackageReportSnapshot");
                 });
 
             modelBuilder.Entity("COMP4911WebAPI.Models.Credential", b =>

@@ -37,8 +37,8 @@ namespace COMP4911WebAPI.ViewModels
             this.EmployeeId = ts.EmployeeId;
             this.WeekNumber = ts.WeekNumber;
             this.Status = ts.Status.ToString();
-            this.WeekNumber = WeekNumber;
-            this.WeekEndingIn = WeekEndingIn;
+            this.WeekNumber = ts.WeekNumber;
+            this.WeekEndingIn = ts.WeekEndingIn;
             this.OverTime = ts.OverTime;
             this.FlexTime = ts.FlexTime;
 

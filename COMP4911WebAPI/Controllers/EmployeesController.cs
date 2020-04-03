@@ -135,14 +135,18 @@ namespace COMP4911WebAPI.Controllers
 
         }
 
-        // PUT: api/Employees
-        [HttpPut]
-        public async Task<IActionResult> PutEmployee(EmployeeViewModel emp)
+        // PUT: api/Employees/id
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutEmployee(int id, EmployeeViewModel emp)
         {
             await _employeeRepository.Update(new Employee(emp));
-            await _credentialRepository.Delete(
-                (await _credentialRepository.GetAll()).SingleOrDefault(c => c.EmployeeId == emp.EmployeeId));
-            await _credentialRepository.Add(new Credential(emp.EmpUsername, emp.EmpPassword, emp.EmployeeId));
+            if (emp.EmpPassword != null)
+            {
+                await _credentialRepository.Delete(
+                    (await _credentialRepository.GetAll()).SingleOrDefault(c => c.EmployeeId == emp.EmployeeId));
+                await _credentialRepository.Add(new Credential(emp.EmpUsername, emp.EmpPassword, emp.EmployeeId));
+            }
+
             return Ok(emp);
         }
 
