@@ -41,15 +41,109 @@ namespace COMP4911WebAPI.Controllers
             this._employeeProjectAssignmentRepository = (EmployeeProjectAssignmentRepository)employeeProjectAssignmentRepository;
         }
 
-        /*
-                //GET: api/ProjectReports/AllProjectReports
-                [HttpGet("AllProjectReports")]
-                public async Task<IActionResult> GetAllProjectReports()
+
+        //GET: api/ProjectReports/AllProjectReports
+        [HttpGet("AllProjectReports")]
+        public async Task<IActionResult> GetAllProjectReports()
+        {
+            List<ProjectReportViewModel> prViewList = new List<ProjectReportViewModel>();
+            IEnumerable<ProjectReport> prList = await _projectReportRepository.GetAll();
+
+            foreach (ProjectReport pr in prList)
+            {
+
+                IEnumerable<WorkPackageReportSnapshot> allWPRS = await _workPackageReportSnapshotRepository.GetAll();
+
+                IEnumerable<WorkPackageReportSnapshot> lowWPRS = allWPRS.Where(x => x.ProjectReportId == pr.ProjectReportId && !x.IsHighWorkPackage); //lowWorkPackage
+
+                IEnumerable<WorkPackageReportSnapshot> highWPRS = allWPRS.Where(x => x.ProjectReportId == pr.ProjectReportId && x.IsHighWorkPackage); //highWP
+
+                IEnumerable<EmployeeProjectAssignment> allEmpProjectAssignments = await _employeeProjectAssignmentRepository.GetAll();
+
+                IEnumerable<EmployeeProjectAssignment> projectAssignments = allEmpProjectAssignments.Where(x => x.ProjectId == pr.ProjectId);
+
+                IEnumerable<Employee> employees = await _employeeRepository.GetAll();
+
+                List<EmployeeNameViewModel> engineers = new List<EmployeeNameViewModel>();
+
+                EmployeeNameViewModel pm = null;
+
+                foreach (EmployeeProjectAssignment e in projectAssignments)
                 {
 
-                    return Ok(pr);
+                    if (e.IsProjectManager)
+                    {
+                        pm = new EmployeeNameViewModel(employees.Where(x => x.EmployeeId == e.EmployeeId).FirstOrDefault());
+                    }
+                    else
+                    {
+
+                        engineers.Add(new EmployeeNameViewModel(employees.Where(x => x.EmployeeId == e.EmployeeId).FirstOrDefault()));
+
+                    }
+
                 }
-        */
+
+                prViewList.Add(new ProjectReportViewModel(pr, pm, engineers, lowWPRS.ToList(), highWPRS.ToList()));
+            }
+
+
+
+            return Ok(prViewList);
+        }
+
+
+        //GET: api/ProjectReports/AllProjectReports/1
+        [HttpGet("AllProjectReports/{id}")]
+        public async Task<IActionResult> GetAllProjectReportsByProjectId(int id)
+        {
+            List<ProjectReportViewModel> prViewList = new List<ProjectReportViewModel>();
+            IEnumerable<ProjectReport> allPRList = await _projectReportRepository.GetAll();
+            IEnumerable<ProjectReport> prList = allPRList.Where(x => x.ProjectId == id);
+
+            foreach (ProjectReport pr in prList)
+            {
+
+                IEnumerable<WorkPackageReportSnapshot> allWPRS = await _workPackageReportSnapshotRepository.GetAll();
+
+                IEnumerable<WorkPackageReportSnapshot> lowWPRS = allWPRS.Where(x => x.ProjectReportId == pr.ProjectReportId && !x.IsHighWorkPackage); //lowWorkPackage
+
+                IEnumerable<WorkPackageReportSnapshot> highWPRS = allWPRS.Where(x => x.ProjectReportId == pr.ProjectReportId && x.IsHighWorkPackage); //highWP
+
+                IEnumerable<EmployeeProjectAssignment> allEmpProjectAssignments = await _employeeProjectAssignmentRepository.GetAll();
+
+                IEnumerable<EmployeeProjectAssignment> projectAssignments = allEmpProjectAssignments.Where(x => x.ProjectId == pr.ProjectId);
+
+                IEnumerable<Employee> employees = await _employeeRepository.GetAll();
+
+                List<EmployeeNameViewModel> engineers = new List<EmployeeNameViewModel>();
+
+                EmployeeNameViewModel pm = null;
+
+                foreach (EmployeeProjectAssignment e in projectAssignments)
+                {
+
+                    if (e.IsProjectManager)
+                    {
+                        pm = new EmployeeNameViewModel(employees.Where(x => x.EmployeeId == e.EmployeeId).FirstOrDefault());
+                    }
+                    else
+                    {
+
+                        engineers.Add(new EmployeeNameViewModel(employees.Where(x => x.EmployeeId == e.EmployeeId).FirstOrDefault()));
+
+                    }
+
+                }
+
+                prViewList.Add(new ProjectReportViewModel(pr, pm, engineers, lowWPRS.ToList(), highWPRS.ToList()));
+            }
+
+
+
+            return Ok(prViewList);
+        }
+
 
         //GET: api/ProjectReports/1
         [HttpGet("{id}")]
@@ -65,13 +159,14 @@ namespace COMP4911WebAPI.Controllers
 
             IEnumerable<EmployeeProjectAssignment> allEmpProjectAssignments = await _employeeProjectAssignmentRepository.GetAll();
 
-            IEnumerable<EmployeeProjectAssignment> projectAssignments = allEmpProjectAssignments.Where(x => x.ProjectId == id);
+            IEnumerable<EmployeeProjectAssignment> projectAssignments = allEmpProjectAssignments.Where(x => x.ProjectId == pr.ProjectId);
 
             IEnumerable<Employee> employees = await _employeeRepository.GetAll();
 
             List<EmployeeNameViewModel> engineers = new List<EmployeeNameViewModel>();
 
             EmployeeNameViewModel pm = null;
+
             foreach (EmployeeProjectAssignment e in projectAssignments)
             {
 
