@@ -20,6 +20,8 @@ namespace COMP4911WebAPI.ViewModels
         public List<HighWorkPackage> HighWpStatus { get; set; } //workpackagesnapshots
         public const double HoursInDay = 8.0;
 
+        public Totals totals;
+
 
         //Constructor for ProjectReportViewModel
         public ProjectReportViewModel(ProjectReport projectReport, EmployeeNameViewModel projectManager,
@@ -35,6 +37,8 @@ namespace COMP4911WebAPI.ViewModels
             EndDate = projectReport.EndDate;
             ProjectManager = projectManager;
             Engineers = engineers;
+            LowWpStatus = new List<LowWorkPackage>();
+            HighWpStatus = new List<HighWorkPackage>();
 
             foreach (WorkPackageReportSnapshot wp in lowWpStatus)
             {
@@ -47,7 +51,7 @@ namespace COMP4911WebAPI.ViewModels
             }
 
             //Inner class totals
-            Totals totals = new Totals(LowWpStatus);
+            totals = new Totals(LowWpStatus);
 
         }
 
@@ -126,7 +130,6 @@ namespace COMP4911WebAPI.ViewModels
             //Data members for Totals
             public double wpReBudget { get; set; } //workPackageResponsibleEngineerBudget
             public double wpActualSpends { get; set; } //WorkPackageActualSpends
-
             public double wpReEAC { get; set; } //WorkPackageResponsibleEngineerEstimateAtCompletion
             public double wpPmEAC { get; set; } //WorkPackageProjectManagerEstimateAtCompletion
             public double wpReVariance { get; set; } //workPackageResponsibleEngineerVariance
