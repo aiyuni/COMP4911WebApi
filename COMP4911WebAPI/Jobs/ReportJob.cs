@@ -19,7 +19,7 @@ namespace COMP4911WebAPI.Jobs
                 string connectionString = (string)dataMap["connectionstring"];
 
                 using (var conn = new SqlConnection(connectionString))
-                using (var Command = new SqlCommand("GenerateProjectReport", conn)
+                using (var Command = new SqlCommand("GenerateProjectReport_TEST", conn)
                 { CommandType = CommandType.StoredProcedure })
                 {
                     conn.Open();
