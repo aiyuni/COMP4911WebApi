@@ -166,11 +166,14 @@ namespace COMP4911WebAPI.Controllers
                     .FirstOrDefault(w => w.WorkPackageCode.Equals(workPackageReportViewModel.WorkPackageCode))
                     .WorkPackageId;
                 await _workPackageReportRepository.Add(new WorkPackageReport(workPackageReportViewModel, wpId));
+
+                var thisReport = (await _workPackageReportRepository.GetAll()).OrderByDescending(x => x.LastUpdatedTime).FirstOrDefault();
+
                 foreach (WorkPackageReportDetailsViewModel details in workPackageReportViewModel.Details)
                 {
                     WorkPackageReportDetails wpReportDetails = new WorkPackageReportDetails();
                     wpReportDetails.LabourGradeId = details.LabourGradeId;
-                    wpReportDetails.WorkPackageReportId = wpId;
+                    wpReportDetails.WorkPackageReportId = thisReport.WorkPackageReportId;
                     wpReportDetails.LabourGradeName = details.LabourGradeName;
                     wpReportDetails.ResponsibleEngineerBudgetInDays = details.ReBudgetDay;
                     wpReportDetails.TotalDays = details.TotalDays;
