@@ -21,14 +21,15 @@ namespace COMP4911WebAPI.Repository
         {
             try
             {
-                await _workPackageReportDetailsContext.AddAsync(entity);
-                await _workPackageReportDetailsContext.SaveChangesAsync();
+                _workPackageReportDetailsContext.Add(entity);
+                _workPackageReportDetailsContext.SaveChanges();
                 _workPackageReportDetailsContext.Entry(entity).State = EntityState.Detached;
                 return true;
             }
             catch (Exception e)
             {
                 //throw new Exception("Failed to add work package details: " + e.ToString());
+                Debug.WriteLine(e.ToString());
                 return true;
             }
         }

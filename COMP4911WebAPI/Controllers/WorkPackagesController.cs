@@ -201,12 +201,18 @@ namespace COMP4911WebAPI.Controllers
 
         // GET: api/WorkPackages/GetTotalHoursByWpIdRange/B/2020-2-10/2020-2-20/2
         //This is for WP Report
-        [HttpGet("GetTotalHoursByWpIdRange/{wpId}/{startDate}/{endDate}/{labourGradeId}")]
-        public async Task<ActionResult> GetActualDaysByWpIdRange(string wpId, DateTime startDate, DateTime endDate,
+        [HttpGet("GetTotalHoursByWpIdRange/{wpCode}/{startDate}/{endDate}/{labourGradeId}")]
+        public async Task<ActionResult> GetActualDaysByWpIdRange(string wpCode, DateTime startDate, DateTime endDate,
             int labourGradeId)
         {
             double totalHours = 0;
-            IList<WorkPackage> wpList = await this.GetAllChildWorkPackages(wpId);
+            IList<WorkPackage> wpList = await this.GetAllChildWorkPackages(wpCode);
+
+            if (wpList == null)
+            {
+                wpList.Add(await _workPackageRepository.Get(_workPackageRepository.GetIdByCode(wpCode)));
+            }
+
             IList<Employee> empList = (await _empController.GetAllEmployeesByLabourGrade(labourGradeId)).ToList();
             IList<Timesheet> tsList = new List<Timesheet>();
             foreach (Employee emp in empList)
