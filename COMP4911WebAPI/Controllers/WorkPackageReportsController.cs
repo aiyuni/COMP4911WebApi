@@ -54,21 +54,18 @@ namespace COMP4911WebAPI.Controllers
         // GET: api/WorkPackageReports/5
         //INPROGRESS - need to create a new viewmodel for get as its different from post. Or look into reusing current model?
         [HttpGet("{id}")]
-        public async Task<ActionResult<WorkPackageReportGetViewModel>> GetWorkPackageReport(string id)
+        public async Task<ActionResult<WorkPackageReportGetViewModel>> GetWorkPackageReport(int id)
         {
             try
             {
-                var workPackage = (await _workPackageRepository.GetAll()).FirstOrDefault(w => w.WorkPackageCode.Equals(id));
+                //var workPackage = (await _workPackageRepository.GetAll()).FirstOrDefault(w => w.WorkPackageCode.Equals(id));
+                //var project = await _projectRepository.Get(workPackage.ProjectId);
+                //int wpId = (await _workPackageRepository.GetAll()).FirstOrDefault(w => w.WorkPackageCode.Equals(id))
+                //    .WorkPackageId;
+                var workPackageReport = await _workPackageReportRepository.Get(id);
+                int wpId = workPackageReport.WorkPackageId; 
+                var workPackage = (await _workPackageRepository.Get(wpId));
                 var project = await _projectRepository.Get(workPackage.ProjectId);
-                int wpId = (await _workPackageRepository.GetAll()).FirstOrDefault(w => w.WorkPackageCode.Equals(id))
-                    .WorkPackageId;
-                var workPackageReport = await _workPackageReportRepository.Get(wpId);
-
-                if (workPackageReport == null)
-                {
-                    return NotFound();
-                }
-
 
                 var projectManager = await _employeeRepository.Get(project.ProjectManagerId);
                 projectManager.LabourGrade = await _labourGradeRepository.Get(projectManager.LabourGradeId);
@@ -203,12 +200,15 @@ namespace COMP4911WebAPI.Controllers
     
 
         // GET: api/WorkPackageReports/getAllWorkPackageReport/wpcode
-        [HttpGet("getAllWorkPackageReport/{id}")]
-        public async Task<ActionResult<IEnumerable<WorkPackageReportGetAllViewModel>>> GetAllWorkPackageReports(int id)
+        [HttpGet("getAllWorkPackageReport/{code}")]
+        public async Task<ActionResult<IEnumerable<WorkPackageReportGetAllViewModel>>> GetAllWorkPackageReports(string code)
         {
+
+            int id = _workPackageRepository.GetIdByCode(code);
             List<WorkPackageReportGetAllViewModel> list = new List<WorkPackageReportGetAllViewModel>();
 
-            foreach(WorkPackageReport item in await _workPackageReportRepository.GetAll()) {
+            foreach(WorkPackageReport item in await _workPackageReportRepository.GetAll()) 
+            {
                 if(item.WorkPackageId == id) 
                     list.Add(new WorkPackageReportGetAllViewModel(item));
             }
