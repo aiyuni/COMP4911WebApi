@@ -22,6 +22,10 @@ using System.IO;
 using System.Reflection;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.OpenApi.Models;
+using Quartz;
+using COMP4911WebAPI.Jobs;
+using System.Collections.Specialized;
+using Quartz.Impl;
 
 namespace COMP4911WebAPI
 {
@@ -77,11 +81,13 @@ namespace COMP4911WebAPI
             //        };
             //    });
 
-            services.AddAuthentication(option => {
+            services.AddAuthentication(option =>
+            {
                 option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 option.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options => {
+            }).AddJwtBearer(options =>
+            {
                 options.SaveToken = true;
                 options.RequireHttpsMetadata = true;
                 options.TokenValidationParameters = new TokenValidationParameters()
@@ -106,7 +112,9 @@ namespace COMP4911WebAPI
             services.AddScoped<IDataRepository<WorkPackageReport>, WorkPackageReportRepository>();
             services.AddScoped<IDataRepository<WorkPackageReportDetails>, WorkPackageReportDetailsRepository>();
             services.AddScoped<IDataRepository<WorkPackageLabourGradeAssignment>, WorkPackageLabourGradeAssignmentRepository>();
-            services.AddScoped<IDataRepository<EmployeeWorkPackageAssignment>, EmployeeWorkPackageAssignmentRepository> ();
+            services.AddScoped<IDataRepository<EmployeeWorkPackageAssignment>, EmployeeWorkPackageAssignmentRepository>();
+            services.AddScoped<IDataRepository<ProjectReport>, ProjectReportRepository>();
+            services.AddScoped<IDataRepository<WorkPackageReportSnapshot>, WorkPackageReportSnapshotRepository>();
 
             services.AddSwaggerGen(c =>
             {
@@ -116,6 +124,13 @@ namespace COMP4911WebAPI
                 //var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 //c.IncludeXmlComments(xmlPath);
             });
+
+
+            
+
+
+
+
 
         }
 
@@ -150,6 +165,10 @@ namespace COMP4911WebAPI
             app.UseAuthentication();
             app.UseMvc();  //this always after useAuthentication!
 
+            //Launch quartz schedule
+
+           
+    
 
             //app.UseAuthorization();  //only in net 3.1
         }

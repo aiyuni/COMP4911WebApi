@@ -40,9 +40,10 @@ namespace COMP4911WebAPI.Repository
                 entity.ProjectId) == null);
         }
 
-        public Task Delete(EmployeeProjectAssignment entity)
+        public async Task Delete(EmployeeProjectAssignment entity)
         {
-            throw new NotImplementedException("Why are you trying to delete data... go watch Angel beats");
+            _employeeProjectAssignmentContext.Remove(entity);
+            await _employeeProjectAssignmentContext.SaveChangesAsync();
         }
 
         public Task<EmployeeProjectAssignment> Get(int id)

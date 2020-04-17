@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -201,17 +201,29 @@ namespace COMP4911WebAPI.Controllers
             proj.ProjectId = id;
             await _projectRepository.Update(proj);
 
-            EmployeeProjectAssignment supProjectAssignment = new EmployeeProjectAssignment(projViewModel.ProjectManager.EmployeeId,
-                id, true);
-            await _employeeProjectAssignmentRepository.Update(supProjectAssignment);
+            IEnumerable<EmployeeProjectAssignment> empProjectAssignmentList =
+                await _employeeProjectAssignmentRepository.GetAll();
 
+            //delete
+            foreach (EmployeeProjectAssignment item in empProjectAssignmentList)
+            {
+                if (item.ProjectId == projViewModel.ProjectId)
+                {
+                    await _employeeProjectAssignmentRepository.Delete(item);
+                }
+            }
+
+            //add again
             foreach (EmployeeNameViewModel emp in projViewModel.Employees)
             {
-                EmployeeProjectAssignment empProjectAssignment = new EmployeeProjectAssignment(
-                    projViewModel.ProjectManager.EmployeeId,
-                    id, false);
-                await _employeeProjectAssignmentRepository.Update(empProjectAssignment);
+                EmployeeProjectAssignment empProjAssignment = new EmployeeProjectAssignment(emp.EmployeeId, projViewModel.ProjectId, false);
+                    await _employeeProjectAssignmentRepository.Add(empProjAssignment);
             }
+
+            EmployeeProjectAssignment supProjectAssignment = new EmployeeProjectAssignment(projViewModel.ProjectManager.EmployeeId,
+                projViewModel.ProjectId, true);
+            await _employeeProjectAssignmentRepository.Add(supProjectAssignment);
+
 
             return Ok(200);
         }
